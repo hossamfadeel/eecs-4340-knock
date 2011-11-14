@@ -1,5 +1,5 @@
 module node5(
-	clk_interface.dut clk,
+	clock_interface.dut clk,
 	reset_interface.dut reset,
 	node_interface.dut local_node,
 	node_interface.dut node_0,
