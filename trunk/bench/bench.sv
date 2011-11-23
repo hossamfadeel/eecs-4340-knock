@@ -1,6 +1,6 @@
 program automatic bench (
   clock_interface.bench clk,
-  reset_interface.bench rst,
+  reset_interface.bench reset,
   node_interface.bench local_node [1:16] 
 );
   environment env;
@@ -8,13 +8,13 @@ program automatic bench (
   initial begin
     env = new();
 
-    rst.cb.reset <= 1;
+    reset.cb.reset <= 1;
     @(clk.cb);
 
     repeat (env.cfg.max_cycles) begin
       env.gen();
 
-      rst.cb.reset <= env.rst.reset;
+      reset.cb.reset <= env.rst.reset;
 
       @(clk.cb);
       env.check();
