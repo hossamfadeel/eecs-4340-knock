@@ -1,15 +1,25 @@
-DUT = dut/node*.sv dut/noc.sv
+NODE_TYPE ?= 0
+NOC_SIZE ?= 2
+NODE_X ?= 0
+NODE_Y ?= 0
+
+ifeq ($(NODE_TYPE), 0)
+	DUT = dut/node*.sv dut/noc.sv
+else
+	DUT = dut/node$(NODE_TYPE).sv
+endif
 INTERFACES = interfaces/*.sv
 BENCH = bench/data.sv bench/transaction.sv bench/reset_transaction.sv bench/configuration.sv bench/tracker.sv bench/environment.sv bench/bench.sv 
 
 VCS = vcs -PP -sverilog  
+DEFINES = +define+NODE_TYPE$(NODE_TYPE) +define+NOC_SIZE=$(NOC_SIZE) +define+NODE_X=$(NODE_X) +define+NODE_Y=$(NODE_Y) 
 
 bench_out: top.sv $(INTERFACES) $(DUT) $(BENCH)
-	$(VCS) $^ -o $@
+	$(VCS) $^ $(DEFINES) -o $@
 	./$@
 
 dut_out: top.sv $(INTERFACES) $(DUT)
-	$(VCS) $^ -o $@
+	$(VCS) $^ $(DEFINES) +define+DUT_MODE -o $@
 
 .PHONY: clean
 clean:
