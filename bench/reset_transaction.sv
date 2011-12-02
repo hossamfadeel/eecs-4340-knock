@@ -1,8 +1,8 @@
 class reset_transaction extends transaction;
   rand bit reset;
   constraint c_reset {
-    reset dist { 1 := e.cfg.density_reset,
-                 0 := (10000 - e.cfg.density_reset)};
+    reset dist { 1 := e.cfg.reset_density,
+                 0 := (10000 - e.cfg.reset_density)};
   }
 
   function new(const ref environment e);
