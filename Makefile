@@ -1,5 +1,5 @@
 NODE_TYPE ?= 0
-NOC_SIZE ?= 2
+NOC_SIZE ?= 4 
 NODE_X ?= 0
 NODE_Y ?= 0
 

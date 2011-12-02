@@ -1,7 +1,7 @@
 program automatic bench (
   clock_interface.bench clk,
   reset_interface.bench reset,
-  node_interface.bench local_node [1:16] 
+  node_interface.bench local_node [1:`INTERFACES] 
 );
   environment env;
 

@@ -1,7 +1,7 @@
 module noc(
 	clock_interface.dut clk,
 	reset_interface.dut reset,
-	node_interface.dut local_node [1:16] 
+	node_interface.dut local_node [1:`INTERFACES] 
 );
 
   node_interface c [1:24] (.clk(clk.clk));
