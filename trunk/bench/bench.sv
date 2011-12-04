@@ -10,13 +10,17 @@ program automatic bench (
     env = new();
     vnode = node;
 
-    reset.cb.reset <= 1;
+    reset.cb.reset <= 1'b0;
     @(clk.cb);
 
     repeat (env.cfg.max_cycles) begin
       env.gen();
 
-      reset.cb.reset <= env.rst.reset;
+      reset.cb.reset <= ~env.rst.reset;
+      for(int i = 1; i<=`INTERFACES; i++) begin
+        vnode[i].cb.receiving_data <= 1'b1;
+        vnode[i].cb.data_in <= 1'b0;
+      end
 
       @(clk.cb);
       for(int i = 1; i<=`INTERFACES; i++) begin
@@ -25,6 +29,8 @@ program automatic bench (
                   vnode[i].cb.sending_data,
                   vnode[i].cb.data_out
                  );
+        //$display("Node Out %h: %d", i, vnode[i].cb.data_out);
+        //$display("Full Out %h: %d", i, vnode[i].cb.buffer_full_out);
       end
 
       env.shift();

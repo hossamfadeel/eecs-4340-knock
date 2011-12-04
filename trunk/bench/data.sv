@@ -3,11 +3,11 @@ class data;
   sim_node next_nodes[`NODE_COUNT];
 
   function new();
-    `ifdef NODE_TYPE0
+    `ifdef NOC_MODE
       for(int x = 0; x<`NOC_SIZE;x++) begin
         for(int y = 0; y<`NOC_SIZE;y++) begin
-          nodes[x + y*4] = new(x, y);
-          next_nodes[x + y*4] = new(x, y);
+          nodes[x + y*`NOC_SIZE] = new(x, y);
+          next_nodes[x + y*`NOC_SIZE] = new(x, y);
         end
       end
     `else

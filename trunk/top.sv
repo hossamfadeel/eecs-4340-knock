@@ -45,7 +45,7 @@ module top;
               .node_3(local_if[ 5])
             );
   `endif
-  `ifdef NODE_TYPE0
+  `ifdef NOC_MODE
     `define INTERFACES `NOC_SIZE*`NOC_SIZE
     `define NODE_COUNT `INTERFACES 
     node_interface local_if [1:`INTERFACES] (.clk(clk));
