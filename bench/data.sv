@@ -4,13 +4,15 @@ class data;
 
   function new();
     `ifdef NODE_TYPE0
-      for(int i = 0; i<`NODE_COUNT;i++) begin
-        nodes[i] = new(3);
-        next_nodes[i] = new(3);
+      for(int x = 0; x<`NOC_SIZE;x++) begin
+        for(int y = 0; y<`NOC_SIZE;y++) begin
+          nodes[x + y*4] = new(x, y);
+          next_nodes[x + y*4] = new(x, y);
+        end
       end
     `else
-        nodes[0] = new(`INTERFACES);
-        next_nodes[0] = new(`INTERFACES);
+      nodes[0] = new(`NODE_X, `NODE_Y);
+      next_nodes[0] = new(`NODE_X, `NODE_Y);
     `endif
   endfunction
 
