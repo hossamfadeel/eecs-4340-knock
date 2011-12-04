@@ -6,7 +6,7 @@ module register #(parameter int BITS = 1) (
 
 	wire [BITS-1:0] write_data;
 
-	flipflop #(.BITS(BITS)) FF (.clk(clk), .data_in(write_data), .data_o(data_o));
+	flipflop #(.BITS(BITS)) FF (.clk(clk), .data_i(write_data), .data_o(data_o));
 
 	assign write_data = reset ? 0 : (enable_i ? data_i : data_o);
 endmodule
