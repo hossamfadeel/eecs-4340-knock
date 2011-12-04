@@ -5,10 +5,12 @@ NODE_Y ?= 0
 PARAMS ?= bench/params$(NODE_TYPE).cfg
 DPARAMS = \"$(PARAMS)\"
 
+GENDUT = dw/*.v general/*.sv 
+
 ifeq ($(NODE_TYPE), 0)
-	DUT = dut/node*.sv dut/noc.sv
+	DUT = $(GENDUT) dut/node*.sv dut/noc.sv
 else
-	DUT = dut/node$(NODE_TYPE).sv
+	DUT = $(GENDUT) dut/node$(NODE_TYPE).sv
 endif
 INTERFACES = interfaces/*.sv
 BENCH = bench/fifo.sv bench/sim_node.sv bench/data.sv bench/transaction.sv bench/reset_transaction.sv bench/configuration.sv bench/tracker.sv bench/environment.sv bench/bench.sv 
