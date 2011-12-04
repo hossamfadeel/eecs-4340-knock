@@ -21,10 +21,10 @@ class environment;
   endfunction
 
   function check(int i, bit bf, bit sd, int data_out);
-    `ifdef NODE_TYPE0
-      if(d.nodes[i].od[0].buffer_full == bf &&
-         d.nodes[i].od[0].sending_data == sd &&
-         d.nodes[i].od[0].data_out == data_out) begin
+    `ifdef NOC_MODE
+      if(d.nodes[i-1].od[0].buffer_full == bf &&
+         d.nodes[i-1].od[0].sending_data == sd &&
+         d.nodes[i-1].od[0].data_out == data_out) begin
     `else
       if(d.nodes[0].od[i-1].buffer_full == bf &&
          d.nodes[0].od[i-1].sending_data == sd &&

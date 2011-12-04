@@ -21,7 +21,7 @@ class configuration;
 
     reset_density  = reset_density_r * 10000;
     
-    `ifndef NODE_TYPE0 
+    `ifndef NOC_MODE 
       rval = $fscanf(file, "local_r_density %f",  local_r_density_r);
       rval = $fscanf(file, "local_s_density %f",  local_s_density_r);
       rval = $fscanf(file, "local_addr_mask_x %d",  local_addr_mask_x);
@@ -31,7 +31,7 @@ class configuration;
       local_s_density  = local_s_density_r * 10000;
     `endif
 
-    `ifdef NODE_TYPE0
+    `ifdef NOC_MODE
       for(int i = 0; i < `NOC_SIZE*`NOC_SIZE; i++) begin
     `else
       for(int i = 0; i < `INTERFACES - 1; i++) begin
