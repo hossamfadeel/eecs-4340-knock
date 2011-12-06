@@ -1,8 +1,6 @@
 class configuration;
   int unsigned  max_cycles, max_transactions,
                 reset_density,
-                local_r_density, local_s_density,
-                local_addr_mask_x, local_addr_mask_y,
                 node_r_density[`INTERFACES], node_s_density[`INTERFACES],
                 node_addr_mask_x[`INTERFACES], node_addr_mask_y[`INTERFACES],
                 address_mode, heavy_mode, random_mode;
@@ -21,21 +19,7 @@ class configuration;
 
     reset_density  = reset_density_r * 10000;
     
-    `ifndef NOC_MODE 
-      rval = $fscanf(file, "local_r_density %f",  local_r_density_r);
-      rval = $fscanf(file, "local_s_density %f",  local_s_density_r);
-      rval = $fscanf(file, "local_addr_mask_x %d",  local_addr_mask_x);
-      rval = $fscanf(file, "local_addr_mask_y %d",  local_addr_mask_y);
-
-      local_r_density  = local_r_density_r * 10000;
-      local_s_density  = local_s_density_r * 10000;
-    `endif
-
-    `ifdef NOC_MODE
-      for(int i = 0; i < `NOC_SIZE*`NOC_SIZE; i++) begin
-    `else
       for(int i = 0; i < `INTERFACES - 1; i++) begin
-    `endif
         int j;
 
         rval = $fscanf(file, {"node_r_density[", "%d", "] %f"}, j, node_r_density_r[i]);
