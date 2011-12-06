@@ -18,8 +18,9 @@ program automatic bench (
 
       reset.cb.reset <= ~env.rst.reset;
       for(int i = 1; i<=`INTERFACES; i++) begin
-        vnode[i].cb.receiving_data <= 1'b1;
-        vnode[i].cb.data_in <= 1'b0;
+        vnode[i].cb.buffer_full_in <= env.in_data[i-1].buffer_full;
+        vnode[i].cb.receiving_data <= env.in_data[i-1].sending;
+        vnode[i].cb.data_in <= env.in_data[i-1].data;
       end
 
       @(clk.cb);

@@ -6,13 +6,13 @@ class data;
     `ifdef NOC_MODE
       for(int x = 0; x<`NOC_SIZE;x++) begin
         for(int y = 0; y<`NOC_SIZE;y++) begin
-          nodes[x + y*`NOC_SIZE] = new(x, y);
-          next_nodes[x + y*`NOC_SIZE] = new(x, y);
+          nodes[x + y*`NOC_SIZE] = new(this, x, y);
+          next_nodes[x + y*`NOC_SIZE] = new(this, x, y);
         end
       end
     `else
-      nodes[0] = new(`NODE_X, `NODE_Y);
-      next_nodes[0] = new(`NODE_X, `NODE_Y);
+      nodes[0] = new(this, `NODE_X, `NODE_Y);
+      next_nodes[0] = new(this, `NODE_X, `NODE_Y);
     `endif
   endfunction
 

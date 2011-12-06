@@ -3,6 +3,7 @@ class environment;
   configuration cfg;
   tracker t;
   reset_transaction rst;
+  node_transaction in_data[`INTERFACES];
 
   function new();
     d = new();
@@ -10,13 +11,26 @@ class environment;
     t = new();
 
     rst = new(this);
+    for(int i=0; i<`INTERFACES; i=i+1) begin
+      in_data[i] = new(this, i);
+    end
   endfunction
 
   function gen();
     rst.randomize();
+    for(int i=0; i<`INTERFACES; i=i+1) begin
+      in_data[i].randomize();
+    end
 
     if(rst.reset) begin
       rst.action(); 
+    end else begin
+      for(int i=0; i<`INTERFACES; i=i+1) begin
+        in_data[i].action();
+      end
+      for(int i=0; i<`NODE_COUNT; i=i+1) begin
+        d.nodes[i].process();
+      end
     end
   endfunction
 
