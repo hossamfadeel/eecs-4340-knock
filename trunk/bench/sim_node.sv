@@ -11,6 +11,7 @@ class sim_node;
   endclass
 
   data d;
+  int dir_map[4]; //east, south, west, north
   int b_count, this_x, this_y, capture_node[], capture_if[];
   fifo buffer[]; //local, east, south, west, north 
   out_data od[];
@@ -28,22 +29,31 @@ class sim_node;
 
     if(`TOP(y) && `LEFT(x)) begin
       b_count = 3;
+      dir_map = '{0, 1, -1, -1};
     end else if (`TOP(y) && `RIGHT(x)) begin
       b_count = 3;
+      dir_map = '{-1, 0, 1, -1};
     end else if (`BOTTOM(y) && `LEFT(x)) begin
       b_count = 3;
+      dir_map = '{0, -1, -1, 1};
     end else if (`BOTTOM(y) && `RIGHT(x)) begin
       b_count = 3;
+      dir_map = '{-1, -1, 0, 1};
     end else if (`TOP(y)) begin
       b_count = 4;
+      dir_map = '{0, 1, 2, -1};
     end else if (`BOTTOM(y)) begin
       b_count = 4;
+      dir_map = '{0, -1, 1, 2};
     end else if (`LEFT(x)) begin
       b_count = 4;
+      dir_map = '{0, 1, -1, 2};
     end else if (`RIGHT(x)) begin
       b_count = 4;
+      dir_map = '{-1, 0, 1, 2};
     end else begin
       b_count = 5;
+      dir_map = '{0, 1, 2, 3};
     end
 
     buffer = new[b_count];
@@ -58,22 +68,46 @@ class sim_node;
     end
 
     if(`TOP(y) && `LEFT(x)) begin
+      capture_node = '{n_east, n_south};
+      capture_if = '{`DIR_WEST, `DIR_NORTH};
     end else if (`TOP(y) && `RIGHT(x)) begin
+      capture_node = '{n_south, n_west};
+      capture_if = '{`DIR_NORTH, `DIR_EAST};
     end else if (`BOTTOM(y) && `LEFT(x)) begin
+      capture_node = '{n_east, n_north};
+      capture_if = '{`DIR_WEST, `DIR_SOUTH};
     end else if (`BOTTOM(y) && `RIGHT(x)) begin
+      capture_node = '{n_west, n_north};
+      capture_if = '{`DIR_EAST, `DIR_SOUTH};
     end else if (`TOP(y)) begin
+      capture_node = '{n_east, n_south, n_west};
+      capture_if = '{`DIR_WEST, `DIR_NORTH, `DIR_EAST};
     end else if (`BOTTOM(y)) begin
+      capture_node = '{n_east, n_west, n_north};
+      capture_if = '{`DIR_WEST, `DIR_EAST, `DIR_SOUTH};
     end else if (`LEFT(x)) begin
+      capture_node = '{n_east, n_south, n_north};
+      capture_if = '{`DIR_WEST, `DIR_NORTH, `DIR_SOUTH};
     end else if (`RIGHT(x)) begin
+      capture_node = '{n_south, n_west, n_north};
+      capture_if = '{`DIR_NORTH, `DIR_EAST, `DIR_SOUTH};
     end else begin
+      capture_node = '{n_east, n_south, n_west, n_north};
+      capture_if = '{`DIR_WEST, `DIR_NORTH, `DIR_EAST, `DIR_SOUTH};
     end
   endfunction
 
   function capture();
+    //$display("Node %d Capture: ", `INDEX(this_x, this_y));
     for(int i=0; i<b_count-1; i++) begin
-      //id[i+1].buffer_full = d.nodes[capture_node[i]].od[capture_if[i]].buffer_full;
-      //id[i+1].receiving_data = d.nodes[capture_node[i]].od[capture_if[i]].sending_data;
-      //id[i+1].data_in = d.nodes[capture_node[i]].od[capture_if[i]].data_out;
+      int dm[] = d.nodes[capture_node[i]-1].dir_map;
+      //$display("\tInterface: %d", i);
+      //$display("\t\tCN: %d", capture_node[i]);
+      //$display("\t\tCI: %d", capture_if[i]);
+      //$display("\t\tCDM: %d", dm[capture_if[i]]);
+      id[i+1].buffer_full = d.nodes[capture_node[i]-1].od[dm[capture_if[i]]].buffer_full;
+      id[i+1].receiving_data = d.nodes[capture_node[i]-1].od[dm[capture_if[i]]].sending_data;
+      id[i+1].data_in = d.nodes[capture_node[i]-1].od[dm[capture_if[i]]].data_out;
     end
   endfunction
 
