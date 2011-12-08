@@ -19,13 +19,16 @@ class configuration;
 
     reset_density  = reset_density_r * 10000;
     
-      for(int i = 0; i < `INTERFACES - 1; i++) begin
+      for(int i = 0; i < `INTERFACES; i++) begin
         int j;
 
         rval = $fscanf(file, {"node_r_density[", "%d", "] %f"}, j, node_r_density_r[i]);
         rval = $fscanf(file, {"node_s_density[", "%d", "] %f"}, j, node_s_density_r[i]);
         rval = $fscanf(file, {"node_addr_mask_x[", "%d", "] %d"}, j, node_addr_mask_x[i]);
         rval = $fscanf(file, {"node_addr_mask_y[", "%d", "] %d"}, j, node_addr_mask_y[i]);
+
+//        $display("Loaded mask_x[%d] = %d", i, node_addr_mask_x[i]);
+//        $display("Loaded mask_y[%d] = %d", i, node_addr_mask_y[i]);
 
         node_r_density[i]  = node_r_density_r[i] * 10000;
         node_s_density[i]  = node_s_density_r[i] * 10000;

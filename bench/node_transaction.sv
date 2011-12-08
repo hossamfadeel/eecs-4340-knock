@@ -15,6 +15,14 @@ class node_transaction extends transaction;
     x <= e.cfg.node_addr_mask_x[node_index];
     y >= 0;
     y <= e.cfg.node_addr_mask_y[node_index];
+
+    `ifdef NOC_MODE
+       x != `GETX(node_index);
+       y != `GETY(node_index);
+    `else
+       x != `NODE_X;
+       y != `NODE_Y;
+    `endif
   }
 
   function new(const ref environment e, int index);
@@ -25,6 +33,18 @@ class node_transaction extends transaction;
 
   function void post_randomize();
     super.post_randomize();
+
+    `ifdef NOC_MODE
+      if(e.d.nodes[node_index].od[0].buffer_full) begin
+    `else
+      if(e.d.nodes[0].od[node_index].buffer_full) begin
+    `endif
+        sending = 0;
+      end
+
+    if (sending) begin
+      e.transaction_count++;
+    end
 
     data = (x << 4) + y;
   endfunction

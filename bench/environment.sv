@@ -5,6 +5,8 @@ class environment;
   reset_transaction rst;
   node_transaction in_data[`INTERFACES];
 
+  int transaction_count;
+
   function new();
     d = new();
     cfg = new();
@@ -14,6 +16,8 @@ class environment;
     for(int i=0; i<`INTERFACES; i=i+1) begin
       in_data[i] = new(this, i);
     end
+
+    transaction_count = 0;
   endfunction
 
   function gen();
@@ -35,17 +39,26 @@ class environment;
   endfunction
 
   function check(int i, bit bf, bit sd, int data_out);
+     int node_index, output_index;
+
     `ifdef NOC_MODE
-      if(d.nodes[i-1].od[0].buffer_full == bf &&
-         d.nodes[i-1].od[0].sending_data == sd &&
-         d.nodes[i-1].od[0].data_out == data_out) begin
+      node_index = i-1;
+      output_index = 0;
     `else
-      if(d.nodes[0].od[i-1].buffer_full == bf &&
-         d.nodes[0].od[i-1].sending_data == sd &&
-         d.nodes[0].od[i-1].data_out == data_out) begin
+      node_index = 0;
+      output_index = i-1;
     `endif
+
+      if(d.nodes[node_index].od[output_index].buffer_full == bf &&
+         d.nodes[node_index].od[output_index].sending_data == sd &&
+         d.nodes[node_index].od[output_index].data_out == data_out) begin
         t.pass();
       end else begin
+        $display("Node %0d, Output %0d", node_index, output_index);
+        $display("\tExpected BF: %b, Received: %b", d.nodes[node_index].od[output_index].buffer_full, bf);
+        $display("\tExpected SD: %b, Received: %b", d.nodes[node_index].od[output_index].sending_data, sd);
+        $display("\tExpected DO: %h, Received: %h", d.nodes[node_index].od[output_index].data_out, data_out);
+
         t.fail("");
       end
   endfunction

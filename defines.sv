@@ -15,3 +15,6 @@
 `define DIR_SOUTH 1
 `define DIR_WEST 2
 `define DIR_NORTH 3
+
+`define GETX(i) (i)%`NOC_SIZE
+`define GETY(i) (i)/`NOC_SIZE
