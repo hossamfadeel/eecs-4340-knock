@@ -17,7 +17,7 @@ module node3(
   converter c3 (node_1, buffer_full_out[3], sending_data[3], data_out[3], buffer_full_in[3], receiving_data[3], data_in[3]);
 
   wire [1:NUM_INTERFACES] pop;
-  assign pop = {NUM_INTERFACES{1'b1}};
+  assign pop = {NUM_INTERFACES{buffer_full_in[1]}};
 
   generate
     for(genvar i = 1; i <= NUM_INTERFACES; i = i + 1) begin
