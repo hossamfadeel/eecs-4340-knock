@@ -72,8 +72,8 @@ module controller4_edge_w
 	);
 
 	dccl dccl_e(
-			.packet_addr_y_i(packet_addr[3][3:0]),
-			.packet_addr_x_i(packet_addr[3][7:4]),
+			.packet_addr_y_i(packet_addr[2][3:0]),
+			.packet_addr_x_i(packet_addr[2][7:4]),
 			.local_addr_y_i(local_addr[3:0]),
 			.local_addr_x_i(local_addr[7:4]),
 			.packet_valid_i(packet_valid),
@@ -86,8 +86,8 @@ module controller4_edge_w
 	);
 
 	dccl dccl_l(
-			.packet_addr_y_i(packet_addr[4][3:0]),
-			.packet_addr_x_i(packet_addr[4][7:4]),
+			.packet_addr_y_i(packet_addr[3][3:0]),
+			.packet_addr_x_i(packet_addr[3][7:4]),
 			.local_addr_y_i(local_addr[3:0]),
 			.local_addr_x_i(local_addr[7:4]),
 			.packet_valid_i(packet_valid),
