@@ -3,7 +3,9 @@ module controller5
 	input clk,
 	input rst,	
 	input [7:0] packet_addr [4:0],
+	input [7:0] local_addr,
 	input [4:0] buffer_full_in,
+	input packet_valid,
 
 	output logic [1:0] grant_0,
 	output logic [1:0] grant_1,
@@ -49,5 +51,77 @@ module controller5
 	//output
 		.grant(grant_4), .grant_v_o(grant_v[4])
 	);
+
+dccl dccl_n(
+			.packet_addr_y_i(packet_addr[0][3:0]),
+			.packet_addr_x_i(packet_addr[0][7:4]),
+			.local_addr_y_i(local_addr[3:0]),
+			.local_addr_x_i(local_addr[7:4]),
+			.packet_valid_i(packet_valid),
+
+			.north_req(),
+			.south_req(request[1][0]),
+			.east_req(request[2][0]),
+			.west_req(request[3][0]),
+			.local_req(request[4][0])
+);
+
+dccl dccl_s(
+			.packet_addr_y_i(packet_addr[0][3:0]),
+			.packet_addr_x_i(packet_addr[0][7:4]),
+			.local_addr_y_i(local_addr[3:0]),
+			.local_addr_x_i(local_addr[7:4]),
+			.packet_valid_i(packet_valid),
+
+			.north_req(request[0][0]),
+			.south_req(),
+			.east_req(request[2][1]),
+			.west_req(request[3][1]),
+			.local_req(request[4][1])
+);
+
+dccl dccl_e(
+			.packet_addr_y_i(packet_addr[0][3:0]),
+			.packet_addr_x_i(packet_addr[0][7:4]),
+			.local_addr_y_i(local_addr[3:0]),
+			.local_addr_x_i(local_addr[7:4]),
+			.packet_valid_i(packet_valid),
+
+			.north_req(),
+			.south_req(),
+			.east_req(),
+			.west_req(request[3][2]),
+			.local_req(request[4][2])
+);
+
+dccl dccl_w(
+			.packet_addr_y_i(packet_addr[0][3:0]),
+			.packet_addr_x_i(packet_addr[0][7:4]),
+			.local_addr_y_i(local_addr[3:0]),
+			.local_addr_x_i(local_addr[7:4]),
+			.packet_valid_i(packet_valid),
+
+			.north_req(),
+			.south_req(),
+			.east_req(request[2][2]),
+			.west_req(),
+			.local_req(request[4][3])
+);
+
+dccl dccl_l(
+			.packet_addr_y_i(packet_addr[0][3:0]),
+			.packet_addr_x_i(packet_addr[0][7:4]),
+			.local_addr_y_i(local_addr[3:0]),
+			.local_addr_x_i(local_addr[7:4]),
+			.packet_valid_i(packet_valid),
+
+			.north_req(request[0][1]),
+			.south_req(request[1][1]),
+			.east_req(request[2][3]),
+			.west_req(request[3][3]),
+			.local_req()
+);
+
+
 
 endmodule
