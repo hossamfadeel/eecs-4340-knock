@@ -1,4 +1,4 @@
-module counter#(parameter ADD_WIDTH = 5)
+module counter#(parameter ADD_WIDTH = 8)
 (
 	input clk,
 	input reset,
