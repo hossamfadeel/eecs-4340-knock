@@ -13,7 +13,7 @@ module fifo #(
   input [WIDTH-1:0] data_in,
   output full,
   output [WIDTH-1:0] data_out,
-  output [WIDTH-1:0] peek
+  output [WIDTH-1:0] peek_out
 );
 
 wire empty;
@@ -28,8 +28,8 @@ DW_fifo_s1_sf #(WIDTH, depth, ae_level, af_level, err_mode, rst_mode)
 	buffer (.clk(clk), .rst_n(rst), .pop_req_n(pop_req), .push_req_n(push_req), .diag_n(1'b1),
 	.data_in(data_in), .empty(empty), .almost_empty(almost_empty),
 	.half_full(half_full), .almost_full(almost_full), .full(full),
-	.error(error), .data_out(data_out) );
-
+	.error(error), .data_out(data_out), .peek_out(peek_out) );
+/*
 always @ (posedge clk) begin
   if (!rst) begin
     peek_data <= 0;
@@ -40,5 +40,5 @@ always @ (posedge clk) begin
 end
 
 assign peek = peek_data;
-
+*/
 endmodule

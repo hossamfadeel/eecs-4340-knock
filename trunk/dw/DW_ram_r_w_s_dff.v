@@ -43,7 +43,7 @@
 //----------------------------------------------------------------------
 
   module DW_ram_r_w_s_dff (clk, rst_n, cs_n, wr_n, rd_addr, wr_addr, data_in, 
-			   data_out);
+			   data_out, peek_out);
 
    parameter data_width = 4;
    parameter depth = 8;
@@ -61,7 +61,7 @@
    input 		   clk;
 
    output [data_width-1:0] data_out;
-
+   output [data_width-1:0] peek_out;
 // synopsys translate_off
    wire [data_width-1:0]   data_in;
    reg [depth*data_width-1:0]    next_mem;
@@ -115,7 +115,10 @@
    assign data_out = ((rd_addr ^ rd_addr) !== {`DW_addr_width{1'b0}})? {data_width{1'bx}} : (
 				(rd_addr >= depth)? {data_width{1'b0}} :
 				   mem_mux[data_width-1 : 0] );
-   
+   // begin edited region
+   assign peek_out = mem_mux[data_width-1:0];
+
+   // end edited region
    assign a_rst_n = (rst_mode == 0)? rst_n : 1'b1;
 
 

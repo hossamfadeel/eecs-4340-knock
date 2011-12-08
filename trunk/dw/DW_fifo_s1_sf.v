@@ -68,7 +68,7 @@
 //
 module DW_fifo_s1_sf (
     clk, rst_n, push_req_n, pop_req_n, diag_n, data_in, empty, 
-    almost_empty, half_full, almost_full, full, error, data_out );
+    almost_empty, half_full, almost_full, full, error, data_out, peek_out);
 
 parameter width  = 8;
 parameter depth  = 4;
@@ -86,6 +86,7 @@ parameter rst_mode  =  0 ;
  input [width-1 : 0] data_in;
  output  empty,  almost_empty,  half_full,  almost_full,  full, error;
  output [width-1 : 0 ]  data_out;
+ output [width-1:0] peek_out;
  wire clk, rst_n, push_req_n, pop_req_n, diag_n;
  wire empty, almost_empty, half_full, almost_full, full, error;
  wire [width-1 : 0 ]  data_out;
@@ -183,8 +184,10 @@ parameter rst_mode  =  0 ;
 			.rd_addr(ram_rd_addr),
 			.wr_addr(ram_wr_addr),
 			.data_in(data_in),
-			.data_out(data_out)
+			.data_out(data_out),
+			.peek_out(peek_out)
 			);
+
 
     // synopsys translate_on
 `undef DW_ram_rst_mode
