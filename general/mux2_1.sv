@@ -1,4 +1,4 @@
-module mux #(
+module mux2_1 #(
   parameter WIDTH = 16
 )
 (
