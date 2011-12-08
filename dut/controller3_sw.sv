@@ -16,7 +16,7 @@ module controller3_sw
 //to North
 	assign grant_v[0] = (request[0][0] & (!buffer_full_in[0]));
 
-	arbiter2 arbiter_w(
+	arbiter2 arbiter_e(
 	//input
 		.clk, .rst, .request(request[1]), .buffer_full_i(buffer_full_in[1]),
 	//output
