@@ -2,7 +2,6 @@ module mux #(
   parameter WIDTH = 16
 )
 (
-  input clk,
   input [WIDTH-1:0] data0,
   input [WIDTH-1:0] data1,
   input [WIDTH-1:0] data2,
@@ -13,7 +12,7 @@ module mux #(
 
 );
 
-always @(posedge clk) begin
+always begin
   case({select0,select1,select2,select3})
     4'b1000: data_o = data0;
     4'b0100: data_o = data1;
