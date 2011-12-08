@@ -12,7 +12,7 @@ class sim_node;
 
   data d;
   int dir_map[4]; //east, south, west, north
-  int b_count, this_x, this_y, capture_node[], capture_if[];
+  int b_count, this_x, this_y, this_i, capture_node[], capture_if[];
   fifo buffer[]; //local, east, south, west, north 
   out_data od[];
   in_data id[];
@@ -25,6 +25,11 @@ class sim_node;
 
     this_x = x;
     this_y = y;
+    `ifdef NOC_MODE
+      this_i = `INDEX(x,y) - 1;
+    `else
+      this_i = 0;
+    `endif
     d = _d;
 
     if(`TOP(y) && `LEFT(x)) begin
@@ -112,7 +117,26 @@ class sim_node;
   endfunction
 
   function process();
+    $display("Node %0d Inputs:", this_i+1);
+    for(int i=0; i<b_count; i++) begin
+      $display("\tInterface %0d:", i);
+      $display("\t\tBF: %b", id[i].buffer_full);
+      $display("\t\tRD: %b", id[i].receiving_data);
+      $display("\t\tDI: %h", id[i].data_in);
+    end
+
     //TODO: act on captured inputs
+    for(int i=0; i<b_count-1; i++) begin
+      if(id[i].receiving_data) begin
+        d.next_nodes[this_i].buffer[i].push(id[i].data_in);
+      end
+    end
+
+    for(int i=0; i<b_count; i++) begin
+      d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
+      d.next_nodes[this_i].od[i].sending_data  = 0;
+      d.next_nodes[this_i].od[i].data_out = buffer[i].data_out();
+    end
   endfunction
 
   function reset();

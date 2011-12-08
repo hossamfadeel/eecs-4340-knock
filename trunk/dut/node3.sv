@@ -24,10 +24,11 @@ module node3(
       fifo buffer ( .clk(clk.clk),
                     .rst(reset.reset),
                     .push_req(receiving_data[i]),
-                    .pop_req(1'b1),
+                    .pop_req(sending_data[i]),
                     .data_in(data_in[i]),
                     .full(buffer_full_out[i]),
-                    .data_out(data_out[i])
+                    .data_out(),
+                    .peek_out(data_out[i])
                   );
     end
   endgenerate

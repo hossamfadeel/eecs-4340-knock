@@ -8,9 +8,9 @@ class tracker;
   endfunction
   
   function perform(string action, string displayText);
-    count[action]++;
+    count[action] = count[action] +`INTERFACES;
 
-    $display(displayText);
+    $display("%0d: %s", $time, displayText);
   endfunction
 
   function pass();
