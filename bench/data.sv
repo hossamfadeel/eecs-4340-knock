@@ -24,7 +24,7 @@ class data;
 
   function shift();
     for(int i = 0; i<`NODE_COUNT;i++) begin
-      nodes[i] = next_nodes[i];
+      nodes[i].copy(next_nodes[i]);
     end
   endfunction
 endclass

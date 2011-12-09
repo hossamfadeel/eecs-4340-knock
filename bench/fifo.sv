@@ -4,6 +4,14 @@ class fifo;
   int read_index, write_index;
   bit is_full;
 
+  function copy(fifo base);
+    data = base.data;
+    valid = base.valid;
+    read_index = base.read_index;
+    write_index = base.write_index;
+    is_full = base.is_full;
+  endfunction
+
   function new();
     reset();
   endfunction

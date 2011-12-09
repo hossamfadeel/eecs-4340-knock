@@ -4,10 +4,22 @@ class sim_node;
   class out_data;
     bit buffer_full, sending_data;
     int data_out;
+    
+    function copy(out_data base);
+      buffer_full = base.buffer_full;
+      sending_data = base.sending_data;
+      data_out = base.data_out;
+    endfunction
   endclass
   class in_data;
     bit buffer_full, receiving_data;
     int data_in;
+
+    function copy(in_data base);
+      buffer_full = base.buffer_full;
+      receiving_data = base.receiving_data;
+      data_in = base.data_in;
+    endfunction
   endclass
 
   data d;
@@ -16,6 +28,21 @@ class sim_node;
   fifo buffer[]; //local, east, south, west, north 
   out_data od[];
   in_data id[];
+
+  function copy(sim_node base);
+    dir_map = base.dir_map;
+    b_count = base.b_count;
+    this_x = base.this_x;
+    this_y = base.this_y;
+    this_i = base.this_i;
+    capture_node = base.capture_node;
+    capture_if = base.capture_if;
+    for(int i=0; i<b_count; i++) begin
+      buffer[i].copy(base.buffer[i]);
+      od[i].copy(base.od[i]);
+      id[i].copy(base.id[i]);
+    end
+  endfunction
 
   function new(const ref data _d, input int x, int y);
     int n_east = `INDEX(x+1,y);
@@ -126,7 +153,7 @@ class sim_node;
     end
 
     //TODO: act on captured inputs
-    for(int i=0; i<b_count-1; i++) begin
+    for(int i=0; i<b_count; i++) begin
       if(id[i].receiving_data) begin
         d.next_nodes[this_i].buffer[i].push(id[i].data_in);
       end
@@ -134,7 +161,7 @@ class sim_node;
 
     for(int i=0; i<b_count; i++) begin
       d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
-      d.next_nodes[this_i].od[i].sending_data  = 0;
+      d.next_nodes[this_i].od[i].sending_data  = 1'b0;
       d.next_nodes[this_i].od[i].data_out = buffer[i].data_out();
     end
   endfunction
