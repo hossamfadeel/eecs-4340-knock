@@ -10,7 +10,9 @@ program automatic bench (
     env = new();
     vnode = node;
 
-    reset.cb.reset <= 1'b0;
+    reset.cb.reset <= 1'b1;
+    @(clk.cb);
+    reset.cb.reset <= 1'b1;
     @(clk.cb);
 
     if(env.cfg.max_transactions > 0) begin 

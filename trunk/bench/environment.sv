@@ -21,6 +21,7 @@ class environment;
   endfunction
 
   function gen();
+
     rst.randomize();
     for(int i=0; i<`INTERFACES; i=i+1) begin
       in_data[i].randomize();
@@ -49,9 +50,9 @@ class environment;
       output_index = i-1;
     `endif
 
-      if(d.nodes[node_index].od[output_index].buffer_full == bf &&
-         d.nodes[node_index].od[output_index].sending_data == sd &&
-         d.nodes[node_index].od[output_index].data_out == data_out) begin
+      if(d.next_nodes[node_index].od[output_index].buffer_full == bf &&
+         d.next_nodes[node_index].od[output_index].sending_data == sd &&
+         d.next_nodes[node_index].od[output_index].data_out == data_out) begin
         t.pass();
       end else begin
         $display("Node %0d, Output %0d", node_index, output_index);
