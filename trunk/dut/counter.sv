@@ -30,7 +30,7 @@ module counter#(parameter ADD_WIDTH = 8)
   register #(.BITS(ADD_WIDTH)) count_reg (
     .clk(clk),
     .reset(reset),
-    .enable_i(1'b1),
+    .enable_i(count_enable),
     .data_i(next_count),
     .data_o(current_count)			
   );
