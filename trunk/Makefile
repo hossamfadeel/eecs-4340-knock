@@ -7,7 +7,7 @@ DPARAMS = \"$(PARAMS)\"
 
 NOC_SIZE_M1 = $(shell echo $(NOC_SIZE)-1 | bc)
 
-GENDUT = dut/converter.sv dw/*.v general/*.sv 
+GENDUT = dut/converter.sv dut/counter.sv dut/address_unit.sv dw/*.v general/*.sv 
 INTERFACES = interfaces/*.sv
 BENCH = bench/fifo.sv bench/sim_node.sv bench/data.sv bench/transaction.sv bench/reset_transaction.sv bench/node_transaction.sv bench/configuration.sv bench/tracker.sv bench/environment.sv bench/bench.sv 
 
