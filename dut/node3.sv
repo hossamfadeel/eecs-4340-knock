@@ -11,19 +11,23 @@ module node3 #(
 );
   parameter NUM_INTERFACES = 3;
 
-  wire buffer_full_out[1:NUM_INTERFACES], sending_data[1:NUM_INTERFACES];
-  wire [15:0] data_out[1:NUM_INTERFACES];
-  wire buffer_full_in[1:NUM_INTERFACES], receiving_data[1:NUM_INTERFACES];
-  wire [15:0] data_in[1:NUM_INTERFACES];
-  wire data_valid[1:NUM_INTERFACES];
-  wire address_write_enable[1:NUM_INTERFACES];
+  wire buffer_full_out[NUM_INTERFACES-1:0], sending_data[NUM_INTERFACES-1:0];
+  wire [15:0] data_out[NUM_INTERFACES-1:0];
+  wire buffer_full_in[NUM_INTERFACES-1:0], receiving_data[NUM_INTERFACES-1:0];
+  wire [15:0] data_in[NUM_INTERFACES-1:0];
+  wire data_valid[NUM_INTERFACES-1:0];
+  wire address_write_enable[NUM_INTERFACES-1:0];
 
-  converter c1 (local_node, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
-  converter c2 (node_0, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
-  converter c3 (node_1, buffer_full_out[3], sending_data[3], data_out[3], buffer_full_in[3], receiving_data[3], data_in[3]);
+  wire [1:0] grant_1;
+  wire [1:0] grant_2;
+  wire [2:0] grant_v;
+
+  converter c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+  converter c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
+  converter c2 (local_node, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
 
   generate
-    for(genvar i = 1; i <= NUM_INTERFACES; i = i + 1) begin
+    for(genvar i = 0; i <= NUM_INTERFACES-1; i = i + 1) begin
       assign sending_data[i] = !buffer_full_in[i] & data_valid[i];
 
       fifo buffer ( .clk(clk.clk),
@@ -46,9 +50,60 @@ module node3 #(
       address_unit au ( .clk(clk.clk),
                         .reset(reset.reset),
                         .write_enable(address_write_enable[i]),
-                        .data_in(),
-                        .data_out()
+                        .interface_data_in(data_in([i][7:0])),
+						.buffer_data_in(data_out[i][7:0]),
+						.data_select(data_valid[i]),
+                        .data_out(packet_addr[i])
                       );
-    end
+	end
+
+	if (`TOP(NODE_Y) & `RIGHT(NODE_X))
+		controller3_ne (.clk(clk.clk),
+                        .reset(reset.reset),
+						.packet_addr,
+						.local_addr,
+						.buffer_full_in,
+
+						.grant_1,
+						.grant_2,
+						.grant_v
+						);
+
+    else if (`TOP(NODE_Y) & `LEFT(NODE_X))
+		controller3_nw (.clk(clk.clk),
+                        .reset(reset.reset),
+						.packet_addr,
+						.local_addr,
+						.buffer_full_in,
+
+						.grant_1,
+						.grant_2,
+						.grant_v
+						); 
+
+	else if (`BOTTOM(NODE_Y) & `LEFT(NODE_X))
+		controller3_sw (.clk(clk.clk),
+                        .reset(reset.reset),
+						.packet_addr,
+						.local_addr,
+						.buffer_full_in,
+
+						.grant_1,
+						.grant_2,
+						.grant_v
+						); 
+
+	else
+		controller3_se (.clk(clk.clk),
+                        .reset(reset.reset),
+						.packet_addr,
+						.local_addr,
+						.buffer_full_in,
+
+						.grant_1,
+						.grant_2,
+						.grant_v
+						); 
+
   endgenerate
 endmodule
