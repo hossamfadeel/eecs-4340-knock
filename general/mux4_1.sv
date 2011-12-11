@@ -12,14 +12,14 @@ module mux4_1 #(
 
 );
 
-always begin
-  case({select0,select1,select2,select3})
-    4'b1000: data_o = data0;
-    4'b0100: data_o = data1;
-    4'b0010: data_o = data2;
-    4'b0001: data_o = data3;
-    default: data_o = 16'b0;
-  endcase
-end
+  always_comb begin
+    case({select0,select1,select2,select3})
+      4'b1000: data_o = data0;
+      4'b0100: data_o = data1;
+      4'b0010: data_o = data2;
+      4'b0001: data_o = data3;
+      default: data_o = {WIDTH{1'b0}};
+    endcase
+  end
 
 endmodule
