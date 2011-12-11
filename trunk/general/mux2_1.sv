@@ -10,12 +10,12 @@ module mux2_1 #(
 
 );
 
-always begin
-  case({select1,select0})
-    4'b10: data_o = data1;
-    4'b01: data_o = data0;
-    default: data_o = 16'b0;
-  endcase
-end
+  always_comb begin
+    case({select1,select0})
+      4'b10: data_o = data1;
+      4'b01: data_o = data0;
+      default: data_o = {WIDTH{1'b0}};
+    endcase
+  end
 
 endmodule
