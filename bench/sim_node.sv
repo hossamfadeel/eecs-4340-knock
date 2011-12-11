@@ -144,6 +144,9 @@ class sim_node;
   endfunction
 
   function process();
+    bit is_sending[] = new[b_count];
+    int data_out[] = new[b_count];    
+
     $display("Node %0d Inputs:", this_i+1);
     for(int i=0; i<b_count; i++) begin
       $display("\tInterface %0d:", i);
@@ -152,8 +155,15 @@ class sim_node;
       $display("\t\tDI: %h", id[i].data_in);
     end
 
-    //TODO: act on captured inputs
     for(int i=0; i<b_count; i++) begin
+      is_sending[i] = 1'b0;
+      data_out[i] = buffer[i].data_out();
+
+      if(!id[i].buffer_full && d.nodes[this_i].buffer[i].data_valid()) begin
+        is_sending[i] = 1'b1;
+        data_out[i] = d.next_nodes[this_i].buffer[i].pop();
+      end
+
       if(id[i].receiving_data) begin
         d.next_nodes[this_i].buffer[i].push(id[i].data_in);
       end
@@ -161,8 +171,8 @@ class sim_node;
 
     for(int i=0; i<b_count; i++) begin
       d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
-      d.next_nodes[this_i].od[i].sending_data  = 1'b0;
-      d.next_nodes[this_i].od[i].data_out = buffer[i].data_out();
+      d.next_nodes[this_i].od[i].sending_data  = is_sending[i];
+      d.next_nodes[this_i].od[i].data_out = data_out[i];
     end
   endfunction
 

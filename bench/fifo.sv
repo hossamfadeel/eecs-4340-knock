@@ -41,6 +41,7 @@ class fifo;
     valid[read_index] = 0;
     read_index = inc(read_index);
     is_full = 0;
+    $display("Returning: %h", temp);
     return temp;
   endfunction
 

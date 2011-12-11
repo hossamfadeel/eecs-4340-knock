@@ -11,17 +11,17 @@ class node_transaction extends transaction;
                        0 := (10000 - e.cfg.node_r_density[node_index])};
     sending dist { 1 := e.cfg.node_s_density[node_index],
                    0 := (10000 - e.cfg.node_s_density[node_index])};
+
+    solve x before y;
     x >= 0;
     x <= e.cfg.node_addr_mask_x[node_index];
     y >= 0;
     y <= e.cfg.node_addr_mask_y[node_index];
 
     `ifdef NOC_MODE
-       x != `GETX(node_index);
-       y != `GETY(node_index);
+      x == `GETX(node_index) -> y != `GETY(node_index);
     `else
-       x != `NODE_X;
-       y != `NODE_Y;
+      x == `NODE_X -> y != `NODE_Y;
     `endif
   }
 
@@ -35,9 +35,9 @@ class node_transaction extends transaction;
     super.post_randomize();
 
     `ifdef NOC_MODE
-      if(e.d.nodes[node_index].od[0].buffer_full) begin
+      if(e.d.nodes[node_index].buffer[0].full()) begin
     `else
-      if(e.d.nodes[0].od[node_index].buffer_full) begin
+      if(e.d.nodes[0].buffer[node_index].full()) begin
     `endif
         sending = 0;
       end
