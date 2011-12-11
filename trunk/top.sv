@@ -13,7 +13,10 @@ module top;
     `define NODE_COUNT 1
     `define INTERFACES 3
     node_interface local_if [1:`INTERFACES] (.clk(clk));
-    node3 n ( .clk(clk_if.dut),
+    node3 #( .NODE_X(`NODE_X),
+             .NODE_Y(`NODE_Y)
+          )
+          n ( .clk(clk_if.dut),
               .reset(rst_if.dut),
               .local_node(local_if[ 1]),
               .node_0(local_if[ 2]),
@@ -24,7 +27,10 @@ module top;
     `define NODE_COUNT 1
     `define INTERFACES 4
     node_interface local_if [1:`INTERFACES] (.clk(clk));
-    node4 n ( .clk(clk_if.dut),
+    node4 #( .NODE_X(`NODE_X),
+             .NODE_Y(`NODE_Y)
+          )
+          n ( .clk(clk_if.dut),
               .reset(rst_if.dut),
               .local_node(local_if[ 1]),
               .node_0(local_if[ 2]),
@@ -36,7 +42,10 @@ module top;
     `define NODE_COUNT 1
     `define INTERFACES 5 
     node_interface local_if [1:`INTERFACES] (.clk(clk));
-    node5 n ( .clk(clk_if.dut),
+    node5 #( .NODE_X(`NODE_X),
+             .NODE_Y(`NODE_Y)
+          )
+          n ( .clk(clk_if.dut),
               .reset(rst_if.dut),
               .local_node(local_if[ 1]),
               .node_0(local_if[ 2]),
