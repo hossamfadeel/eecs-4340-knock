@@ -12,7 +12,7 @@ module controller5
 	output logic [3:0] grant_2,
 	output logic [3:0] grant_3,
 	output logic [3:0] grant_4,
-	output logic [5:0] grant_v
+	output logic [4:0] grant_v
 );
 
 	wire [3:0] request [4:0];

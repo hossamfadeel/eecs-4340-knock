@@ -2,9 +2,15 @@ module address_unit(
 	input clk,
 	input reset,
 	input write_enable,
-	input [7:0] data_in,
+	input [7:0] interface_data_in,
+	input [7:0] buffer_data_in,
+	input data_select,
 	output logic [7:0] data_out
 );
+
+	wire [7:0] data_in;
+
+	assign data_in = data_select ? buffer_data_in : interface_data_in;
 
 	register  #(.BITS(4)) addr_x(
 		//input
