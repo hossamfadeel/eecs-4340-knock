@@ -1,44 +1,28 @@
 module address_unit(
 	input clk,
 	input reset,
-	input count,
-	input [7:0] packet_in,
-	
-	output logic [7:0] packet_addr
+	input write_enable,
+	input [7:0] data_in,
+	output logic [7:0] data_out
 );
 
-	wire [3:0] addr_x_o;
-	wire [3:0] addr_y_o;
+	register  #(.BITS(4)) addr_x(
+		//input
+		.clk(clk),
+		.reset(reset),
+		.enable_i(write_enable),
+		.data_i(data_in[3:0]),
+		//out
+		.data_o(data_out[3:0])
+	);
 
-	assign packet_addr[3:0] = count ? packet_addr[3:0] : addr_x_o;
-	assign packet_addr[7:4] = count ? packet_addr[7:4] : addr_y_o;
-
-	register  #(.BITS(4))
-		addr_x(
-			//input
-			.clk(clk),
-			.enable_i(count),
-			.data_i(packet_in[3:0]),
-			.reset(reset),
-
-
-			//out
-			.data_o(addr_x_o)
-
-			);
-
-	register  #(.BITS(4))
-		addr_y(
-			//input
-			.clk(clk),
-			.enable_i(count),
-			.data_i(packet_in[7:4]),
-			.reset(reset),
-
-
-			//out
-			.data_o(addr_y_o)
-
-			);
-
+	register  #(.BITS(4)) addr_y(
+		//input
+		.clk(clk),
+		.reset(reset),
+		.enable_i(write_enable),
+		.data_i(data_in[7:4]),
+		//out
+		.data_o(data_out[7:4])
+	);
 endmodule
