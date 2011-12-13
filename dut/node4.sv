@@ -66,7 +66,7 @@ module node4 #(
     end
 
 	if (`TOP(NODE_Y)) begin
-		controller4_edge_n (.clk(clk.clk),
+		controller4_edge_n n(.clk(clk.clk),
                         .reset(reset.reset),
 						.packet_addr,
 						.local_addr,
@@ -112,7 +112,7 @@ module node4 #(
 	end
 
     else if (`BOTTOM(NODE_Y)) begin
-		controller4_edge_s (.clk(clk.clk),
+		controller4_edge_s s(.clk(clk.clk),
                         .reset(reset.reset),
 						.packet_addr,
 						.local_addr,
@@ -158,7 +158,7 @@ module node4 #(
 	end
 
 	else if (`RIGHT(NODE_X)) begin
-		controller4_edge_e (.clk(clk.clk),
+		controller4_edge_e e(.clk(clk.clk),
                         .reset(reset.reset),
 						.packet_addr,
 						.local_addr,
@@ -210,7 +210,7 @@ module node4 #(
 	end
 
 	else begin
-		controller4_edge_w (.clk(clk.clk),
+		controller4_edge_w w(.clk(clk.clk),
                         .reset(reset.reset),
 						.packet_addr,
 						.local_addr,
