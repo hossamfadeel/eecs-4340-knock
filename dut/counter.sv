@@ -14,7 +14,7 @@ module counter#(parameter ADD_WIDTH = 8)
   always_comb begin
     if(reset) begin
       next_count = 0;
-    end else if(count_enable == 1'b1) begin
+    end else if((count_enable == 1'b1)&&(current_count = 0)) begin
       next_count = flit_length;
     end else if(current_count != 0) begin
       next_count = current_count - 1'b1;
