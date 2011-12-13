@@ -14,9 +14,14 @@ module node4 #(
 
   wire buffer_full_out[NUM_INTERFACES-1:0], sending_data[NUM_INTERFACES-1:0];
   wire [15:0] data_out[NUM_INTERFACES-1:0];
+
   wire buffer_full_in[NUM_INTERFACES-1:0], receiving_data[NUM_INTERFACES-1:0];
   wire [15:0] data_in[NUM_INTERFACES-1:0];
+
+  wire [15:0] buffer_out[NUM_INTERFACES-1:0];
+  wire [7:0] packet_addr[NUM_INTERFACES-1:0];
   wire data_valid[NUM_INTERFACES-1:0];
+  wire [7:0] local_addr;
 
   wire [2:0] grant_0;
   wire [2:0] grant_1;
@@ -24,12 +29,8 @@ module node4 #(
   wire [2:0] grant_3;
   wire [3:0] grant_v;
 
-  wire [7:0] packet_addr [4:0];
-
   assign local_addr[7:4] = NODE_Y[3:0];
   assign local_addr[3:0] = NODE_X[3:0];
-
-  wire [16:0] buffer_data_out [3:0];
 
   converter c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
   converter c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
@@ -47,24 +48,25 @@ module node4 #(
                     .data_in(data_in[i]),
                     .full(buffer_full_out[i]),
                     .data_valid(data_valid[i]),
-                    .data_out(buffer_data_out[i])
+                    .data_out(buffer_out[i])
                   );
 
-	  address_counter addr(
-        			.clk(clk.clk),
-                    .rst(reset.reset),
-       				.interface_flit_length(data_in[i][15:8]),
-       				.buffer_flit_length(buffer_data_out[i][15:8]),
-					.buffer_data_valid(data_valid[i]),
-					.interface_flit_address(data_in[i][7:0]),
-					.buffer_flit_address(buffer_data_out[i][7:0]),        
-      		 		.buffer_pop(sending_data[i]),
-      				.receiving_data(receiving_data[i]),
+      address_counter addr (  .clk(clk.clk),
+                              .rst(reset.reset),
+                              .interface_flit_length(data_in[i][15:8]),
+                              .interface_flit_address(data_in[i][7:0]),
+                              .buffer_flit_length(buffer_out[i][15:8]),
+                              .buffer_flit_address(buffer_out[i][7:0]),       
+                              .buffer_data_valid(data_valid[i]),
+                              .buffer_pop(sending_data[i]),
+                              .receiving_data(receiving_data[i]),
+                              .flit_address_o(packet_addr[i])
+			   );
 
-					.flit_address_o(packet_addr),
-					);
+      assign data_out[i][15:8] = 8'h00;
+      assign data_out[i][7:0] = packet_addr[i];
     end
-
+/*
 	if (`TOP(NODE_Y)) begin
 		controller4_edge_n n(.clk(clk.clk),
                         .reset(reset.reset),
@@ -260,6 +262,6 @@ module node4 #(
 				.data_o(data_out[3])
 		);
 	end
-
+*/
   endgenerate
 endmodule

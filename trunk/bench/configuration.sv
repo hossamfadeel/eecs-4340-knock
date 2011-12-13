@@ -1,9 +1,22 @@
 class configuration;
-  int unsigned  max_cycles, max_transactions,
+  rand int unsigned  max_cycles, max_transactions,
                 reset_density,
                 node_r_density[`INTERFACES], node_s_density[`INTERFACES],
                 node_addr_mask_x[`INTERFACES], node_addr_mask_y[`INTERFACES],
                 address_mode, heavy_mode, random_mode;
+
+  /*constraint c_config {
+    max_cycles <= 50000;
+    max_transactions == 0;
+    reset_density <= 10000;
+    for(int i = 0; i < `INTERFACES; i++) begin
+      node_r_density[i] <= 10000;
+      node_s_density[i] <= 10000;
+      node_addr_mask_x[i] <= 15; 
+      node_addr_mask_y[i] <= 15; 
+    end
+    address_mode <= 1;
+  }*/
 
   real reset_density_r;
   real local_r_density_r, local_s_density_r;
@@ -40,5 +53,8 @@ class configuration;
 
     $fclose(file);
 
+    if (random_mode == 1) begin
+      this.randomize();
+    end
   endfunction
 endclass
