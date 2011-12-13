@@ -25,6 +25,7 @@ class sim_node;
   data d;
   int dir_map[4]; //east, south, west, north
   int b_count, this_x, this_y, this_i, capture_node[], capture_if[];
+  int address[], flit_count[];
   fifo buffer[]; //local, east, south, west, north 
   out_data od[];
   in_data id[];
@@ -37,6 +38,8 @@ class sim_node;
     this_i = base.this_i;
     capture_node = base.capture_node;
     capture_if = base.capture_if;
+    address = base.address;
+    flit_count = base.flit_count;
     for(int i=0; i<b_count; i++) begin
       buffer[i].copy(base.buffer[i]);
       od[i].copy(base.od[i]);
@@ -91,12 +94,16 @@ class sim_node;
     buffer = new[b_count];
     od = new[b_count];
     id = new[b_count];
+    address = new[b_count];
+    flit_count = new[b_count];
     capture_node = new[b_count-1];
     capture_if = new[b_count-1];
     for(int i=0; i<b_count; i++) begin
       buffer[i] = new;
       od[i] = new;
       id[i] = new;
+      address[i] = 0;
+      flit_count[i] = 0;
     end
 
     if(`TOP(y) && `LEFT(x)) begin
@@ -155,13 +162,45 @@ class sim_node;
       $display("\t\tDI: %h", id[i].data_in);
     end
 
+    //$display("Node %0d Outputs:", this_i+1);
     for(int i=0; i<b_count; i++) begin
       is_sending[i] = 1'b0;
       data_out[i] = buffer[i].data_out();
 
-      if(!id[i].buffer_full && d.nodes[this_i].buffer[i].data_valid()) begin
+      if(!id[i].buffer_full && buffer[i].data_valid()) begin
         is_sending[i] = 1'b1;
-        data_out[i] = d.next_nodes[this_i].buffer[i].pop();
+        d.next_nodes[this_i].buffer[i].pop();
+      end
+      //$display("\tInterface %0d:", i);
+      //$display("\t\tSD: %b", is_sending[i]);
+      //$display("\t\tDO%0d: %h",i, data_out[i]);
+    end
+
+    for(int i=0; i<b_count; i++) begin
+      if(flit_count[i] == 0) begin
+        if(!d.next_nodes[this_i].buffer[i].data_valid() && id[i].receiving_data) begin
+          d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8];
+          d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
+        end else if(d.next_nodes[this_i].buffer[i].data_valid()) begin
+          d.next_nodes[this_i].flit_count[i] = data_out[i][15:8];
+          d.next_nodes[this_i].address[i] = data_out[i][7:0];
+        end
+      end else if (flit_count[i] == 1) begin
+        if(is_sending[i]) begin
+          if(d.next_nodes[this_i].buffer[i].data_valid()) begin
+            d.next_nodes[this_i].flit_count[i] = data_out[i][15:8];
+            d.next_nodes[this_i].address[i] = data_out[i][7:0];
+          end else begin
+            if(id[i].receiving_data) begin
+              d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8];
+              d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
+            end else begin
+              d.next_nodes[this_i].flit_count[i] --;
+            end
+          end
+        end
+      end else if (is_sending[i]) begin
+        d.next_nodes[this_i].flit_count[i] --;
       end
 
       if(id[i].receiving_data) begin
@@ -171,8 +210,8 @@ class sim_node;
 
     for(int i=0; i<b_count; i++) begin
       d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
-      d.next_nodes[this_i].od[i].sending_data  = is_sending[i];
-      d.next_nodes[this_i].od[i].data_out = data_out[i];
+      d.next_nodes[this_i].od[i].sending_data = is_sending[i];
+      d.next_nodes[this_i].od[i].data_out = address[i]; //data_out[i];
     end
   endfunction
 
