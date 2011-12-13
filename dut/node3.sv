@@ -40,24 +40,23 @@ module node3 #(
                     .data_out(data_out[i])
                   );
 
-      counter c ( .clk(clk.clk),
-                  .reset(reset.reset),
-                  .flit_length(8'h01),
-                  .count_enable(receiving_data[i]),
-                  .is_address(address_write_enable[i])
-                );
+	address_counter addr(
+        			.clk(clk.clk),
+                    .rst(reset.reset),
+       				.interface_flit_length(data_in[i][15:8]),
+       				.buffer_flit_length(buffer_data_out[i][15:8]),
+					.buffer_data_valid(data_valid[i]),
+					.interface_flit_address(data_in[i][7:0]),
+					.buffer_flit_address(buffer_data_out[i][7:0]),        
+      		 		.buffer_pop(sending_data[i]),
+      				.receiving_data(receiving_data[i]),
 
-      address_unit au ( .clk(clk.clk),
-                        .reset(reset.reset),
-                        .write_enable(address_write_enable[i]),
-                        .interface_data_in(data_in([i][7:0])),
-						.buffer_data_in(data_out[i][7:0]),
-						.data_select(data_valid[i]),
-                        .data_out(packet_addr[i])
-                      );
+					.flit_address_o(packet_addr),
+					);
+
 	end
 
-	if (`TOP(NODE_Y) & `RIGHT(NODE_X))
+	if (`TOP(NODE_Y) & `RIGHT(NODE_X)) begin
 		controller3_ne (.clk(clk.clk),
                         .reset(reset.reset),
 						.packet_addr,
@@ -69,7 +68,27 @@ module node3 #(
 						.grant_v
 						);
 
-    else if (`TOP(NODE_Y) & `LEFT(NODE_X))
+		assign data_out[0] = sengding_data[0] ? buffer_data_out[0] : 16'b0;
+
+		MUX_2 mux_e(
+				.data0(buffer_data_out[0]),
+				.data1(buffer_data_out[2]),
+				.select0(grant_1[0]),
+				.select1(grant_1[1]),
+				.data_o(data_out[1])
+		);
+
+		MUX_2 mux_l(
+				.data0(buffer_data_out[0]),
+				.data1(buffer_data_out[1]),
+				.select0(grant_1[0]),
+				.select1(grant_1[1]),
+				.data_o(data_out[2])
+		);
+
+	end
+
+    else if (`TOP(NODE_Y) & `LEFT(NODE_X)) begin
 		controller3_nw (.clk(clk.clk),
                         .reset(reset.reset),
 						.packet_addr,
@@ -81,7 +100,27 @@ module node3 #(
 						.grant_v
 						); 
 
-	else if (`BOTTOM(NODE_Y) & `LEFT(NODE_X))
+		assign data_out[0] = sengding_data[0] ? buffer_data_out[0] : 16'b0;
+
+		MUX_2 mux_w(
+				.data0(buffer_data_out[0]),
+				.data1(buffer_data_out[2]),
+				.select0(grant_1[0]),
+				.select1(grant_1[1]),
+				.data_o(data_out[1])
+		);
+
+		MUX_2 mux_l(
+				.data0(buffer_data_out[0]),
+				.data1(buffer_data_out[1]),
+				.select0(grant_1[0]),
+				.select1(grant_1[1]),
+				.data_o(data_out[2])
+		);
+
+	end
+
+	else if (`BOTTOM(NODE_Y) & `LEFT(NODE_X)) begin
 		controller3_sw (.clk(clk.clk),
                         .reset(reset.reset),
 						.packet_addr,
@@ -93,7 +132,27 @@ module node3 #(
 						.grant_v
 						); 
 
-	else
+		assign data_out[0] = sengding_data[0] ? buffer_data_out[0] : 16'b0;
+
+		MUX_2 mux_e(
+				.data0(buffer_data_out[0]),
+				.data1(buffer_data_out[2]),
+				.select0(grant_1[0]),
+				.select1(grant_1[1]),
+				.data_o(data_out[1])
+		);
+
+		MUX_2 mux_l(
+				.data0(buffer_data_out[0]),
+				.data1(buffer_data_out[1]),
+				.select0(grant_1[0]),
+				.select1(grant_1[1]),
+				.data_o(data_out[2])
+		);
+
+	end
+
+	else begin
 		controller3_se (.clk(clk.clk),
                         .reset(reset.reset),
 						.packet_addr,
@@ -103,7 +162,26 @@ module node3 #(
 						.grant_1,
 						.grant_2,
 						.grant_v
-						); 
+						);
+		assign data_out[0] = sengding_data[0] ? buffer_data_out[0] : 16'b0;
+
+		MUX_2 mux_w(
+				.data0(buffer_data_out[0]),
+				.data1(buffer_data_out[2]),
+				.select0(grant_1[0]),
+				.select1(grant_1[1]),
+				.data_o(data_out[1])
+		);
+
+		MUX_2 mux_l(
+				.data0(buffer_data_out[0]),
+				.data1(buffer_data_out[1]),
+				.select0(grant_1[0]),
+				.select1(grant_1[1]),
+				.data_o(data_out[2])
+		);
+
+	end
 
   endgenerate
 endmodule
