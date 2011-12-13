@@ -57,7 +57,7 @@ module node3 #(
 	end
 
 	if (`TOP(NODE_Y) & `RIGHT(NODE_X)) begin
-		controller3_ne (.clk(clk.clk),
+		controller3_ne ne(.clk(clk.clk),
                         .reset(reset.reset),
 						.packet_addr,
 						.local_addr,
@@ -89,7 +89,7 @@ module node3 #(
 	end
 
     else if (`TOP(NODE_Y) & `LEFT(NODE_X)) begin
-		controller3_nw (.clk(clk.clk),
+		controller3_nw nw(.clk(clk.clk),
                         .reset(reset.reset),
 						.packet_addr,
 						.local_addr,
@@ -121,7 +121,7 @@ module node3 #(
 	end
 
 	else if (`BOTTOM(NODE_Y) & `LEFT(NODE_X)) begin
-		controller3_sw (.clk(clk.clk),
+		controller3_sw sw(.clk(clk.clk),
                         .reset(reset.reset),
 						.packet_addr,
 						.local_addr,
@@ -153,7 +153,7 @@ module node3 #(
 	end
 
 	else begin
-		controller3_se (.clk(clk.clk),
+		controller3_se se(.clk(clk.clk),
                         .reset(reset.reset),
 						.packet_addr,
 						.local_addr,
