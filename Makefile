@@ -74,7 +74,12 @@ bench_out: defines.sv top.sv $(INTERFACES) $(DUT) $(BENCH)
 dut_out: defines.sv top.sv $(INTERFACES) $(DUT)
 	$(VCS) $^ $(DEFINES) +define+DUT_MODE -o $@
 
+
+dccl_out: defines.sv dw/DW01_cmp2.v general/dccl.sv other/dccl_bench.sv other/dccl_top.sv
+	$(VCS) $^ $(DEFINES) -o $@
+	./$@
+
 .PHONY: clean
 clean:
 	-rm -rf csrc/ *.daidir/ DVEfiles/
-	-rm -f *.log bench_out dut_out *.svf *.key *.vpd
+	-rm -f *.log bench_out dut_out dccl_out *.svf *.key *.vpd
