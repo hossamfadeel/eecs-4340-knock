@@ -188,20 +188,28 @@ class sim_node;
       end else if (flit_count[i] == 1) begin
         if(is_sending[i]) begin
           if(d.next_nodes[this_i].buffer[i].data_valid()) begin
+            $display("Interface %0d Here1", i);
             d.next_nodes[this_i].flit_count[i] = data_out[i][15:8];
             d.next_nodes[this_i].address[i] = data_out[i][7:0];
           end else begin
             if(id[i].receiving_data) begin
+              $display("Interface %0d Here2", i);
               d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8];
               d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
             end else begin
+              $display("Interface %0d Here3", i);
               d.next_nodes[this_i].flit_count[i] --;
+              d.next_nodes[this_i].address[i] = address[i];
             end
           end
         end
       end else if (is_sending[i]) begin
         d.next_nodes[this_i].flit_count[i] --;
+        d.next_nodes[this_i].address[i] = address[i];
       end
+      
+      $display("Address for Interface %0d: %h", i, address[i]);
+      $display("Packets Remaining for Interface %0d: %0d", i, d.next_nodes[this_i].flit_count[i]);
 
       if(id[i].receiving_data) begin
         d.next_nodes[this_i].buffer[i].push(id[i].data_in);

@@ -65,7 +65,9 @@ class node_transaction extends transaction;
       current_bytes = bytes;
     end else begin
       data = packet_data;
-      current_bytes--;
+      if(sending) begin
+        current_bytes--;
+      end
     end
   endfunction
 
