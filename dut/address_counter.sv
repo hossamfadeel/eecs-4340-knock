@@ -59,7 +59,6 @@ module address_counter#(parameter ADD_WIDTH = 8)
         flit_address = buffer_flit_address;
         count_enable = 1'b1;
         is_address =1'b1;
-        $display("===============================================");
       end else if(buffer_pop && receiving_data) begin //buffer has last data flit and new flip head is coming in from interface
         next_count = interface_flit_length;
         flit_address = interface_flit_address;
