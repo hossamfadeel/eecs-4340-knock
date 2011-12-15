@@ -1,4 +1,5 @@
 class node_transaction extends transaction;
+  int from;
   int node_index;
   int data;
   int current_bytes;
@@ -31,18 +32,18 @@ class node_transaction extends transaction;
     y >= 0;
     y <= e.cfg.node_addr_mask_y[node_index];
 
-    `ifdef NOC_MODE
-      x == `GETX(node_index) -> y != `GETY(node_index);
-    `else
-      x == `NODE_X -> y != `NODE_Y;
-    `endif
+    from == -1 && x == `NODE_X -> y != `NODE_Y;
+    from > -1 && x == `GETX(from) -> y != `GETY(from);
+    from == -1 && y == `NODE_Y -> x != `NODE_X;
+    from > -1 && y == `GETY(from) -> x != `GETX(from);
   }
 
-  function new(const ref environment e, int index);
+  function new(const ref environment e, int index, int from_index);
     super.new(e);
 
     node_index = index;
     current_bytes = 0;
+    from = from_index;
   endfunction
 
   function void post_randomize();

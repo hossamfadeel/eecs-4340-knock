@@ -208,8 +208,8 @@ class sim_node;
         d.next_nodes[this_i].address[i] = address[i];
       end
       
-      $display("Address for Interface %0d: %h", i, address[i]);
-      $display("Packets Remaining for Interface %0d: %0d", i, d.next_nodes[this_i].flit_count[i]);
+      //$display("Address for Interface %0d: %h", i, address[i]);
+      //$display("Packets Remaining for Interface %0d: %0d", i, d.next_nodes[this_i].flit_count[i]);
 
       if(id[i].receiving_data) begin
         d.next_nodes[this_i].buffer[i].push(id[i].data_in);
