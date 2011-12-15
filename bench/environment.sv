@@ -14,7 +14,12 @@ class environment;
 
     rst = new(this);
     for(int i=0; i<`INTERFACES; i=i+1) begin
-      in_data[i] = new(this, i);
+      `ifdef NOC_MODE
+        in_data[i] = new(this, i, i);
+      `else
+        int f = (i==0) ? -1 : d.nodes[0].capture_node[i-1]-1;
+        in_data[i] = new(this, i, f);
+      `endif
     end
 
     transaction_count = 0;
