@@ -153,6 +153,7 @@ class sim_node;
   function process();
     bit is_sending[] = new[b_count];
     int data_out[] = new[b_count];    
+    int request[] = new[b_count];
 
     $display("Node %0d Inputs:", this_i+1);
     for(int i=0; i<b_count; i++) begin
@@ -160,6 +161,23 @@ class sim_node;
       $display("\t\tBF: %b", id[i].buffer_full);
       $display("\t\tRD: %b", id[i].receiving_data);
       $display("\t\tDI: %h", id[i].data_in);
+    end
+
+    for(int i=0; i<b_count; i++) begin
+      request[i] = -1;
+      if(buffer[i].data_valid() && (address[i][3:0] > `GETY(this_i))) begin
+        request[i] = `REQ_DIR_SOUTH;
+      end else if(buffer[i].data_valid() && (address[i][3:0] < `GETY(this_i))) begin
+        request[i] = `REQ_DIR_NORTH;
+      end else if(buffer[i].data_valid() && (address[i][3:0] == `GETY(this_i))) begin
+        if(buffer[i].data_valid() && (address[i][7:4] > `GETX(this_i))) begin
+          request[i] = `REQ_DIR_EAST;
+        end else if(buffer[i].data_valid() && (address[i][7:4] < `GETX(this_i))) begin
+          request[i] = `REQ_DIR_WEST;
+        end else if(buffer[i].data_valid() && (address[i][7:4] == `GETX(this_i))) begin
+          request[i] = `REQ_DIR_LOCAL;
+        end
+      end
     end
 
     //$display("Node %0d Outputs:", this_i+1);
