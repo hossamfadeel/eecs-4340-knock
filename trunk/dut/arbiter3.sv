@@ -126,7 +126,7 @@ module arbiter3
 
 				//tail_o cannot be 0 in this case
 					if (tail_o==2) begin
-						req_i[0]=req_o[1];
+						req_i[0]=req_o[1] & !grant;
 						if (request_c==0) begin
 							req_en=2'b01;
 							tail_i=2'b01;
@@ -172,7 +172,7 @@ module arbiter3
 				//tail_o cannot be 2 or 0 in this case
 
 					req_i[0]=req_m;
-					req_i[1]=request_c;
+					req_i[1]=request_c & (!req_m);
 					tail_en=1;
 					tail_i=2'b10;
 					req_en=2'b11;

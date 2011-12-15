@@ -189,9 +189,9 @@ module arbiter4
 
 				//tail_o cannot be 0 in this case
 					if (tail_o==3) begin
-						req_i[0]=req_o[1];
-						req_i[1]=req_o[2];
-						if (request_c==0) begin
+						req_i[0]=req_o[1] & !grant;
+						req_i[1]=req_o[2] & !grant;
+						if (request_c==0 | request_c == req_o[2]) begin
 							req_en=3'b011;
 							tail_i=2'b10;
 							tail_en=1;
@@ -203,8 +203,8 @@ module arbiter4
 						end
 					end
 					else if (tail_o==2) begin
-						req_i[0]=req_o[1];
-						if (request_c==0) begin
+						req_i[0]=req_o[1] & !grant;
+						if (request_c==0 | request_c == req_o[1]) begin
 							req_en=3'b001;
 							tail_i=2'b01;
 							tail_en=1;
@@ -252,14 +252,14 @@ module arbiter4
 				//tail_o cannot be 3 or 0 in this case
 					if (tail_o==2) begin
 						req_i[0]=req_m;
-						req_i[2]=request_c;
+						req_i[2]=request_c & (!req_m);
 						tail_en=1;
 						tail_i=2'b11;
 						req_en=3'b101;
 					end
 					else begin
 						req_i[0]=req_m;
-						req_i[1]=request_c;
+						req_i[1]=request_c & (!req_m);
 						tail_en=1;
 						tail_i=2'b10;
 						req_en=3'b011;
