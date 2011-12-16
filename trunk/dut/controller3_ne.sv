@@ -9,10 +9,16 @@ module controller3_ne
 
 	output logic [1:0] grant_1,
 	output logic [1:0] grant_2,
-	output logic [2:0] grant_v
+	output logic [2:0] grant_v,
+	output logic [2:0] pop_v
 );
 
 	wire [1:0] request [2:0];
+
+	assign pop_v[0] = grant_1[0] | grant_2[0];
+	assign pop_v[1] = grant_2[1];
+	assign pop_v[2] = grant_v[0] | grant_1[1];
+
 
 //to South
 	assign grant_v[0] = (request[0][0] & (!buffer_full_in[0]));

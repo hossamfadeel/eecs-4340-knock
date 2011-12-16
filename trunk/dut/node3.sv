@@ -25,6 +25,7 @@ module node3 #(
   wire [1:0] grant_1;
   wire [1:0] grant_2;
   wire [2:0] grant_v;
+  wire [2:0] pop_v;
 
   converter c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
   converter c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
@@ -38,7 +39,7 @@ module node3 #(
       fifo buffer ( .clk(clk.clk),
                     .rst(reset.reset),
                     .push_req(receiving_data[i]),
-                    .pop_req(sending_data[i]),
+                    .pop_req(pop_v[i]),
                     .data_in(data_in[i]),
                     .full(buffer_full_out[i]),
                     .data_valid(data_valid[i]),
@@ -71,7 +72,8 @@ module node3 #(
 
 						.grant_1,
 						.grant_2,
-						.grant_v
+						.grant_v,
+						.pop_v
 						);
 
 		assign data_out[0] = sending_data[0] ? buffer_out[0] : 16'b0;
@@ -104,7 +106,8 @@ module node3 #(
 				  
 				  		.grant_1,
 				  		.grant_2,
-				  		.grant_v
+				  		.grant_v,
+						.pop_v
   						); 
 
 		assign data_out[0] = sending_data[0] ? buffer_out[0] : 16'b0;
@@ -137,7 +140,8 @@ module node3 #(
 
 						.grant_1,
 						.grant_2,
-						.grant_v
+						.grant_v,
+						.pop_v
 						); 
 
 		assign data_out[0] = sending_data[0] ? buffer_out[0] : 16'b0;
@@ -170,7 +174,8 @@ module node3 #(
 
 						.grant_1,
 						.grant_2,
-						.grant_v
+						.grant_v,
+						.pop_v
 						);
 		assign data_out[0] = sending_data[0] ? buffer_out[0] : 16'b0;
 

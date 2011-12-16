@@ -10,10 +10,16 @@ module controller4_edge_s
 	output logic [2:0] grant_1,
 	output logic [2:0] grant_2,
 	output logic [2:0] grant_3,
-	output logic [3:0] grant_v
+	output logic [3:0] grant_v,
+	output logic [3:0] pop_v
 );
 
 	wire [2:0] request [3:0];
+
+	assign pop_v[0] = grant_1[0] | grant_2[0] | grant_3[0];
+	assign pop_v[1] = grant_2[1] | grant_3[1];
+	assign pop_v[2] = grant_1[1] | grant_3[2];
+	assign pop_v[3] = grant_v[0] | grant_1[2] | grant_2[2];
 
 //to North
 	assign grant_v[0] = (request[0][0] & (!buffer_full_in[0]));

@@ -29,6 +29,8 @@ module node5 #(
   wire [3:0] grant_2;
   wire [3:0] grant_3;
   wire [3:0] grant_4;
+  wire [4:0] grant_v;
+  wire [4:0] pop_v;
 
   assign local_addr[7:4] = NODE_Y[3:0];
   assign local_addr[3:0] = NODE_X[3:0];
@@ -78,7 +80,8 @@ module node5 #(
 
 					//output
 					.grant_0, .grant_1, .grant_2, .grant_3, .grant_4, 
-					.grant_v(sengding_data) 
+					.grant_v,
+					.pop_v
 					);
 
 	MUX_2 mux_n(
