@@ -16,7 +16,7 @@ VCS = vcs -PP -sverilog
 ifeq ($(NODE_Y), 0)
   ifeq ($(NODE_X), 0)
     NODE_TYPE = 3
-    NODEDUT := dut/controller3_nw.sv
+    NODEDUT := general/mux2_1.sv dut/controller3_nw.sv
   else ifeq ($(NODE_X), $(NOC_SIZE_M1))
     NODE_TYPE = 3
     NODEDUT := dut/controller3_ne.sv
@@ -59,7 +59,7 @@ ifeq ($(NOC_MODE), 1)
   DUT = $(GENDUT) dut/arbiter*.sv dut/controller*.sv dut/node*.sv dut/noc.sv
   DEFINES = +define+NOC_MODE
 else
-  DUT = $(GENDUT) dut/node$(NODE_TYPE).sv
+  DUT = $(GENDUT) $(NODEDUT) dut/node$(NODE_TYPE).sv
   DEFINES = +define+NODE_TYPE$(NODE_TYPE) +define+NODE_X=$(NODE_X) +define+NODE_Y=$(NODE_Y) 
 endif
 

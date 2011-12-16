@@ -300,7 +300,7 @@ class sim_node;
 
   function int get_grant(bit reqs[5]);
     for(int i = 0; i < 5; i ++) begin
-      if(reqs[i] == 1 ) begin
+      if(reqs[i] == 1 && !id[req_to_int(i)].buffer_full) begin
         return i;
       end
     end

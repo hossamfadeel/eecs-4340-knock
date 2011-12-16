@@ -29,6 +29,8 @@ module node3 #(
   converter c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
   converter c2 (local_node, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
 
+  wire [7:0] local_addr = {NODE_X[3:0], NODE_Y[3:0]};
+
   generate
     for(genvar i = 0; i <= NUM_INTERFACES-1; i = i + 1) begin
       assign sending_data[i] = !buffer_full_in[i] & data_valid[i];
@@ -55,10 +57,10 @@ module node3 #(
                               .flit_address_o(packet_addr[i])
 			   );
 
-      assign data_out[i][15:8] = 8'h00;
-      assign data_out[i][7:0] = packet_addr[i];
+      //assign data_out[i][15:8] = 8'h00;
+      //assign data_out[i][7:0] = packet_addr[i];
     end
-/*
+
 	if (`TOP(NODE_Y) & `RIGHT(NODE_X)) begin
 		controller3_ne ne(.clk(clk.clk),
                         .reset(reset.reset),
@@ -71,7 +73,7 @@ module node3 #(
 						.grant_v
 						);
 
-		assign data_out[0] = sengding_data[0] ? buffer_out[0] : 16'b0;
+		assign data_out[0] = sending_data[0] ? buffer_out[0] : 16'b0;
 
 		MUX_2 mux_e(
 				.data0(buffer_out[0]),
@@ -93,19 +95,19 @@ module node3 #(
 
     else if (`TOP(NODE_Y) & `LEFT(NODE_X)) begin
 		controller3_nw nw(.clk(clk.clk),
-                        .reset(reset.reset),
-						.packet_addr,
-						.local_addr,
-						.buffer_full_in,
+                .rst(reset.reset),
+  		.packet_addr(packet_addr),
+  		.local_addr,
+  		.buffer_full_in,
+  
+  		.grant_1,
+  		.grant_2,
+  		.grant_v
+  		); 
 
-						.grant_1,
-						.grant_2,
-						.grant_v
-						); 
+		assign data_out[0] = sending_data[0] ? buffer_out[0] : 16'b0;
 
-		assign data_out[0] = sengding_data[0] ? buffer_out[0] : 16'b0;
-
-		MUX_2 mux_w(
+		mux2_1 mux_w(
 				.data0(buffer_out[0]),
 				.data1(buffer_out[2]),
 				.select0(grant_1[0]),
@@ -113,7 +115,7 @@ module node3 #(
 				.data_o(data_out[1])
 		);
 
-		MUX_2 mux_l(
+		mux2_1 mux_l(
 				.data0(buffer_out[0]),
 				.data1(buffer_out[1]),
 				.select0(grant_1[0]),
@@ -135,7 +137,7 @@ module node3 #(
 						.grant_v
 						); 
 
-		assign data_out[0] = sengding_data[0] ? buffer_out[0] : 16'b0;
+		assign data_out[0] = sending_data[0] ? buffer_out[0] : 16'b0;
 
 		MUX_2 mux_e(
 				.data0(buffer_out[0]),
@@ -166,7 +168,7 @@ module node3 #(
 						.grant_2,
 						.grant_v
 						);
-		assign data_out[0] = sengding_data[0] ? buffer_out[0] : 16'b0;
+		assign data_out[0] = sending_data[0] ? buffer_out[0] : 16'b0;
 		MUX_2 mux_w(
 				.data0(buffer_out[0]),
 				.data1(buffer_out[2]),
@@ -184,7 +186,5 @@ module node3 #(
 		);
 
 	end
-
-*/
   endgenerate
 endmodule
