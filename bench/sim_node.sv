@@ -26,6 +26,8 @@ class sim_node;
   int dir_map[4]; //east, south, west, north
   int b_count, this_x, this_y, this_i, capture_node[], capture_if[];
   int address[], flit_count[];
+  bit req_table[5][3][5]; // buffer, state, req_line
+  int req_s[5];
   fifo buffer[]; //local, east, south, west, north 
   out_data od[];
   in_data id[];
@@ -40,6 +42,8 @@ class sim_node;
     capture_if = base.capture_if;
     address = base.address;
     flit_count = base.flit_count;
+    req_table = base.req_table;
+    req_s = base.req_s;
     for(int i=0; i<b_count; i++) begin
       buffer[i].copy(base.buffer[i]);
       od[i].copy(base.od[i]);
@@ -106,6 +110,15 @@ class sim_node;
       flit_count[i] = 0;
     end
 
+    for(int i=0; i<5; i++) begin
+      for(int j=0; j<b_count-2;j++) begin
+        for(int k=0; k<5; k++) begin
+          req_table[i][j][k] = 0;
+        end
+      end
+      req_s[i] = 0; 
+    end
+
     if(`TOP(y) && `LEFT(x)) begin
       capture_node = '{n_east, n_south};
       capture_if = '{`DIR_WEST, `DIR_NORTH};
@@ -153,7 +166,8 @@ class sim_node;
   function process();
     bit is_sending[] = new[b_count];
     int data_out[] = new[b_count];    
-    int request[] = new[b_count];
+    bit requests[5][5];
+    int grant[5] = '{-1, -1, -1, -1, -1};
 
     $display("Node %0d Inputs:", this_i+1);
     for(int i=0; i<b_count; i++) begin
@@ -164,21 +178,64 @@ class sim_node;
     end
 
     for(int i=0; i<b_count; i++) begin
-      request[i] = -1;
+      int req_from, req_to;
+      req_to = -1;
+      req_from = int_to_req(i);
+
       if(buffer[i].data_valid() && (address[i][3:0] > `GETY(this_i))) begin
-        request[i] = `REQ_DIR_SOUTH;
+        req_to = `REQ_DIR_SOUTH;
       end else if(buffer[i].data_valid() && (address[i][3:0] < `GETY(this_i))) begin
-        request[i] = `REQ_DIR_NORTH;
+        req_to = `REQ_DIR_NORTH;
       end else if(buffer[i].data_valid() && (address[i][3:0] == `GETY(this_i))) begin
         if(buffer[i].data_valid() && (address[i][7:4] > `GETX(this_i))) begin
-          request[i] = `REQ_DIR_EAST;
+          req_to = `REQ_DIR_EAST;
         end else if(buffer[i].data_valid() && (address[i][7:4] < `GETX(this_i))) begin
-          request[i] = `REQ_DIR_WEST;
+          req_to = `REQ_DIR_WEST;
         end else if(buffer[i].data_valid() && (address[i][7:4] == `GETX(this_i))) begin
-          request[i] = `REQ_DIR_LOCAL;
+          req_to = `REQ_DIR_LOCAL;
         end
       end
+      
+      if (req_to != -1) begin
+        $display("%0d Requests %0d", req_from, req_to);
+        requests[req_to][req_from] = 1;
+      end
     end
+
+    for(int i=0; i<5; i++) begin 
+      if(no_reqs(req_table[i][0])) begin
+        grant[i] = get_grant(requests[i]);
+      end else begin
+        grant[i] = get_grant(req_table[i][0]);
+      end
+      
+      requests[i][grant[i]] = 0;
+      for(int j=0; j<3; j++) begin
+        d.next_nodes[this_i].req_table[i][j][grant[i]] = 0;
+      end
+
+      if(no_reqs(d.next_nodes[this_i].req_table[i][0])) begin
+        if (d.next_nodes[this_i].req_s[i] != 0) begin
+          d.next_nodes[this_i].req_s[i]--;
+        end
+        for(int j=0; j<b_count-3;j++) begin
+          d.next_nodes[this_i].req_table[i][j] = d.next_nodes[this_i].req_table[i][j+1];
+        end
+      end
+
+      if (no_reqs(requests[i]) == 0) begin
+        d.next_nodes[this_i].req_table[i][d.next_nodes[this_i].req_s[i]] = requests[i];
+        d.next_nodes[this_i].req_s[i]++;
+      end
+
+      $display("Interface %0d Grants %0d", i, grant[i]);
+    end
+
+    for(int i=0; i<5; i++) begin
+    for(int j=0; j<3; j++) begin
+      $display("[%0d][%0d]: %b%b%b%b%b", i, j, req_table[i][j][0], req_table[i][j][1], req_table[i][j][2], req_table[i][j][3], req_table[i][j][4]);
+    end
+  end
 
     //$display("Node %0d Outputs:", this_i+1);
     for(int i=0; i<b_count; i++) begin
@@ -239,6 +296,48 @@ class sim_node;
       d.next_nodes[this_i].od[i].sending_data = is_sending[i];
       d.next_nodes[this_i].od[i].data_out = address[i]; //data_out[i];
     end
+  endfunction
+
+  function int get_grant(bit reqs[5]);
+    for(int i = 0; i < 5; i ++) begin
+      if(reqs[i] == 1 ) begin
+        return i;
+      end
+    end
+    return -1;
+  endfunction
+
+  function int req_to_int(int req);
+    int r;
+    case (req) 
+      `REQ_DIR_LOCAL: r = `DIR_LOCAL; 
+      `REQ_DIR_EAST:  r = `DIR_EAST; 
+      `REQ_DIR_SOUTH: r = `DIR_SOUTH; 
+      `REQ_DIR_WEST:  r = `DIR_WEST; 
+      `REQ_DIR_NORTH: r = `DIR_NORTH; 
+    endcase
+    return r+1;
+  endfunction
+
+  function int int_to_req(int i);
+    int r;
+    case (i-1) 
+      `DIR_LOCAL: r = `REQ_DIR_LOCAL; 
+      `DIR_EAST:  r = `REQ_DIR_EAST; 
+      `DIR_SOUTH: r = `REQ_DIR_SOUTH; 
+      `DIR_WEST:  r = `REQ_DIR_WEST; 
+      `DIR_NORTH: r = `REQ_DIR_NORTH; 
+    endcase
+    return r;
+  endfunction
+
+  function bit no_reqs(bit reqs[5]);
+    for(int i = 0; i < 5; i ++) begin
+      if(reqs[i] == 1) begin
+        return 0;
+      end
+    end
+    return 1;
   endfunction
 
   function reset();
