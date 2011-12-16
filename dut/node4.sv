@@ -12,15 +12,15 @@ module node4 #(
 );
   parameter NUM_INTERFACES = 4;
 
-  wire buffer_full_out[NUM_INTERFACES-1:0], sending_data[NUM_INTERFACES-1:0];
+  wire [NUM_INTERFACES-1:0] buffer_full_out, sending_data;
   wire [15:0] data_out[NUM_INTERFACES-1:0];
 
-  wire buffer_full_in[NUM_INTERFACES-1:0], receiving_data[NUM_INTERFACES-1:0];
+  wire [NUM_INTERFACES-1:0] buffer_full_in, receiving_data;
   wire [15:0] data_in[NUM_INTERFACES-1:0];
 
   wire [15:0] buffer_out[NUM_INTERFACES-1:0];
   wire [7:0] packet_addr[NUM_INTERFACES-1:0];
-  wire data_valid[NUM_INTERFACES-1:0];
+  wire [NUM_INTERFACES-1:0] data_valid;
   wire [7:0] local_addr;
 
   wire [2:0] grant_0;
@@ -39,7 +39,6 @@ module node4 #(
 
   generate
     for(genvar i = 0; i <= NUM_INTERFACES-1; i = i + 1) begin
-      assign sending_data[i] = !buffer_full_in[i] & data_valid[i];
 
       fifo buffer ( .clk(clk.clk),
                     .rst(reset.reset),
@@ -69,9 +68,10 @@ module node4 #(
 /*
 	if (`TOP(NODE_Y)) begin
 		controller4_edge_n n(.clk(clk.clk),
-                        .reset(reset.reset),
+                        .rst(reset.reset),
 						.packet_addr,
 						.local_addr,
+						.packet_valid(data_valid),
 						.buffer_full_in,
 
 						.grant_1,
@@ -115,9 +115,10 @@ module node4 #(
 
     else if (`BOTTOM(NODE_Y)) begin
 		controller4_edge_s s(.clk(clk.clk),
-                        .reset(reset.reset),
+                        .rst(reset.reset),
 						.packet_addr,
 						.local_addr,
+						.packet_valid(data_valid),
 						.buffer_full_in,
 
 						.grant_1,
@@ -161,9 +162,10 @@ module node4 #(
 
 	else if (`RIGHT(NODE_X)) begin
 		controller4_edge_e e(.clk(clk.clk),
-                        .reset(reset.reset),
+                        .rst(reset.reset),
 						.packet_addr,
 						.local_addr,
+						.packet_valid(data_valid),
 						.buffer_full_in,
 
 						.grant_0(grant_0[1:0]),						
@@ -213,9 +215,10 @@ module node4 #(
 
 	else begin
 		controller4_edge_w w(.clk(clk.clk),
-                        .reset(reset.reset),
+                        .rst(reset.reset),
 						.packet_addr,
 						.local_addr,
+						.packet_valid(data_valid),
 						.buffer_full_in,
 
 						.grant_0(grant_0[1:0]),						

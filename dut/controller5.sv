@@ -4,8 +4,8 @@ module controller5
 	input rst,	
 	input [7:0] packet_addr [4:0],
 	input [7:0] local_addr,
+	input [4:0] packet_valid,
 	input [4:0] buffer_full_in,
-	input packet_valid,
 
 	output logic [1:0] grant_0,
 	output logic [1:0] grant_1,
@@ -57,7 +57,7 @@ module controller5
 			.packet_addr_x_i(packet_addr[0][7:4]),
 			.local_addr_y_i(local_addr[3:0]),
 			.local_addr_x_i(local_addr[7:4]),
-			.packet_valid_i(packet_valid),
+			.packet_valid_i(packet_valid[0]),
 
 			.north_req(),
 			.south_req(request[1][0]),
@@ -71,7 +71,7 @@ module controller5
 			.packet_addr_x_i(packet_addr[1][7:4]),
 			.local_addr_y_i(local_addr[3:0]),
 			.local_addr_x_i(local_addr[7:4]),
-			.packet_valid_i(packet_valid),
+			.packet_valid_i(packet_valid[1]),
 
 			.north_req(request[0][0]),
 			.south_req(),
@@ -85,7 +85,7 @@ module controller5
 			.packet_addr_x_i(packet_addr[2][7:4]),
 			.local_addr_y_i(local_addr[3:0]),
 			.local_addr_x_i(local_addr[7:4]),
-			.packet_valid_i(packet_valid),
+			.packet_valid_i(packet_valid[2]),
 
 			.north_req(),
 			.south_req(),
@@ -99,7 +99,7 @@ module controller5
 			.packet_addr_x_i(packet_addr[3][7:4]),
 			.local_addr_y_i(local_addr[3:0]),
 			.local_addr_x_i(local_addr[7:4]),
-			.packet_valid_i(packet_valid),
+			.packet_valid_i(packet_valid[3]),
 
 			.north_req(),
 			.south_req(),
@@ -113,7 +113,7 @@ module controller5
 			.packet_addr_x_i(packet_addr[4][7:4]),
 			.local_addr_y_i(local_addr[3:0]),
 			.local_addr_x_i(local_addr[7:4]),
-			.packet_valid_i(packet_valid),
+			.packet_valid_i(packet_valid[4]),
 
 			.north_req(request[0][1]),
 			.south_req(request[1][1]),

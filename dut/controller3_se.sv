@@ -4,6 +4,7 @@ module controller3_se
 	input rst,	
 	input [7:0] packet_addr [2:0],
 	input [7:0] local_addr,
+	input [2:0] packet_valid,
 	input [2:0] buffer_full_in,
 
 	output logic [1:0] grant_1,
@@ -35,7 +36,7 @@ module controller3_se
 			.packet_addr_x_i(packet_addr[0][7:4]),
 			.local_addr_y_i(local_addr[3:0]),
 			.local_addr_x_i(local_addr[7:4]),
-			.packet_valid_i(packet_valid),
+			.packet_valid_i(packet_valid[0]),
 
 			.north_req(),
 			.south_req(),
@@ -49,7 +50,7 @@ module controller3_se
 			.packet_addr_x_i(packet_addr[1][7:4]),
 			.local_addr_y_i(local_addr[3:0]),
 			.local_addr_x_i(local_addr[7:4]),
-			.packet_valid_i(packet_valid),
+			.packet_valid_i(packet_valid[1]),
 
 			.north_req(),
 			.south_req(),
@@ -63,7 +64,7 @@ module controller3_se
 			.packet_addr_x_i(packet_addr[2][7:4]),
 			.local_addr_y_i(local_addr[3:0]),
 			.local_addr_x_i(local_addr[7:4]),
-			.packet_valid_i(packet_valid),
+			.packet_valid_i(packet_valid[2]),
 
 			.north_req(request[0][0]),
 			.south_req(),
