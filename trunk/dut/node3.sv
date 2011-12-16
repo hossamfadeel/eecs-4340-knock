@@ -20,7 +20,7 @@ module node3 #(
   wire [15:0] buffer_out[NUM_INTERFACES-1:0];
   wire [7:0] packet_addr[NUM_INTERFACES-1:0];
   wire [NUM_INTERFACES-1:0] data_valid;
-  wire [7:0] local_addr;
+  wire [7:0] local_addr = {NODE_Y[3:0], NODE_X[3:0]};
 
   wire [1:0] grant_1;
   wire [1:0] grant_2;
@@ -30,7 +30,7 @@ module node3 #(
   converter c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
   converter c2 (local_node, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
 
-  wire [7:0] local_addr = {NODE_Y[3:0], NODE_X[3:0]};
+  assign sending_data = {grant_v[1], grant_v[0], grant_v[2]};
 
   generate
     for(genvar i = 0; i <= NUM_INTERFACES-1; i = i + 1) begin

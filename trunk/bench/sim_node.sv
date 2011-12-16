@@ -171,7 +171,7 @@ class sim_node;
 
     $display("Node %0d Inputs:", this_i+1);
     for(int i=0; i<b_count; i++) begin
-      $display("\tInterface %0d:", i);
+      $display("\tInterface %0d:", int_to_req(i));
       $display("\t\tBF: %b", id[i].buffer_full);
       $display("\t\tRD: %b", id[i].receiving_data);
       $display("\t\tDI: %h", id[i].data_in);
@@ -198,6 +198,9 @@ class sim_node;
       
       if (req_to != -1) begin
         $display("%0d Requests %0d", req_from, req_to);
+        if(id[req_to_int(req_to)].buffer_full) begin
+          $display("\tBut buffer is full");
+        end
         requests[req_to][req_from] = 1;
       end
     end
@@ -231,18 +234,18 @@ class sim_node;
       $display("Interface %0d Grants %0d", i, grant[i]);
     end
 
-    for(int i=0; i<5; i++) begin
+    /*for(int i=0; i<5; i++) begin
     for(int j=0; j<3; j++) begin
       $display("[%0d][%0d]: %b%b%b%b%b", i, j, req_table[i][j][0], req_table[i][j][1], req_table[i][j][2], req_table[i][j][3], req_table[i][j][4]);
     end
-  end
+  end*/
 
     //$display("Node %0d Outputs:", this_i+1);
     for(int i=0; i<b_count; i++) begin
       is_sending[i] = 1'b0;
       data_out[i] = buffer[i].data_out();
 
-      if(!id[i].buffer_full && buffer[i].data_valid()) begin
+      if(grant[int_to_req(i)] > -1) begin
         is_sending[i] = 1'b1;
         d.next_nodes[this_i].buffer[i].pop();
       end
@@ -294,7 +297,7 @@ class sim_node;
     for(int i=0; i<b_count; i++) begin
       d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
       d.next_nodes[this_i].od[i].sending_data = is_sending[i];
-      d.next_nodes[this_i].od[i].data_out = address[i]; //data_out[i];
+      d.next_nodes[this_i].od[i].data_out = is_sending[i] ? data_out[req_to_int(grant[int_to_req(i)])] : 0; //data_out[i];
     end
   endfunction
 
