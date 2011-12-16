@@ -12,10 +12,17 @@ module controller5
 	output logic [3:0] grant_2,
 	output logic [3:0] grant_3,
 	output logic [3:0] grant_4,
-	output logic [4:0] grant_v
+	output logic [4:0] grant_v,
+	output logic [4:0] pop_v
 );
 
 	wire [3:0] request [4:0];
+
+	assign pop_v[0] = grant_1[0] | grant_2[0] | grant_3[0] | grant_4[0];
+	assign pop_v[1] = grant_0[0] | grant_2[1] | grant_3[1] | grant_4[1];
+	assign pop_v[2] = grant_3[2] | grant_4[2];
+	assign pop_v[3] = grant_2[2] | grant_4[3];
+	assign pop_v[4] = grant_0[1] | grant_1[1] | grant_2[3] | grant_3[3];
 
 	arbiter2 arbiter_n(
 	//input

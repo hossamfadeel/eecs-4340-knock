@@ -28,6 +28,7 @@ module node4 #(
   wire [2:0] grant_2;
   wire [2:0] grant_3;
   wire [3:0] grant_v;
+  wire [3:0] pop_v;
 
   assign local_addr[7:4] = NODE_Y[3:0];
   assign local_addr[3:0] = NODE_X[3:0];
@@ -77,7 +78,8 @@ module node4 #(
 						.grant_1,
 						.grant_2,
 						.grant_3,
-						.grant_v
+						.grant_v,
+						.pop_v
 						);
 
 		assign data_out[0] = sengding_data[0] ? buffer_data_out[0] : 16'b0;
@@ -124,7 +126,8 @@ module node4 #(
 						.grant_1,
 						.grant_2,
 						.grant_3,
-						.grant_v
+						.grant_v,
+						.pop_v
 						); 
 
 		assign data_out[0] = sengding_data[0] ? buffer_data_out[0] : 16'b0;
@@ -172,7 +175,8 @@ module node4 #(
 						.grant_1(grant_1[1:0]),
 						.grant_2,
 						.grant_3,
-						.grant_v
+						.grant_v,
+						.pop_v
 						); 
 
 		MUX_2 mux_n(
@@ -225,7 +229,8 @@ module node4 #(
 						.grant_1(grant_1[1:0]),
 						.grant_2,
 						.grant_3,
-						.grant_v
+						.grant_v,
+						.pop_v
 						); 
 
 		MUX_2 mux_n(
