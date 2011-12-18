@@ -17,7 +17,8 @@ class environment;
       `ifdef NOC_MODE
         in_data[i] = new(this, i, i);
       `else
-        int f = (i==0) ? -1 : d.nodes[0].capture_node[i-1]-1;
+        int lid = d.nodes[0].get_buffer_id(`DIR_LOCAL);
+        int f = (i==lid) ? -1 : d.nodes[0].capture_node[i]-1;
         in_data[i] = new(this, i, f);
       `endif
     end
@@ -64,7 +65,7 @@ class environment;
        // $display("\tReceived SD: %b", sd);
        // $display("\tReceived DO: %h", data_out);
       end else begin
-        $display("Node %0d, Output %0d", node_index, d.nodes[node_index].int_to_req(output_index));
+        $display("Node %0d, Output %0d", node_index, output_index);
         $display("\tExpected BF: %b, Received: %b", d.next_nodes[node_index].od[output_index].buffer_full, bf);
         $display("\tExpected SD: %b, Received: %b", d.next_nodes[node_index].od[output_index].sending_data, sd);
         $display("\tExpected DO: %h, Received: %h", d.next_nodes[node_index].od[output_index].data_out, data_out);

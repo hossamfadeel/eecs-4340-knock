@@ -23,12 +23,12 @@ class sim_node;
   endclass
 
   data d;
-  int dir_map[4]; //east, south, west, north
+  int dir_map[5]; //north, south, east, west, local
   int b_count, this_x, this_y, this_i, capture_node[], capture_if[];
   int address[], flit_count[];
   bit req_table[5][3][5]; // buffer, state, req_line
   int req_s[5];
-  fifo buffer[]; //local, east, south, west, north 
+  fifo buffer[]; //north, south, east, west, local
   out_data od[];
   in_data id[];
 
@@ -68,31 +68,31 @@ class sim_node;
 
     if(`TOP(y) && `LEFT(x)) begin
       b_count = 3;
-      dir_map = '{0, 1, -1, -1};
+      dir_map = '{-1, 0, 1, -1, 2};
     end else if (`TOP(y) && `RIGHT(x)) begin
       b_count = 3;
-      dir_map = '{-1, 0, 1, -1};
+      dir_map = '{-1, 0, -1, 1, 2};
     end else if (`BOTTOM(y) && `LEFT(x)) begin
       b_count = 3;
-      dir_map = '{0, -1, -1, 1};
+      dir_map = '{0, -1, 1, -1, 2};
     end else if (`BOTTOM(y) && `RIGHT(x)) begin
       b_count = 3;
-      dir_map = '{-1, -1, 0, 1};
+      dir_map = '{0, -1, -1, 1, 2};
     end else if (`TOP(y)) begin
       b_count = 4;
-      dir_map = '{0, 1, 2, -1};
+      dir_map = '{-1, 0, 1, 2, 3};
     end else if (`BOTTOM(y)) begin
       b_count = 4;
-      dir_map = '{0, -1, 1, 2};
+      dir_map = '{0, -1, 1, 2, 3};
     end else if (`LEFT(x)) begin
       b_count = 4;
-      dir_map = '{0, 1, -1, 2};
+      dir_map = '{0, 1, 2, -1, 3};
     end else if (`RIGHT(x)) begin
       b_count = 4;
-      dir_map = '{-1, 0, 1, 2};
+      dir_map = '{0, 1, -1, 2, 3};
     end else begin
       b_count = 5;
-      dir_map = '{0, 1, 2, 3};
+      dir_map = '{0, 1, 2, 3, 4};
     end
 
     buffer = new[b_count];
@@ -120,46 +120,46 @@ class sim_node;
     end
 
     if(`TOP(y) && `LEFT(x)) begin
-      capture_node = '{n_east, n_south};
-      capture_if = '{`DIR_WEST, `DIR_NORTH};
+      capture_node = '{n_south, n_east};
+      capture_if = '{`DIR_NORTH, `DIR_WEST};
     end else if (`TOP(y) && `RIGHT(x)) begin
       capture_node = '{n_south, n_west};
       capture_if = '{`DIR_NORTH, `DIR_EAST};
     end else if (`BOTTOM(y) && `LEFT(x)) begin
-      capture_node = '{n_east, n_north};
-      capture_if = '{`DIR_WEST, `DIR_SOUTH};
+      capture_node = '{n_north, n_east};
+      capture_if = '{`DIR_SOUTH, `DIR_WEST};
     end else if (`BOTTOM(y) && `RIGHT(x)) begin
-      capture_node = '{n_west, n_north};
-      capture_if = '{`DIR_EAST, `DIR_SOUTH};
+      capture_node = '{n_north, n_west};
+      capture_if = '{`DIR_SOUTH, `DIR_EAST};
     end else if (`TOP(y)) begin
-      capture_node = '{n_east, n_south, n_west};
-      capture_if = '{`DIR_WEST, `DIR_NORTH, `DIR_EAST};
+      capture_node = '{n_south, n_east, n_west};
+      capture_if = '{`DIR_NORTH, `DIR_WEST, `DIR_EAST};
     end else if (`BOTTOM(y)) begin
-      capture_node = '{n_east, n_west, n_north};
-      capture_if = '{`DIR_WEST, `DIR_EAST, `DIR_SOUTH};
+      capture_node = '{n_north, n_east, n_west};
+      capture_if = '{`DIR_SOUTH, `DIR_WEST, `DIR_EAST};
     end else if (`LEFT(x)) begin
-      capture_node = '{n_east, n_south, n_north};
-      capture_if = '{`DIR_WEST, `DIR_NORTH, `DIR_SOUTH};
+      capture_node = '{n_north, n_south, n_east};
+      capture_if = '{`DIR_SOUTH, `DIR_NORTH, `DIR_WEST};
     end else if (`RIGHT(x)) begin
-      capture_node = '{n_south, n_west, n_north};
-      capture_if = '{`DIR_NORTH, `DIR_EAST, `DIR_SOUTH};
+      capture_node = '{n_north, n_south, n_west};
+      capture_if = '{`DIR_SOUTH, `DIR_NORTH, `DIR_EAST};
     end else begin
-      capture_node = '{n_east, n_south, n_west, n_north};
-      capture_if = '{`DIR_WEST, `DIR_NORTH, `DIR_EAST, `DIR_SOUTH};
+      capture_node = '{n_north, n_south, n_east, n_west};
+      capture_if = '{`DIR_SOUTH, `DIR_NORTH, `DIR_WEST, `DIR_EAST};
     end
   endfunction
 
   function capture();
     //$display("Node %d Capture: ", `INDEX(this_x, this_y));
     for(int i=0; i<b_count-1; i++) begin
-      int dm[] = d.nodes[capture_node[i]-1].dir_map;
+      int bid = d.nodes[capture_node[i]-1].get_buffer_id(capture_if[i]);
       //$display("\tInterface: %d", i);
       //$display("\t\tCN: %d", capture_node[i]);
       //$display("\t\tCI: %d", capture_if[i]);
       //$display("\t\tCDM: %d", dm[capture_if[i]]);
-      id[i+1].buffer_full = d.nodes[capture_node[i]-1].od[dm[capture_if[i]]].buffer_full;
-      id[i+1].receiving_data = d.nodes[capture_node[i]-1].od[dm[capture_if[i]]].sending_data;
-      id[i+1].data_in = d.nodes[capture_node[i]-1].od[dm[capture_if[i]]].data_out;
+      id[i].buffer_full = d.nodes[capture_node[i]-1].od[bid].buffer_full;
+      id[i].receiving_data = d.nodes[capture_node[i]-1].od[bid].sending_data;
+      id[i].data_in = d.nodes[capture_node[i]-1].od[bid].data_out;
     end
   endfunction
 
@@ -171,7 +171,7 @@ class sim_node;
 
     $display("Node %0d Inputs:", this_i+1);
     for(int i=0; i<b_count; i++) begin
-      $display("\tInterface %0d:", int_to_req(i));
+      $display("\tInterface %0d:", i);
       $display("\t\tBF: %b", id[i].buffer_full);
       $display("\t\tRD: %b", id[i].receiving_data);
       $display("\t\tDI: %h", id[i].data_in);
@@ -180,25 +180,27 @@ class sim_node;
     for(int i=0; i<b_count; i++) begin
       int req_from, req_to;
       req_to = -1;
-      req_from = int_to_req(i);
+      req_from = i;
 
       if(buffer[i].data_valid() && (address[i][3:0] > `GETY(this_i))) begin
-        req_to = `REQ_DIR_SOUTH;
+        req_to = get_buffer_id(`DIR_SOUTH);
       end else if(buffer[i].data_valid() && (address[i][3:0] < `GETY(this_i))) begin
-        req_to = `REQ_DIR_NORTH;
+        req_to = get_buffer_id(`DIR_NORTH);
       end else if(buffer[i].data_valid() && (address[i][3:0] == `GETY(this_i))) begin
         if(buffer[i].data_valid() && (address[i][7:4] > `GETX(this_i))) begin
-          req_to = `REQ_DIR_EAST;
+          req_to = get_buffer_id(`DIR_EAST);
         end else if(buffer[i].data_valid() && (address[i][7:4] < `GETX(this_i))) begin
-          req_to = `REQ_DIR_WEST;
+          req_to = get_buffer_id(`DIR_WEST);
         end else if(buffer[i].data_valid() && (address[i][7:4] == `GETX(this_i))) begin
-          req_to = `REQ_DIR_LOCAL;
+          req_to = get_buffer_id(`DIR_LOCAL);
         end
       end
+
+      assert(req_to!=req_from) else $display("Request from and to same interface!");
       
       if (req_to != -1) begin
         $display("%0d Requests %0d", req_from, req_to);
-        if(id[req_to_int(req_to)].buffer_full) begin
+        if(id[req_to].buffer_full) begin
           $display("\tBut buffer is full");
         end
         requests[req_to][req_from] = 1;
@@ -245,7 +247,7 @@ class sim_node;
       is_sending[i] = 1'b0;
       data_out[i] = buffer[i].data_out();
 
-      if(grant[int_to_req(i)] > -1) begin
+      if(grant[i] > -1) begin
         is_sending[i] = 1'b1;
         d.next_nodes[this_i].buffer[i].pop();
       end
@@ -297,41 +299,17 @@ class sim_node;
     for(int i=0; i<b_count; i++) begin
       d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
       d.next_nodes[this_i].od[i].sending_data = is_sending[i];
-      d.next_nodes[this_i].od[i].data_out = is_sending[i] ? data_out[req_to_int(grant[int_to_req(i)])] : 0; //data_out[i];
+      d.next_nodes[this_i].od[i].data_out = is_sending[i] ? data_out[grant[i]] : 0; //data_out[i];
     end
   endfunction
 
   function int get_grant(bit reqs[5]);
-    for(int i = 0; i < 5; i ++) begin
-      if(reqs[i] == 1 && !id[req_to_int(i)].buffer_full) begin
+    for(int i = `DIR_LOCAL; i >= `DIR_NORTH; i --) begin
+      if(reqs[i] == 1 && !id[i].buffer_full) begin
         return i;
       end
     end
     return -1;
-  endfunction
-
-  function int req_to_int(int req);
-    int r;
-    case (req) 
-      `REQ_DIR_LOCAL: r = `DIR_LOCAL; 
-      `REQ_DIR_EAST:  r = `DIR_EAST; 
-      `REQ_DIR_SOUTH: r = `DIR_SOUTH; 
-      `REQ_DIR_WEST:  r = `DIR_WEST; 
-      `REQ_DIR_NORTH: r = `DIR_NORTH; 
-    endcase
-    return r+1;
-  endfunction
-
-  function int int_to_req(int i);
-    int r;
-    case (i-1) 
-      `DIR_LOCAL: r = `REQ_DIR_LOCAL; 
-      `DIR_EAST:  r = `REQ_DIR_EAST; 
-      `DIR_SOUTH: r = `REQ_DIR_SOUTH; 
-      `DIR_WEST:  r = `REQ_DIR_WEST; 
-      `DIR_NORTH: r = `REQ_DIR_NORTH; 
-    endcase
-    return r;
   endfunction
 
   function bit no_reqs(bit reqs[5]);
@@ -341,6 +319,10 @@ class sim_node;
       end
     end
     return 1;
+  endfunction
+
+  function int get_buffer_id(int dir);
+    return dir_map[dir];
   endfunction
 
   function reset();
