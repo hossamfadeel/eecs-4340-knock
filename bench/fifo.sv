@@ -39,6 +39,7 @@ class fifo;
     int temp;
     temp = data[read_index];
     valid[read_index] = 0;
+    data[read_index] = 0;
     read_index = inc(read_index);
     is_full = 0;
     return temp;
