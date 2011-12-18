@@ -172,12 +172,12 @@ class sim_node;
     bit requests[5][5];
     int grant[5] = '{-1, -1, -1, -1, -1};
 
-    $display("Node %0d Inputs:", this_i+1);
+    $display("%0d:: Node %0d Info:", $time, this_i+1);
     for(int i=0; i<b_count; i++) begin
       $display("\tInterface %0d:", i);
-      $display("\t\tBF: %b", id[i].buffer_full);
-      $display("\t\tRD: %b", id[i].receiving_data);
-      $display("\t\tDI: %h", id[i].data_in);
+      $display("\t\tBFI: %b", id[i].buffer_full);
+      $display("\t\tDV: %0b", buffer[i].data_valid());
+      $display("\t\tBD: %h", buffer[i].data_out());
     end
 
     for(int i=0; i<b_count; i++) begin
@@ -185,6 +185,7 @@ class sim_node;
       req_to = -1;
       req_from = i;
 
+      //$display("Address[%0d] = %0d", i, address[i]);
       if(buffer[i].data_valid() && (address[i][3:0] > `GETY(this_i))) begin
         req_to = get_buffer_id(`DIR_SOUTH);
       end else if(buffer[i].data_valid() && (address[i][3:0] < `GETY(this_i))) begin
@@ -195,6 +196,7 @@ class sim_node;
         end else if(buffer[i].data_valid() && (address[i][7:4] < `GETX(this_i))) begin
           req_to = get_buffer_id(`DIR_WEST);
         end else if(buffer[i].data_valid() && (address[i][7:4] == `GETX(this_i))) begin
+          $display("A: %0d", address[i]);
           req_to = get_buffer_id(`DIR_LOCAL);
         end
       end
@@ -214,6 +216,7 @@ class sim_node;
       if(no_reqs(req_table[i][0])) begin
         grant[i] = get_grant(requests[i]);
       end else begin
+        $display("Getting from RT");
         grant[i] = get_grant(req_table[i][0]);
       end
       
@@ -239,11 +242,11 @@ class sim_node;
       $display("Interface %0d Grants %0d", i, grant[i]);
     end
 
-    /*for(int i=0; i<5; i++) begin
+    for(int i=0; i<5; i++) begin
     for(int j=0; j<3; j++) begin
-      $display("[%0d][%0d]: %b%b%b%b%b", i, j, req_table[i][j][0], req_table[i][j][1], req_table[i][j][2], req_table[i][j][3], req_table[i][j][4]);
+      $display("[%0d][%0d]: %b%b%b%b%b", i, j, d.next_nodes[this_i].req_table[i][j][0], d.next_nodes[this_i].req_table[i][j][1], d.next_nodes[this_i].req_table[i][j][2], d.next_nodes[this_i].req_table[i][j][3], d.next_nodes[this_i].req_table[i][j][4]);
     end
-  end*/
+  end
 
     //$display("Node %0d Outputs:", this_i+1);
     for(int i=0; i<b_count; i++) begin
@@ -252,8 +255,11 @@ class sim_node;
 			next_data_out[i] = buffer[i].next_data_out();
 
       if(grant[i] > -1) begin
+        int temp;
         is_sending[i] = 1'b1;
-        d.next_nodes[this_i].buffer[i].pop();
+        temp = d.next_nodes[this_i].buffer[grant[i]].pop();
+        $display("Popping %0d from B%0d", temp,  grant[i]);
+        $display("B%0d next = %0d", grant[i], d.next_nodes[this_i].buffer[grant[i]].data_out());
       end
       //$display("\tInterface %0d:", i);
       //$display("\t\tSD: %b", is_sending[i]);
@@ -263,25 +269,24 @@ class sim_node;
     for(int i=0; i<b_count; i++) begin
       if(flit_count[i] == 0) begin
         if(!d.next_nodes[this_i].buffer[i].next_data_valid() && id[i].receiving_data) begin
+          $display("Address%0d from DI", i);
           d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8]+1;
           d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
         end else if(d.next_nodes[this_i].buffer[i].next_data_valid()) begin
+          $display("Address%0d from BUF = %0d", i, data_out[i][7:0]);
           d.next_nodes[this_i].flit_count[i] = next_data_out[i][15:8]+1;
           d.next_nodes[this_i].address[i] = next_data_out[i][7:0];
         end
       end else if (flit_count[i] == 1) begin
         if(is_sending[i]) begin
           if(d.next_nodes[this_i].buffer[i].next_data_valid()) begin
-            $display("Interface %0d Here1", i);
             d.next_nodes[this_i].flit_count[i] = next_data_out[i][15:8]+1;
             d.next_nodes[this_i].address[i] = next_data_out[i][7:0];
           end else begin
             if(id[i].receiving_data) begin
-              $display("Interface %0d Here2", i);
               d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8]+1;
               d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
             end else begin
-              $display("Interface %0d Here3", i);
               d.next_nodes[this_i].flit_count[i] --;
               d.next_nodes[this_i].address[i] = address[i];
             end
@@ -309,7 +314,7 @@ class sim_node;
 
   function int get_grant(bit reqs[5]);
     for(int i = `DIR_LOCAL; i >= `DIR_NORTH; i --) begin
-      if(reqs[i] == 1 && !id[i].buffer_full) begin
+      if(reqs[i] == 1 && (id[i].buffer_full == 0)) begin
         return i;
       end
     end

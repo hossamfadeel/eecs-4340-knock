@@ -18,9 +18,9 @@ module top;
           )
           n ( .clk(clk_if.dut),
               .reset(rst_if.dut),
-              .local_node(local_if[ 1]),
-              .node_0(local_if[ 2]),
-              .node_1(local_if[ 3])
+              .local_node(local_if[ 3]),
+              .node_0(local_if[ 1]),
+              .node_1(local_if[ 2])
             );
   `endif
   `ifdef NODE_TYPE4
@@ -32,10 +32,10 @@ module top;
           )
           n ( .clk(clk_if.dut),
               .reset(rst_if.dut),
-              .local_node(local_if[ 1]),
-              .node_0(local_if[ 2]),
-              .node_1(local_if[ 3]),
-              .node_2(local_if[ 4])
+              .local_node(local_if[ 4]),
+              .node_0(local_if[ 1]),
+              .node_1(local_if[ 2]),
+              .node_2(local_if[ 3])
             );
   `endif
   `ifdef NODE_TYPE5
@@ -47,11 +47,11 @@ module top;
           )
           n ( .clk(clk_if.dut),
               .reset(rst_if.dut),
-              .local_node(local_if[ 1]),
-              .node_0(local_if[ 2]),
-              .node_1(local_if[ 3]),
-              .node_2(local_if[ 4]),
-              .node_3(local_if[ 5])
+              .local_node(local_if[ 5]),
+              .node_0(local_if[ 1]),
+              .node_1(local_if[ 2]),
+              .node_2(local_if[ 3]),
+              .node_3(local_if[ 4])
             );
   `endif
   `ifdef NOC_MODE
