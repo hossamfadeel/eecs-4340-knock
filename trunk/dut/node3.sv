@@ -41,13 +41,13 @@ module node3 #(
       fifo_kev buffer ( .clk(clk.clk),
                     .rst(reset.reset),
                     .push_req(receiving_data[i]),
-                    .pop_req(sending_data[i]),
+                    .pop_req(pop_v[i]),
                     .data_in(data_in[i]),
                     .full(buffer_full_out[i]),
                     .data_valid(data_valid[i]),
                     .data_out(buffer_out[i]),
-										.next_data_out(next_buffer_out[i]),
-										.next_data_valid(next_data_valid[i])
+                    .next_data_out(next_buffer_out[i]),
+                    .next_data_valid(next_data_valid[i])
                   );
 
       address_counter addr (  .clk(clk.clk),
@@ -61,28 +61,24 @@ module node3 #(
                               .receiving_data(receiving_data[i]),
                               .flit_address_o(packet_addr[i])
 			   );
-
-      //assign data_out[i][15:8] = 8'h00;
-      //assign data_out[i][7:0] = packet_addr[i];
     end
 
 	if (`TOP(NODE_Y) & `RIGHT(NODE_X)) begin
-		controller3_ne ne(.clk(clk.clk),
-                        .rst(reset.reset),
-						.packet_addr,
-						.local_addr,
-						.packet_valid(data_valid),
-						.buffer_full_in,
+		controller3_ne ne(
+                  .clk(clk.clk),
+                  .rst(reset.reset),
+                  .packet_addr,
+                  .local_addr,
+                  .packet_valid(data_valid),
+                  .buffer_full_in,
+                  .grant_1,
+                  .grant_2,
+                  .grant_v,
+                  .pop_v
+                );
 
-						.grant_1,
-						.grant_2,
-						.grant_v,
-						.pop_v
-						);
-
-		assign data_out[0] = sending_data[0] ? buffer_out[0] : 16'b0;
-
-		MUX_2 mux_e(
+		assign data_out[0] = grant_v[0] ? buffer_out[2] : 16'b0;
+		mux2_1 mux_e(
 				.data0(buffer_out[0]),
 				.data1(buffer_out[2]),
 				.select0(grant_1[0]),
@@ -90,7 +86,7 @@ module node3 #(
 				.data_o(data_out[1])
 		);
 
-		MUX_2 mux_l(
+		mux2_1 mux_l(
 				.data0(buffer_out[0]),
 				.data1(buffer_out[1]),
 				.select0(grant_2[0]),

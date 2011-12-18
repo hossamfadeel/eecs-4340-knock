@@ -242,12 +242,13 @@ class sim_node;
       $display("Interface %0d Grants %0d", i, grant[i]);
     end
 
+    /*
     for(int i=0; i<5; i++) begin
     for(int j=0; j<3; j++) begin
       $display("[%0d][%0d]: %b%b%b%b%b", i, j, d.next_nodes[this_i].req_table[i][j][0], d.next_nodes[this_i].req_table[i][j][1], d.next_nodes[this_i].req_table[i][j][2], d.next_nodes[this_i].req_table[i][j][3], d.next_nodes[this_i].req_table[i][j][4]);
     end
   end
-
+*/
     //$display("Node %0d Outputs:", this_i+1);
     for(int i=0; i<b_count; i++) begin
       is_sending[i] = 1'b0;
@@ -313,7 +314,7 @@ class sim_node;
   endfunction
 
   function int get_grant(bit reqs[5]);
-    for(int i = `DIR_LOCAL; i >= `DIR_NORTH; i --) begin
+    for(int i = `DIR_NORTH; i < `DIR_LOCAL; i ++) begin
       if(reqs[i] == 1 && (id[i].buffer_full == 0)) begin
         return i;
       end
