@@ -70,7 +70,7 @@ module arbiter2
 					tail_en=1;
 					tail_i=1'b1;
 					req_en=1'b1;
-					req_i[0]=2'b10;
+					req_i=2'b10;
 				end
 				default:	begin
 					grant_v_o=0;
@@ -105,7 +105,7 @@ module arbiter2
 					tail_en=1;
 				end
 
-				case(req_o[0])
+				case(req_o)
 				1:	begin
 					grant=2'b01;
 				end
