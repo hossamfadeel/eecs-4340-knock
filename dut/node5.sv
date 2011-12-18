@@ -32,8 +32,7 @@ module node5 #(
   wire [4:0] grant_v;
   wire [4:0] pop_v;
 
-  assign local_addr[7:4] = NODE_Y[3:0];
-  assign local_addr[3:0] = NODE_X[3:0];
+  assign sending_data = {NODE_X[3:0], NODE_Y[3:0]};
 
   converter c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
   converter c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
