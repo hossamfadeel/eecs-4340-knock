@@ -23,6 +23,7 @@ logic x_equal;
 
 always_comb begin
 
+
 	if(packet_addr_y_i == local_addr_y_i) begin
 		y_equal = 1'b1;
 	end
