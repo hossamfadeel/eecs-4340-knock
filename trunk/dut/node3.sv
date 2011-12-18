@@ -20,7 +20,7 @@ module node3 #(
   wire [15:0] buffer_out[NUM_INTERFACES-1:0];
   wire [7:0] packet_addr[NUM_INTERFACES-1:0];
   wire [NUM_INTERFACES-1:0] data_valid;
-  wire [7:0] local_addr = {NODE_Y[3:0], NODE_X[3:0]};
+  wire [7:0] local_addr = {NODE_X[3:0], NODE_Y[3:0]};
 
   wire [1:0] grant_1;
   wire [1:0] grant_2;
