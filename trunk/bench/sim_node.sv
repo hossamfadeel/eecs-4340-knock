@@ -4,11 +4,13 @@ class sim_node;
   class out_data;
     bit buffer_full, sending_data;
     int data_out;
+		int next_data_out;
     
     function copy(out_data base);
       buffer_full = base.buffer_full;
       sending_data = base.sending_data;
       data_out = base.data_out;
+			next_data_out = base.next_data_out;
     endfunction
   endclass
   class in_data;
@@ -166,6 +168,7 @@ class sim_node;
   function process();
     bit is_sending[] = new[b_count];
     int data_out[] = new[b_count];    
+		int next_data_out[] = new[b_count];
     bit requests[5][5];
     int grant[5] = '{-1, -1, -1, -1, -1};
 
@@ -246,6 +249,7 @@ class sim_node;
     for(int i=0; i<b_count; i++) begin
       is_sending[i] = 1'b0;
       data_out[i] = buffer[i].data_out();
+			next_data_out[i] = buffer[i].next_data_out();
 
       if(grant[i] > -1) begin
         is_sending[i] = 1'b1;
@@ -258,23 +262,23 @@ class sim_node;
 
     for(int i=0; i<b_count; i++) begin
       if(flit_count[i] == 0) begin
-        if(!d.next_nodes[this_i].buffer[i].data_valid() && id[i].receiving_data) begin
-          d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8];
+        if(!d.next_nodes[this_i].buffer[i].next_data_valid() && id[i].receiving_data) begin
+          d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8]+1;
           d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
-        end else if(d.next_nodes[this_i].buffer[i].data_valid()) begin
-          d.next_nodes[this_i].flit_count[i] = data_out[i][15:8];
-          d.next_nodes[this_i].address[i] = data_out[i][7:0];
+        end else if(d.next_nodes[this_i].buffer[i].next_data_valid()) begin
+          d.next_nodes[this_i].flit_count[i] = next_data_out[i][15:8]+1;
+          d.next_nodes[this_i].address[i] = next_data_out[i][7:0];
         end
       end else if (flit_count[i] == 1) begin
         if(is_sending[i]) begin
-          if(d.next_nodes[this_i].buffer[i].data_valid()) begin
+          if(d.next_nodes[this_i].buffer[i].next_data_valid()) begin
             $display("Interface %0d Here1", i);
-            d.next_nodes[this_i].flit_count[i] = data_out[i][15:8];
-            d.next_nodes[this_i].address[i] = data_out[i][7:0];
+            d.next_nodes[this_i].flit_count[i] = next_data_out[i][15:8]+1;
+            d.next_nodes[this_i].address[i] = next_data_out[i][7:0];
           end else begin
             if(id[i].receiving_data) begin
               $display("Interface %0d Here2", i);
-              d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8];
+              d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8]+1;
               d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
             end else begin
               $display("Interface %0d Here3", i);
