@@ -48,19 +48,19 @@ module address_counter#(parameter ADD_WIDTH = 8)
     //LOAD FUNCTION
     if(current_count == 0) begin
       if(receiving_data) begin
-        next_count = interface_flit_length;
+        next_count = interface_flit_length+1;
         flit_address = interface_flit_address;
         count_enable = 1'b1;
         is_address =1'b1;
       end
     end else if(current_count == 1) begin
       if(buffer_pop && buffer_data_valid) begin //buffer has the next flit head
-        next_count = buffer_flit_length;
+        next_count = buffer_flit_length+1;
         flit_address = buffer_flit_address;
         count_enable = 1'b1;
         is_address =1'b1;
       end else if(buffer_pop && receiving_data) begin //buffer has last data flit and new flip head is coming in from interface
-        next_count = interface_flit_length;
+        next_count = interface_flit_length+1;
         flit_address = interface_flit_address;
         count_enable = 1'b1;
         is_address =1'b1;

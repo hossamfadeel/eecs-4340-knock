@@ -60,7 +60,15 @@ class fifo;
     return data[read_index];
   endfunction
 
+	function int next_data_out();
+    return data[read_index+1];
+  endfunction
+
   function int data_valid();
     return valid[read_index];
+  endfunction
+
+  function int next_data_valid();
+    return valid[read_index+1];
   endfunction
 endclass
