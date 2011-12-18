@@ -74,9 +74,11 @@ class node_transaction extends transaction;
 
   function void action();
     `ifdef NOC_MODE
-      e.d.nodes[node_index].id[0].buffer_full = buffer_full;
-      e.d.nodes[node_index].id[0].receiving_data = sending;
-      e.d.nodes[node_index].id[0].data_in = data;
+      int bid = e.d.nodes[node_index].get_buffer_id(`DIR_LOCAL);
+
+      e.d.nodes[node_index].id[bid].buffer_full = buffer_full;
+      e.d.nodes[node_index].id[bid].receiving_data = sending;
+      e.d.nodes[node_index].id[bid].data_in = data;
       e.d.nodes[node_index].capture();
     `else
       e.d.nodes[0].id[node_index].buffer_full = buffer_full;
