@@ -43,9 +43,9 @@ logic [WIDTH-1:0] head_wrdata;
 
 
 always_comb begin
-	head_push = (push_req & head_empty ) || ( push_req & pop_req && fifo_empty);
-	fifo_push = push_req & !head_push;
-	head_wrdata = (head_push)? data_in : next_data_out;
+	head_push = (push_req & head_empty) || (push_req & pop_req);	
+	fifo_push = push_req & !full;
+	head_wrdata = ((push_req & head_empty))? data_in : next_data_out;
 	
 end
 
