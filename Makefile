@@ -5,7 +5,7 @@ NODE_Y ?= 0
 
 NOC_SIZE_M1 = $(shell echo $(NOC_SIZE)-1 | bc)
 
-GENDUT = dut/converter.sv dut/address_counter.sv dw/*.v general/*.sv 
+GENDUT = dut/converter_in.sv dut/converter_out.sv dut/address_counter.sv dw/*.v general/*.sv 
 INTERFACES = interfaces/*.sv
 BENCH = bench/fifo.sv bench/sim_node.sv bench/data.sv bench/transaction.sv bench/reset_transaction.sv bench/node_transaction.sv bench/configuration.sv bench/tracker.sv bench/environment.sv bench/bench.sv 
 

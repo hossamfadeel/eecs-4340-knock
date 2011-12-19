@@ -35,11 +35,11 @@ module node5 #(
   wire [4:0] grant_v;
   wire [4:0] pop_v;
 
-  converter c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
-  converter c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
-  converter c2 (node_2, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
-  converter c3 (node_3, buffer_full_out[3], sending_data[3], data_out[3], buffer_full_in[3], receiving_data[3], data_in[3]);
-  converter c4 (local_node, buffer_full_out[4], sending_data[4], data_out[4], buffer_full_in[4], receiving_data[4], data_in[4]);
+  converter_in c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+  converter_out c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
+  converter_in c2 (node_2, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
+  converter_out c3 (node_3, buffer_full_out[3], sending_data[3], data_out[3], buffer_full_in[3], receiving_data[3], data_in[3]);
+  converter_out c4 (local_node, buffer_full_out[4], sending_data[4], data_out[4], buffer_full_in[4], receiving_data[4], data_in[4]);
 
   assign sending_data = grant_v;
 
