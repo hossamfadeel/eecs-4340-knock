@@ -140,7 +140,7 @@ module arbiter4
 				end
 				12:	begin
 					grant_v_o=1;
-					grant=4'b0010;
+					grant=4'b0100;
 					tail_en=1;
 					tail_i=2'b01;
 					tail_i=tail_o+shift;
@@ -210,20 +210,35 @@ module arbiter4
 					if (tail_o==3) begin
 						req_i[0]=req_o[1] & ~grant;
 						req_i[1]=req_o[2] & ~grant;
-						if (request_c==0 | request_c == req_o[2]) begin
-							req_en=3'b011;
-							tail_i=2'b10;
-							tail_en=1;
+						if (request_c==0 | request_c == req_i[0] |  request_c == req_i[1]) begin
+							if (req_i[0] == req_i[1]) begin
+								req_en=3'b001;
+								tail_i=2'b01;
+								tail_en=1;
+							end
+							else begin
+								req_en=3'b011;
+								tail_i=2'b10;
+								tail_en=1;
+							end
 						end
 						else begin
-							tail_en=0;
-							req_en=3'b111;
-							req_i[2]=request_c;
+							if (req_i[0] == req_i[1]) begin
+								req_en=3'b011;
+								tail_i=2'b10;
+								tail_en=1;
+								req_i[1]=request_c;
+							end
+							else begin
+								req_en=3'b111;
+								req_i[2]=request_c;
+								tail_en=0;
+							end
 						end
 					end
 					else if (tail_o==2) begin
 						req_i[0]=req_o[1] & ~grant;
-						if (request_c==0 | request_c == req_o[1]) begin
+						if (request_c==0 | request_c == req_i[0]) begin
 							req_en=3'b001;
 							tail_i=2'b01;
 							tail_en=1;
@@ -278,7 +293,7 @@ module arbiter4
 						req_m=4'b1010;
 					end
 					12:	begin
-						grant=4'b0010;
+						grant=4'b0100;
 						req_m=4'b1000;
 					end
 					13:	begin
@@ -303,17 +318,33 @@ module arbiter4
 				//tail_o cannot be 3 or 0 in this case
 					if (tail_o==2) begin
 						req_i[0]=req_m;
-						req_i[1]=req_o[1] & (~grant);
+						req_i[1]=req_o[1] & (~grant) & (~req_m);
 						req_i[2]=request_c & (~req_m);
-                        if (req_i[2] > 0) begin
-						  tail_en=1;
-						  tail_i=2'b11;
-						  req_en=3'b111;
+                        if (req_i[2] > 0 & req_i[1] > 0) begin
+						  	if (req_i[2] != req_i[1]) begin
+							  tail_en=1;
+							  tail_i=2'b11;
+							  req_en=3'b111;
+							end
+							else begin
+                          	  tail_en=0;
+                          	  req_en=3'b011;
+							end
                         end
-                        else begin
+                        else if (req_i[2] == 0 & req_i[1] > 0) begin
                           tail_en=0;
                           req_en=3'b011;
                         end
+                        else if (req_i[2] > 0 & req_i[1] == 0) begin
+                          tail_en=0;
+                          req_en=3'b011;
+						  req_i[1]=req_i[2];
+                        end
+						else begin
+						  tail_en=1;
+						  tail_i=2'b01;
+						  req_en=3'b001;
+						end
 					end
 					else begin
 						req_i[0]=req_m;
