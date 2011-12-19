@@ -84,7 +84,23 @@ module arbiter2
 
 			else begin			
 				grant_v_o=1;
-				request_c=request&(!grant);
+
+				case(req_o)
+				1:	begin
+					grant=2'b01;
+				end
+				2:	begin
+					grant=2'b10;
+				end
+				3:	begin
+					grant=2'b01;
+				end
+				default:	begin
+					grant=2'b00;
+				end	
+				endcase			
+
+                                request_c = request & (!grant);
 
 				if (req_o==1 | req_o==2) begin
 					if (request_c==0) begin
@@ -104,21 +120,6 @@ module arbiter2
 					tail_i=1'b1;
 					tail_en=1;
 				end
-
-				case(req_o)
-				1:	begin
-					grant=2'b01;
-				end
-				2:	begin
-					grant=2'b10;
-				end
-				3:	begin
-					grant=2'b01;
-				end
-				default:	begin
-					grant=2'b00;
-				end	
-				endcase			
 			end
 		end
 		else begin

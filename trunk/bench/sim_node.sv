@@ -173,6 +173,7 @@ class sim_node;
 
   function process();
     bit is_sending[] = new[b_count];
+    int popping_int[] = new[b_count];
     int data_out[] = new[b_count];    
 		int next_data_out[] = new[b_count];
     bit requests[5][5];
@@ -191,6 +192,7 @@ class sim_node;
       $display("\tInterface %0d:", i);
       $display("\t\tDV: %0b", buffer[i].data_valid());
       $display("\t\tBD: %h", buffer[i].data_out());
+      $display("\t\tBF: %0b", buffer[i].full());
       $display("\t\tADDR: %h", address[i]);
       $display("\t\tFC: %h", flit_count[i]);
     end
@@ -226,43 +228,52 @@ class sim_node;
       end
     end
 
-    for(int i=0; i<5; i++) begin 
-      if(no_reqs(req_table[i][0])) begin
-        grant[i] = get_grant(requests[i]);
-      end else begin
-        grant[i] = get_grant(req_table[i][0]);
+    for(int i=0; i<b_count; i++) begin 
+      if(!id[i].buffer_full) begin
+        if(no_reqs(req_table[i][0])) begin
+          grant[i] = get_grant(requests[i]);
+        end else begin
+          grant[i] = get_grant(req_table[i][0]);
+        end
+      end 
+
+      if(grant[i] > -1) begin
+        requests[i][grant[i]] = 0;
+        for(int j=0; j<3; j++) begin
+          d.next_nodes[this_i].req_table[i][j][grant[i]] = 0;
+        end
+
+        if(no_reqs(d.next_nodes[this_i].req_table[i][0])) begin
+          if (d.next_nodes[this_i].req_s[i] != 0) begin
+            d.next_nodes[this_i].req_s[i]--;
+          end
+          for(int j=0; j<b_count-3;j++) begin
+            d.next_nodes[this_i].req_table[i][j] = d.next_nodes[this_i].req_table[i][j+1];
+          end
+        end
+
+        if (no_reqs(requests[i]) == 0) begin
+          d.next_nodes[this_i].req_table[i][d.next_nodes[this_i].req_s[i]] = requests[i];
+          d.next_nodes[this_i].req_s[i]++;
+        end
       end
       
-      requests[i][grant[i]] = 0;
-      for(int j=0; j<3; j++) begin
-        d.next_nodes[this_i].req_table[i][j][grant[i]] = 0;
-      end
-
-      if(no_reqs(d.next_nodes[this_i].req_table[i][0])) begin
-        if (d.next_nodes[this_i].req_s[i] != 0) begin
-          d.next_nodes[this_i].req_s[i]--;
-        end
-        for(int j=0; j<b_count-3;j++) begin
-          d.next_nodes[this_i].req_table[i][j] = d.next_nodes[this_i].req_table[i][j+1];
-        end
-      end
-
-      if (no_reqs(requests[i]) == 0) begin
-        d.next_nodes[this_i].req_table[i][d.next_nodes[this_i].req_s[i]] = requests[i];
-        d.next_nodes[this_i].req_s[i]++;
-      end
-
       $display("Interface %0d Grants %0d", i, grant[i]);
     end
 
-    /*
+    
     for(int i=0; i<5; i++) begin
     for(int j=0; j<3; j++) begin
       $display("[%0d][%0d]: %b%b%b%b%b", i, j, d.next_nodes[this_i].req_table[i][j][0], d.next_nodes[this_i].req_table[i][j][1], d.next_nodes[this_i].req_table[i][j][2], d.next_nodes[this_i].req_table[i][j][3], d.next_nodes[this_i].req_table[i][j][4]);
     end
   end
-*/
+
     //$display("Node %0d Outputs:", node_index);
+
+    for(int i=0; i<b_count; i++) begin
+      popping_int[i] = 0;
+    end
+
     for(int i=0; i<b_count; i++) begin
       is_sending[i] = 1'b0;
       data_out[i] = buffer[i].data_out();
@@ -272,6 +283,7 @@ class sim_node;
         int temp;
         is_sending[i] = 1'b1;
         temp = d.next_nodes[this_i].buffer[grant[i]].pop();
+        popping_int[grant[i]] = 1;
         $display("Popping %0d from B%0d", temp,  grant[i]);
       end
       //$display("\tInterface %0d:", i);
@@ -287,22 +299,21 @@ class sim_node;
     end
 
     for(int i=0; i<b_count; i++) begin
-      int popping_int = grant[i];
-      int sending_int = i;
-
       if(flit_count[i] == 0) begin
         if(id[i].receiving_data) begin
           $display("Address %0d from DI = %h", i, id[i].data_in[7:0]);
           d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8]+1;
           d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
+        end else begin
+          d.next_nodes[this_i].flit_count[i] = 0;
         end
       end else if (flit_count[i] == 1) begin
-        if(is_sending[i]) begin
-          if(d.next_nodes[this_i].buffer[popping_int].data_valid()) begin
-            int dout = d.next_nodes[this_i].buffer[popping_int].data_out();
-            $display("Address %0d from NDO = %h", popping_int, dout[7:0]);
-            d.next_nodes[this_i].flit_count[popping_int] = dout[15:8]+1;
-            d.next_nodes[this_i].address[popping_int] = dout[7:0];
+        if(popping_int[i] == 1) begin
+          if(d.next_nodes[this_i].buffer[i].data_valid()) begin
+            int dout = d.next_nodes[this_i].buffer[i].data_out();
+            $display("Address %0d from NDO = %h", i, dout[7:0]);
+            d.next_nodes[this_i].flit_count[i] = dout[15:8]+1;
+            d.next_nodes[this_i].address[i] = dout[7:0];
           end else begin
             if(id[i].receiving_data) begin
               $display("Address %0d from DI = %h", i, id[i].data_in[7:0]);
@@ -314,19 +325,17 @@ class sim_node;
               d.next_nodes[this_i].address[i] = address[i];
             end
           end
+        end else begin
+          d.next_nodes[this_i].flit_count[i] = flit_count[i];
+          d.next_nodes[this_i].address[i] = address[i];
         end
       end else if (is_sending[i]) begin
         d.next_nodes[this_i].flit_count[i] --;
         d.next_nodes[this_i].address[i] = address[i];
+      end else begin
+        d.next_nodes[this_i].flit_count[i] = flit_count[i];
+        d.next_nodes[this_i].address[i] = address[i];
       end
-      
-      //$display("Address for Interface %0d: %h", i, address[i]);
-      //$display("Packets Remaining for Interface %0d: %0d", i, d.next_nodes[this_i].flit_count[i]);
-
-    /*  if(id[i].receiving_data) begin
-        $display("Pushing %h onto B%0d", id[i].data_in, i);
-        d.next_nodes[this_i].buffer[i].push(id[i].data_in);
-      end*/
     end
 
     for(int i=0; i<b_count; i++) begin
@@ -337,8 +346,8 @@ class sim_node;
   endfunction
 
   function int get_grant(bit reqs[5]);
-    for(int i = `DIR_NORTH; i < `DIR_LOCAL; i ++) begin
-      if(reqs[i] == 1 && (id[i].buffer_full == 0)) begin
+    for(int i = 0; i < 5; i ++) begin
+      if(reqs[i] == 1) begin
         return i;
       end
     end

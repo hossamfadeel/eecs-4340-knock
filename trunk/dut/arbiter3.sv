@@ -120,9 +120,24 @@ module arbiter3
 			else begin			
 				shift=(req_o[0]==1|req_o[0]==2|req_o[0]==4) ? 1 : 0;
 				grant_v_o=1;
-				request_c=request & (!grant);
 				
 				if (shift) begin
+					case(req_o[0])
+					1:	begin
+						grant=3'b001;
+					end
+					2:	begin
+						grant=3'b010;
+					end
+					4:	begin
+						grant=3'b100;
+					end
+					default:	begin
+						grant=3'b000;
+					end	
+					endcase			
+
+				request_c=request & (!grant);
 
 				//tail_o cannot be 0 in this case
 					if (tail_o==2) begin
@@ -151,31 +166,12 @@ module arbiter3
 						end
 					end
 
-					case(req_o[0])
-					1:	begin
-						grant=3'b001;
-					end
-					2:	begin
-						grant=3'b010;
-					end
-					4:	begin
-						grant=3'b100;
-					end
-					default:	begin
-						grant=3'b000;
-					end	
-					endcase			
 				
 				end
 				else begin
 					tail_en=1;
 				//tail_o cannot be 2 or 0 in this case
 
-					req_i[0]=req_m;
-					req_i[1]=request_c & (!req_m);
-					tail_en=1;
-					tail_i=2'b10;
-					req_en=2'b11;
 
 					case(req_o[0])
 					3:	begin
@@ -199,6 +195,13 @@ module arbiter3
 						req_m=3'b000;
 					end
 					endcase
+
+				        request_c=request & (!grant);
+					req_i[0]=req_m;
+					req_i[1]=request_c & (!req_m);
+					tail_en=1;
+					tail_i=2'b10;
+					req_en=2'b11;
 				end				
 			end
 		end

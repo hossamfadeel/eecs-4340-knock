@@ -71,6 +71,7 @@ bench_out: defines.sv top.sv $(INTERFACES) $(DUT) $(BENCH)
 	$(VCS) $^ $(DEFINES) -o $@
 	./$@ > out.txt
 	vim out.txt
+	tail -n 20 out.txt
 
 dut_out: defines.sv top.sv $(INTERFACES) $(DUT)
 	$(VCS) $^ $(DEFINES) +define+DUT_MODE -o $@
