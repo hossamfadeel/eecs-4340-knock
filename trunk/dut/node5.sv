@@ -46,7 +46,7 @@ module node5 #(
       fifo buffer ( .clk(clk.clk),
                     .rst(reset.reset),
                     .push_req(receiving_data[i]),
-                    .pop_req(sending_data[i]),
+                    .pop_req(pop_v[i]),
                     .data_in(data_in[i]),
                     .full(buffer_full_out[i]),
                     .data_valid(data_valid[i]),
@@ -60,7 +60,7 @@ module node5 #(
                               .buffer_flit_length(buffer_out[i][15:8]),
                               .buffer_flit_address(buffer_out[i][7:0]),       
                               .buffer_data_valid(data_valid[i]),
-                              .buffer_pop(sending_data[i]),
+                              .buffer_pop(pop_v[i]),
                               .receiving_data(receiving_data[i]),
                               .flit_address_o(packet_addr[i])
 			   );
