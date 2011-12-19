@@ -69,7 +69,8 @@ DEFINES += +define+NOC_SIZE=$(NOC_SIZE) +define+PARAMS=$(DPARAMS)
 
 bench_out: defines.sv top.sv $(INTERFACES) $(DUT) $(BENCH)
 	$(VCS) $^ $(DEFINES) -o $@
-	./$@
+	./$@ > out.txt
+	vim out.txt
 
 dut_out: defines.sv top.sv $(INTERFACES) $(DUT)
 	$(VCS) $^ $(DEFINES) +define+DUT_MODE -o $@

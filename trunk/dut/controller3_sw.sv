@@ -26,7 +26,7 @@ module controller3_sw
 	//input
 		.clk, .rst, .request(request[1]), .buffer_full_i(buffer_full_in[1]),
 	//output
-		.grant(grant_1), .grant_v_o(grant_v[2])
+		.grant(grant_1), .grant_v_o(grant_v[1])
 	);
 	
 	arbiter2 arbiter_l(

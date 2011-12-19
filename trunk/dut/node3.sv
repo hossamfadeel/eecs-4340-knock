@@ -33,7 +33,7 @@ module node3 #(
   converter c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
   converter c2 (local_node, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
 
-  assign sending_data = {grant_v[2], grant_v[1], grant_v[0]};
+  assign sending_data = grant_v;
 
   generate
     for(genvar i = 0; i <= NUM_INTERFACES-1; i = i + 1) begin
@@ -98,17 +98,17 @@ module node3 #(
 
     else if (`TOP(NODE_Y) & `LEFT(NODE_X)) begin
 		controller3_nw nw(.clk(clk.clk),
-				        .rst(reset.reset),
-				  		.packet_addr,
-				  		.local_addr,
-						.packet_valid(data_valid),
-				  		.buffer_full_in,
-				  
-				  		.grant_1,
-				  		.grant_2,
-				  		.grant_v,
-						.pop_v
-  						); 
+                  .rst(reset.reset),
+                  .packet_addr,
+                  .local_addr,
+                  .packet_valid(data_valid),
+                  .buffer_full_in,
+                  
+                  .grant_1,
+                  .grant_2,
+                  .grant_v,
+                  .pop_v
+                ); 
 
 		assign data_out[0] = grant_v[0] ? buffer_out[2] : 16'b0;
 		mux2_1 mux_w(
@@ -130,21 +130,21 @@ module node3 #(
 
 	else if (`BOTTOM(NODE_Y) & `LEFT(NODE_X)) begin
 		controller3_sw sw(.clk(clk.clk),
-                        .rst(reset.reset),
-						.packet_addr,
-						.local_addr,
-						.packet_valid(data_valid),
-						.buffer_full_in,
+                  .rst(reset.reset),
+                  .packet_addr,
+                  .local_addr,
+                  .packet_valid(data_valid),
+                  .buffer_full_in,
+                  
+                  .grant_1,
+                  .grant_2,
+                  .grant_v,
+                  .pop_v
+                ); 
 
-						.grant_1,
-						.grant_2,
-						.grant_v,
-						.pop_v
-						); 
+		assign data_out[0] = grant_v[0] ? buffer_out[0] : 16'b0;
 
-		assign data_out[0] = sending_data[0] ? buffer_out[0] : 16'b0;
-
-		MUX_2 mux_e(
+		mux2_1 mux_e(
 				.data0(buffer_out[0]),
 				.data1(buffer_out[2]),
 				.select0(grant_1[0]),
@@ -152,7 +152,7 @@ module node3 #(
 				.data_o(data_out[1])
 		);
 
-		MUX_2 mux_l(
+		mux2_1 mux_l(
 				.data0(buffer_out[0]),
 				.data1(buffer_out[1]),
 				.select0(grant_2[0]),
@@ -164,20 +164,20 @@ module node3 #(
 
 	else begin
 		controller3_se se(.clk(clk.clk),
-                        .rst(reset.reset),
-						.packet_addr,
-						.local_addr,
-						.packet_valid(data_valid),
-						.buffer_full_in,
+                  .rst(reset.reset),
+                  .packet_addr,
+                  .local_addr,
+                  .packet_valid(data_valid),
+                  .buffer_full_in,
+                  
+                  .grant_1,
+                  .grant_2,
+                  .grant_v,
+                  .pop_v
+                );
 
-						.grant_1,
-						.grant_2,
-						.grant_v,
-						.pop_v
-						);
-		assign data_out[0] = sending_data[0] ? buffer_out[0] : 16'b0;
-
-		MUX_2 mux_w(
+		assign data_out[0] = grant_v[0] ? buffer_out[0] : 16'b0;
+		mux2_1 mux_w(
 				.data0(buffer_out[0]),
 				.data1(buffer_out[2]),
 				.select0(grant_1[0]),
@@ -185,7 +185,7 @@ module node3 #(
 				.data_o(data_out[1])
 		);
 
-		MUX_2 mux_l(
+		mux2_1 mux_l(
 				.data0(buffer_out[0]),
 				.data1(buffer_out[1]),
 				.select0(grant_2[0]),

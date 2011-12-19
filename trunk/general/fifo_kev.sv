@@ -45,7 +45,6 @@ always_comb begin
 //	head_push = (push_req & head_empty) || (push_req & pop_req) || (pop_req & !fifo_empty);	
 	fifo_push = (!pop_req & push_req & (!head_empty & !full)) | (pop_req & push_req & !fifo_empty);
 	head_wrdata = ((push_req & head_empty)|| (!head_empty & push_req & pop_req & fifo_empty))? data_in : next_data_out;
-	
 	if(head_empty) begin
 		if(push_req) begin
 			head_push = 1'b1;
