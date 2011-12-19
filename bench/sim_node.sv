@@ -69,9 +69,6 @@ class sim_node;
       this_i = 0;
     `endif
 
-    $display("this_x=%0d", this_x);
-    $display("this_y=%0d", this_y);
-    $display("node_index=%0d", node_index);
     d = _d;
 
     if(`TOP(y) && `LEFT(x)) begin
@@ -238,13 +235,22 @@ class sim_node;
       end 
 
       if(grant[i] > -1) begin
+        $display("Interface %0d Grants %0d", i, grant[i]);
+        $display("Pointer is at %0d", req_s[i]);
+
         requests[i][grant[i]] = 0;
         for(int j=0; j<3; j++) begin
+          if(d.next_nodes[this_i].req_table[i][j][grant[i]] == 1) begin
+            $display("Clearing %0d in Column %0d", grant[i], j);
+          end
           d.next_nodes[this_i].req_table[i][j][grant[i]] = 0;
         end
 
         if(no_reqs(d.next_nodes[this_i].req_table[i][0])) begin
+          $display("First column is empty");
+
           if (d.next_nodes[this_i].req_s[i] != 0) begin
+            $display("Decrementing pointer");
             d.next_nodes[this_i].req_s[i]--;
           end
           for(int j=0; j<b_count-3;j++) begin
@@ -254,21 +260,29 @@ class sim_node;
         end
 
         if (no_reqs(requests[i]) == 0) begin
-          d.next_nodes[this_i].req_table[i][d.next_nodes[this_i].req_s[i]] = requests[i];
-          d.next_nodes[this_i].req_s[i]++;
+          for(int k=0; k<5; k++) begin
+            if(d.next_nodes[this_i].req_table[i][d.next_nodes[this_i].req_s[i]-1][k] != requests[i][k]) begin
+              $display("Adding row");
+              d.next_nodes[this_i].req_table[i][d.next_nodes[this_i].req_s[i]] = requests[i];
+              d.next_nodes[this_i].req_s[i]++;
+              break;
+            end
+          end
         end
       end
-      
-      $display("Interface %0d Grants %0d", i, grant[i]);
+
+      for(int j=0; j<3; j++) begin
+        $display("[%0d][%0d]: %b%b%b%b%b", i, j, d.next_nodes[this_i].req_table[i][j][0], d.next_nodes[this_i].req_table[i][j][1], d.next_nodes[this_i].req_table[i][j][2], d.next_nodes[this_i].req_table[i][j][3], d.next_nodes[this_i].req_table[i][j][4]);
+      end
     end
 
-    
+   /* 
     for(int i=0; i<5; i++) begin
     for(int j=0; j<3; j++) begin
       $display("[%0d][%0d]: %b%b%b%b%b", i, j, d.next_nodes[this_i].req_table[i][j][0], d.next_nodes[this_i].req_table[i][j][1], d.next_nodes[this_i].req_table[i][j][2], d.next_nodes[this_i].req_table[i][j][3], d.next_nodes[this_i].req_table[i][j][4]);
     end
   end
-
+*/
     //$display("Node %0d Outputs:", node_index);
 
     for(int i=0; i<b_count; i++) begin

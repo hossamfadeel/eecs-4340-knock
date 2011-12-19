@@ -37,10 +37,10 @@ else ifeq ($(NODE_Y), $(NOC_SIZE_M1))
   endif
 else ifeq ($(NODE_X), 0)
   NODE_TYPE = 4
-  NODEDUT := dut/arbiter2.sv dut/controller4_edge_e.sv
+  NODEDUT := dut/arbiter2.sv dut/controller4_edge_w.sv
 else ifeq ($(NODE_X), $(NOC_SIZE_M1))
   NODE_TYPE = 4
-  NODEDUT := dut/arbiter2.sv dut/controller4_edge_w.sv
+  NODEDUT := dut/arbiter2.sv dut/controller4_edge_e.sv
 else
   NODE_TYPE = 5
   NODEDUT := dut/controller5.sv
@@ -69,9 +69,9 @@ DEFINES += +define+NOC_SIZE=$(NOC_SIZE) +define+PARAMS=$(DPARAMS)
 
 bench_out: defines.sv top.sv $(INTERFACES) $(DUT) $(BENCH)
 	$(VCS) $^ $(DEFINES) -o $@
-	./$@ > out.txt
-	vim out.txt
-	tail -n 20 out.txt
+	./$@ > results.txt
+	vim results.txt
+	tail -n 20 results.txt
 
 dut_out: defines.sv top.sv $(INTERFACES) $(DUT)
 	$(VCS) $^ $(DEFINES) +define+DUT_MODE -o $@
@@ -84,4 +84,4 @@ dccl_out: defines.sv dw/DW01_cmp2.v general/dccl.sv other/dccl_bench.sv other/dc
 .PHONY: clean
 clean:
 	-rm -rf csrc/ *.daidir/ DVEfiles/
-	-rm -f *.log bench_out dut_out dccl_out *.svf *.key *.vpd
+	-rm -f *.log bench_out dut_out dccl_out *.svf *.key *.vpd results.txt
