@@ -36,11 +36,21 @@ class environment;
     if(rst.reset) begin
       rst.action(); 
     end else begin
+      $display("***CAPTURING LOCAL***");
       for(int i=0; i<`INTERFACES; i=i+1) begin
         in_data[i].action();
       end
+      $display("***SENDING***");
       for(int i=0; i<`NODE_COUNT; i=i+1) begin
-        d.nodes[i].process();
+        d.nodes[i].send();
+      end
+      $display("***CAPTURING NON-LOCAL***");
+      for(int i=0; i<`NODE_COUNT; i=i+1) begin
+        d.nodes[i].capture();
+      end
+      $display("***RECEIVING***");
+      for(int i=0; i<`NODE_COUNT; i=i+1) begin
+        d.nodes[i].receive();
       end
     end
   endfunction
