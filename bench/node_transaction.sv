@@ -34,27 +34,12 @@ class node_transaction extends transaction;
     y <= e.cfg.node_addr_mask_y[node_index];
     y < `NOC_SIZE;
 
-    x != `GETX(from) ||  y != `GETY(from);
-    `NODE_Y == `GETY(from) -> y == `GETY(from);
-    `NODE_X == `GETX(from) -> y == `NODE_Y;
-    
-    from == -1 && x == `NODE_X -> y != `NODE_Y;
-    from > -1 && x == `GETX(from) -> y != `GETY(from);
-    from == -1 && y == `NODE_Y -> x != `NODE_X;
-    from > -1 && y == `GETY(from) -> x != `GETX(from);
-    //`TOP(`GETY(from)) && from != -1 -> x != `GETX(`SOUTH(`NODE_X, `NODE_Y));
-    `TOP(`GETY(from)) && from != -1 -> y != `GETY(`SOUTH(`NODE_X, `NODE_Y));
-    //`BOTTOM(`GETY(from)) && from != -1 -> x != `GETX(`NORTH(`NODE_X,`NODE_Y));
-    `BOTTOM(`GETY(from)) && from != -1 -> y != `GETY(`NORTH(`NODE_X, `NODE_Y));
-
-/*    from == -1 -> x == 1;
-    from == -1 -> y == 0;
-    from == 1 -> x == 0;
-    from == 1 -> y == 0;
-    from == -1 -> sending == 1;
-    from == 1 -> sending == 1;
-    from > 1 -> sending == 0;
-    */
+    from == -1 -> x != `NODE_X || y != `NODE_Y;
+    from > -1 -> x != `GETX(from) || y != `GETY(from);
+    from > -1 && from == `INDEX(`NODE_X-1, `NODE_Y)-1 -> y == `GETY(from) && x > `GETX(from);
+    from > -1 && from == `INDEX(`NODE_X+1, `NODE_Y)-1 -> y == `GETY(from) && x < `GETX(from) ;
+    from > -1 && from == `INDEX(`NODE_X, `NODE_Y+1)-1 -> y < `GETY(from);
+    from > -1 && from == `INDEX(`NODE_X, `NODE_Y-1)-1 -> y > `GETY(from);
   }
 
   function new(const ref environment e, int index, int from_index);
