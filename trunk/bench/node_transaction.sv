@@ -34,12 +34,17 @@ class node_transaction extends transaction;
     y <= e.cfg.node_addr_mask_y[node_index];
     y < `NOC_SIZE;
 
-    from == -1 -> x != `NODE_X || y != `NODE_Y;
-    from > -1 -> x != `GETX(from) || y != `GETY(from);
-    from > -1 && from == `INDEX(`NODE_X-1, `NODE_Y)-1 -> y == `GETY(from) && x > `GETX(from);
-    from > -1 && from == `INDEX(`NODE_X+1, `NODE_Y)-1 -> y == `GETY(from) && x < `GETX(from) ;
-    from > -1 && from == `INDEX(`NODE_X, `NODE_Y+1)-1 -> y < `GETY(from);
-    from > -1 && from == `INDEX(`NODE_X, `NODE_Y-1)-1 -> y > `GETY(from);
+
+    `ifdef NOC_MODE
+      x != `GETX(node_index) || y != `GETY(node_index);
+    `else
+      from == -1 -> x != `NODE_X || y != `NODE_Y;
+      from > -1 -> x != `GETX(from) || y != `GETY(from);
+      from > -1 && from == `INDEX(`NODE_X-1, `NODE_Y)-1 -> y == `GETY(from) && x > `GETX(from);
+      from > -1 && from == `INDEX(`NODE_X+1, `NODE_Y)-1 -> y == `GETY(from) && x < `GETX(from) ;
+      from > -1 && from == `INDEX(`NODE_X, `NODE_Y+1)-1 -> y < `GETY(from);
+      from > -1 && from == `INDEX(`NODE_X, `NODE_Y-1)-1 -> y > `GETY(from);
+    `endif
   }
 
   function new(const ref environment e, int index, int from_index);

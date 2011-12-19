@@ -2,8 +2,6 @@ NOC_MODE ?= 0
 NOC_SIZE ?= 4 
 NODE_X ?= 0
 NODE_Y ?= 0
-PARAMS ?= bench/params$(NODE_TYPE).cfg
-DPARAMS = \"$(PARAMS)\"
 
 NOC_SIZE_M1 = $(shell echo $(NOC_SIZE)-1 | bc)
 
@@ -56,16 +54,18 @@ endif
 
 
 ifeq ($(NOC_MODE), 1)
+  PARAMS ?= bench/params0.cfg
+  DPARAMS = \"$(PARAMS)\"
   DUT = $(GENDUT) dut/arbiter*.sv dut/controller*.sv dut/node*.sv dut/noc.sv
   DEFINES = +define+NOC_MODE
 else
+  PARAMS ?= bench/params$(NODE_TYPE).cfg
+  DPARAMS = \"$(PARAMS)\"
   DUT = $(GENDUT) $(NODEDUT) dut/node$(NODE_TYPE).sv
   DEFINES = +define+NODE_TYPE$(NODE_TYPE) +define+NODE_X=$(NODE_X) +define+NODE_Y=$(NODE_Y) 
 endif
 
 DEFINES += +define+NOC_SIZE=$(NOC_SIZE) +define+PARAMS=$(DPARAMS)
-
-
 
 bench_out: defines.sv top.sv $(INTERFACES) $(DUT) $(BENCH)
 	$(VCS) $^ $(DEFINES) -o $@

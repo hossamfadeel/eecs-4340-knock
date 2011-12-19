@@ -250,7 +250,7 @@ module arbiter4
 						end
 					end
 					else begin
-						if (request_c==0) begin
+						if (request_c==0 | request_c == req_o[0]) begin
 							req_en=3'b000;
 							tail_i=2'b00;
 							tail_en=1;
