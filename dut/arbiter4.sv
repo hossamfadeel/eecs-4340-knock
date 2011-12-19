@@ -223,7 +223,7 @@ module arbiter4
 					end
 					else if (tail_o==2) begin
 						req_i[0]=req_o[1] & ~grant;
-						if (request_c==0 | request_c == req_o[1].) begin
+						if (request_c==0 | request_c == req_o[1]) begin
 							req_en=3'b001;
 							tail_i=2'b01;
 							tail_en=1;
@@ -303,7 +303,7 @@ module arbiter4
 				//tail_o cannot be 3 or 0 in this case
 					if (tail_o==2) begin
 						req_i[0]=req_m;
-						req_i[1]=req_o[2];
+						req_i[1]=req_o[1] & (~grant);
 						req_i[2]=request_c & (~req_m);
                         if (req_i[2] > 0) begin
 						  tail_en=1;
