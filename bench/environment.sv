@@ -50,7 +50,7 @@ class environment;
 
     `ifdef NOC_MODE
       node_index = i-1;
-      output_index = 0;
+      output_index = d.nodes[node_index].get_buffer_id(`DIR_LOCAL);
     `else
       node_index = 0;
       output_index = i-1;
