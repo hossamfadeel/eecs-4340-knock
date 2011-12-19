@@ -38,7 +38,6 @@ module node3 #(
 
   generate
     for(genvar i = 0; i <= NUM_INTERFACES-1; i = i + 1) begin
- 
       fifo_kev buffer ( .clk(clk.clk),
                     .rst(reset.reset),
                     .push_req(receiving_data[i]),
