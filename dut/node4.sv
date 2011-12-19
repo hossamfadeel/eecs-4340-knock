@@ -21,7 +21,8 @@ module node4 #(
   wire [15:0] buffer_out[NUM_INTERFACES-1:0];
   wire [7:0] packet_addr[NUM_INTERFACES-1:0];
   wire [NUM_INTERFACES-1:0] data_valid;
-  wire [7:0] local_addr;
+
+  wire [7:0] local_addr = {NODE_X[3:0], NODE_Y[3:0]};
 
   wire [2:0] grant_0;
   wire [2:0] grant_1;
@@ -30,7 +31,7 @@ module node4 #(
   wire [3:0] grant_v;
   wire [3:0] pop_v;
 
-  assign sending_data = {NODE_X[3:0], NODE_Y[3:0]};
+  assign sending_data = grant_v;
 
   converter c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
   converter c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
@@ -44,7 +45,7 @@ module node4 #(
                     .rst(reset.reset),
                     .push_req(receiving_data[i]),
                     .pop_req(sending_data[i]),
-                    .data_in(data_in[i]),
+                    .data_in(pop_v[i]),
                     .full(buffer_full_out[i]),
                     .data_valid(data_valid[i]),
                     .data_out(buffer_out[i])
@@ -57,7 +58,7 @@ module node4 #(
                               .buffer_flit_length(buffer_out[i][15:8]),
                               .buffer_flit_address(buffer_out[i][7:0]),       
                               .buffer_data_valid(data_valid[i]),
-                              .buffer_pop(sending_data[i]),
+                              .buffer_pop(pop_v[i]),
                               .receiving_data(receiving_data[i]),
                               .flit_address_o(packet_addr[i])
 			   );
@@ -65,7 +66,7 @@ module node4 #(
       assign data_out[i][15:8] = 8'h00;
       assign data_out[i][7:0] = packet_addr[i];
     end
-/*
+
 	if (`TOP(NODE_Y)) begin
 		controller4_edge_n n(.clk(clk.clk),
                         .rst(reset.reset),
@@ -81,9 +82,9 @@ module node4 #(
 						.pop_v
 						);
 
-		assign data_out[0] = sengding_data[0] ? buffer_data_out[0] : 16'b0;
+		assign data_out[0] = sengding_data[0] ? buffer_data_out[3] : 16'b0;
 
-		MUX_3 mux_e(
+		MUX3_1 mux_e(
 				.data0(buffer_data_out[0]),
 				.data1(buffer_data_out[2]),
 				.data2(buffer_data_out[3]),
@@ -93,7 +94,7 @@ module node4 #(
 				.data_o(data_out[1])
 		);
 
-		MUX_3 mux_w(
+		MUX3_1 mux_w(
 				.data0(buffer_data_out[0]),
 				.data1(buffer_data_out[1]),
 				.data2(buffer_data_out[3]),
@@ -103,7 +104,7 @@ module node4 #(
 				.data_o(data_out[2])
 		);
 
-		MUX_3 mux_l(
+		MUX3_1 mux_l(
 				.data0(buffer_data_out[0]),
 				.data1(buffer_data_out[1]),
 				.data2(buffer_data_out[2]),
@@ -129,9 +130,9 @@ module node4 #(
 						.pop_v
 						); 
 
-		assign data_out[0] = sengding_data[0] ? buffer_data_out[0] : 16'b0;
+		assign data_out[0] = sengding_data[0] ? buffer_data_out[3] : 16'b0;
 
-		MUX_3 mux_e(
+		MUX3_1 mux_e(
 				.data0(buffer_data_out[0]),
 				.data1(buffer_data_out[2]),
 				.data2(buffer_data_out[3]),
@@ -141,7 +142,7 @@ module node4 #(
 				.data_o(data_out[1])
 		);
 
-		MUX_3 mux_w(
+		MUX3_1 mux_w(
 				.data0(buffer_data_out[0]),
 				.data1(buffer_data_out[1]),
 				.data2(buffer_data_out[3]),
@@ -151,7 +152,7 @@ module node4 #(
 				.data_o(data_out[2])
 		);
 
-		MUX_3 mux_l(
+		MUX3_1 mux_l(
 				.data0(buffer_data_out[0]),
 				.data1(buffer_data_out[1]),
 				.data2(buffer_data_out[2]),
@@ -178,7 +179,7 @@ module node4 #(
 						.pop_v
 						); 
 
-		MUX_2 mux_n(
+		MUX2_1 mux_n(
 				.data0(buffer_data_out[1]),
 				.data1(buffer_data_out[3]),
 				.select0(grant_0[0]),
@@ -186,7 +187,7 @@ module node4 #(
 				.data_o(data_out[0])
 		);
 
-		MUX_2 mux_s(
+		MUX2_1 mux_s(
 				.data0(buffer_data_out[0]),
 				.data1(buffer_data_out[3]),
 				.select0(grant_1[0]),
@@ -195,7 +196,7 @@ module node4 #(
 		);
 
 
-		MUX_3 mux_w(
+		MUX3_1 mux_w(
 				.data0(buffer_data_out[0]),
 				.data1(buffer_data_out[1]),
 				.data2(buffer_data_out[3]),
@@ -205,7 +206,7 @@ module node4 #(
 				.data_o(data_out[2])
 		);
 
-		MUX_3 mux_l(
+		MUX3_1 mux_l(
 				.data0(buffer_data_out[0]),
 				.data1(buffer_data_out[1]),
 				.data2(buffer_data_out[2]),
@@ -232,7 +233,7 @@ module node4 #(
 						.pop_v
 						); 
 
-		MUX_2 mux_n(
+		MUX2_1 mux_n(
 				.data0(buffer_data_out[1]),
 				.data1(buffer_data_out[3]),
 				.select0(grant_0[0]),
@@ -240,7 +241,7 @@ module node4 #(
 				.data_o(data_out[0])
 		);
 
-		MUX_2 mux_s(
+		MUX2_1 mux_s(
 				.data0(buffer_data_out[0]),
 				.data1(buffer_data_out[3]),
 				.select0(grant_1[0]),
@@ -249,7 +250,7 @@ module node4 #(
 		);
 
 
-		MUX_3 mux_e(
+		MUX3_1 mux_e(
 				.data0(buffer_data_out[0]),
 				.data1(buffer_data_out[1]),
 				.data2(buffer_data_out[3]),
@@ -259,7 +260,7 @@ module node4 #(
 				.data_o(data_out[2])
 		);
 
-		MUX_3 mux_l(
+		MUX3_1 mux_l(
 				.data0(buffer_data_out[0]),
 				.data1(buffer_data_out[1]),
 				.data2(buffer_data_out[2]),
@@ -269,6 +270,6 @@ module node4 #(
 				.data_o(data_out[3])
 		);
 	end
-*/
+
   endgenerate
 endmodule
