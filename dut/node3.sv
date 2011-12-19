@@ -57,7 +57,7 @@ module node3 #(
                               .buffer_flit_length(next_buffer_out[i][15:8]),
                               .buffer_flit_address(next_buffer_out[i][7:0]),       
                               .buffer_data_valid(next_data_valid[i]),
-                              .buffer_pop(sending_data[i]),
+                              .buffer_pop(pop_v[i]),
                               .receiving_data(receiving_data[i]),
                               .flit_address_o(packet_addr[i])
 			   );
@@ -142,7 +142,7 @@ module node3 #(
                   .pop_v
                 ); 
 
-		assign data_out[0] = grant_v[0] ? buffer_out[0] : 16'b0;
+		assign data_out[0] = grant_v[0] ? buffer_out[2] : 16'b0;
 
 		mux2_1 mux_e(
 				.data0(buffer_out[0]),
@@ -176,7 +176,7 @@ module node3 #(
                   .pop_v
                 );
 
-		assign data_out[0] = grant_v[0] ? buffer_out[0] : 16'b0;
+		assign data_out[0] = grant_v[0] ? buffer_out[2] : 16'b0;
 		mux2_1 mux_w(
 				.data0(buffer_out[0]),
 				.data1(buffer_out[2]),

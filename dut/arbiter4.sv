@@ -183,9 +183,28 @@ module arbiter4
 			else begin			
 				shift=(req_o[0]==1|req_o[0]==2|req_o[0]==4|req_o[0]==8) ? 1 : 0;
 				grant_v_o=1;
-				request_c=request & (!grant);
 				
 				if (shift) begin
+
+					case(req_o[0])
+					1:	begin
+						grant=4'b0001;
+					end
+					2:	begin
+						grant=4'b0010;
+					end
+					4:	begin
+						grant=4'b0100;
+					end
+					8:	begin
+						grant=4'b1000;
+					end
+					default:	begin
+						grant=4'b0000;
+					end	
+					endcase	
+
+					request_c=request & (!grant);
 
 				//tail_o cannot be 0 in this case
 					if (tail_o==3) begin
@@ -226,44 +245,11 @@ module arbiter4
 							req_en=3'b001;
 							req_i[0]=request_c;
 						end
-					end
-
-					case(req_o[0])
-					1:	begin
-						grant=4'b0001;
-					end
-					2:	begin
-						grant=4'b0010;
-					end
-					4:	begin
-						grant=4'b0100;
-					end
-					8:	begin
-						grant=4'b1000;
-					end
-					default:	begin
-						grant=4'b0000;
-					end	
-					endcase			
-				
+					end				
 				end
 				else begin
 					tail_en=1;
-				//tail_o cannot be 3 or 0 in this case
-					if (tail_o==2) begin
-						req_i[0]=req_m;
-						req_i[2]=request_c & (!req_m);
-						tail_en=1;
-						tail_i=2'b11;
-						req_en=3'b101;
-					end
-					else begin
-						req_i[0]=req_m;
-						req_i[1]=request_c & (!req_m);
-						tail_en=1;
-						tail_i=2'b10;
-						req_en=3'b011;
-					end
+
 					case(req_o[0])
 					3:	begin
 						grant=4'b0001;
@@ -314,6 +300,23 @@ module arbiter4
 						req_m=4'b0000;
 					end
 					endcase
+					
+					request_c=request & (!grant);
+				//tail_o cannot be 3 or 0 in this case
+					if (tail_o==2) begin
+						req_i[0]=req_m;
+						req_i[2]=request_c & (!req_m);
+						tail_en=1;
+						tail_i=2'b11;
+						req_en=3'b101;
+					end
+					else begin
+						req_i[0]=req_m;
+						req_i[1]=request_c & (!req_m);
+						tail_en=1;
+						tail_i=2'b10;
+						req_en=3'b011;
+					end
 				end				
 			end
 		end
