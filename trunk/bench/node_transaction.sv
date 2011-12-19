@@ -93,7 +93,6 @@ class node_transaction extends transaction;
       e.d.nodes[node_index].id[bid].buffer_full = buffer_full;
       e.d.nodes[node_index].id[bid].receiving_data = sending;
       e.d.nodes[node_index].id[bid].data_in = data;
-      e.d.nodes[node_index].capture();
     `else
       e.d.nodes[0].id[node_index].buffer_full = buffer_full;
       e.d.nodes[0].id[node_index].receiving_data = sending;

@@ -28,7 +28,7 @@ module controller4_edge_s
 	//input
 		.clk, .rst, .request(request[1]), .buffer_full_i(buffer_full_in[1]),
 	//output
-		.grant(grant_1), .grant_v_o(grant_v[2])
+		.grant(grant_1), .grant_v_o(grant_v[1])
 	);
 	
 	arbiter3 arbiter_w(

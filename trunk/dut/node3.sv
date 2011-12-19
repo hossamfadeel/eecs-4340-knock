@@ -64,7 +64,7 @@ module node3 #(
 	if (`TOP(NODE_Y) & `RIGHT(NODE_X)) begin
 
 	converter_out c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
-	converter_out c1 (node_1, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+	converter_out c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
 
 		controller3_ne ne(
                   .clk(clk.clk),
@@ -101,7 +101,7 @@ module node3 #(
     else if (`TOP(NODE_Y) & `LEFT(NODE_X)) begin
 
 	converter_out c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
-	converter_in c1 (node_1, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+	converter_in c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
 
 		controller3_nw nw(.clk(clk.clk),
                   .rst(reset.reset),
@@ -137,7 +137,7 @@ module node3 #(
 	else if (`BOTTOM(NODE_Y) & `LEFT(NODE_X)) begin
 
 	converter_in c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
-	converter_in c1 (node_1, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+	converter_in c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
 
 		controller3_sw sw(.clk(clk.clk),
                   .rst(reset.reset),
@@ -175,7 +175,7 @@ module node3 #(
 	else begin
 
 	converter_in c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
-	converter_out c1 (node_1, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+	converter_out c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
 
 		controller3_se se(.clk(clk.clk),
                   .rst(reset.reset),
