@@ -204,12 +204,12 @@ module arbiter4
 					end	
 					endcase	
 
-					request_c=request & (!grant);
+					request_c=request & (~grant);
 
 				//tail_o cannot be 0 in this case
 					if (tail_o==3) begin
-						req_i[0]=req_o[1] & !grant;
-						req_i[1]=req_o[2] & !grant;
+						req_i[0]=req_o[1] & ~grant;
+						req_i[1]=req_o[2] & ~grant;
 						if (request_c==0 | request_c == req_o[2]) begin
 							req_en=3'b011;
 							tail_i=2'b10;
@@ -222,7 +222,7 @@ module arbiter4
 						end
 					end
 					else if (tail_o==2) begin
-						req_i[0]=req_o[1] & !grant;
+						req_i[0]=req_o[1] & ~grant;
 						if (request_c==0 | request_c == req_o[1]) begin
 							req_en=3'b001;
 							tail_i=2'b01;
@@ -248,8 +248,6 @@ module arbiter4
 					end				
 				end
 				else begin
-					tail_en=1;
-
 					case(req_o[0])
 					3:	begin
 						grant=4'b0001;
@@ -301,21 +299,33 @@ module arbiter4
 					end
 					endcase
 					
-					request_c=request & (!grant);
+					request_c=request & (~grant);
 				//tail_o cannot be 3 or 0 in this case
 					if (tail_o==2) begin
 						req_i[0]=req_m;
-						req_i[2]=request_c & (!req_m);
-						tail_en=1;
-						tail_i=2'b11;
-						req_en=3'b101;
+						req_i[2]=request_c & (~req_m);
+		                                if (req_i[2] > 0) begin
+						  tail_en=1;
+						  tail_i=2'b11;
+						  req_en=3'b111;
+		                                end
+		                                else begin
+		                                  tail_en=0;
+		                                  req_en=3'b011;
+		                                end
 					end
 					else begin
 						req_i[0]=req_m;
-						req_i[1]=request_c & (!req_m);
-						tail_en=1;
-						tail_i=2'b10;
-						req_en=3'b011;
+						req_i[1]=request_c & (~req_m);
+		                                if (req_i[1] > 0) begin
+						  tail_en=1;
+						  tail_i=2'b10;
+						  req_en=3'b011;
+		                                end
+		                                else begin
+		                                  tail_en=0;
+		                                  req_en=3'b001;
+		                                end
 					end
 				end				
 			end
