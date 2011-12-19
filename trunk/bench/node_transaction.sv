@@ -58,11 +58,9 @@ class node_transaction extends transaction;
     `else
       if(e.d.nodes[0].buffer[node_index].full()) begin
     `endif
-        $display("Forcing Sending[%0d] to 0", node_index);
         sending = 0;
       end
-        $display("BF[%0d] = %0b", node_index, e.d.nodes[0].buffer[node_index].full());
-        $display("Sending[%0d] = %0b", node_index, sending);
+
     if (sending) begin
       e.transaction_count++;
     end
