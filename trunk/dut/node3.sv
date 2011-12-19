@@ -30,9 +30,7 @@ module node3 #(
   wire [2:0] grant_v;
   wire [2:0] pop_v;
 
-  converter c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
-  converter c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
-  converter c2 (local_node, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
+  converter_out c2 (local_node, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
 
   assign sending_data = grant_v;
 
@@ -64,6 +62,10 @@ module node3 #(
     end
 
 	if (`TOP(NODE_Y) & `RIGHT(NODE_X)) begin
+
+	converter_out c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+	converter_out c1 (node_1, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+
 		controller3_ne ne(
                   .clk(clk.clk),
                   .rst(reset.reset),
@@ -97,6 +99,10 @@ module node3 #(
 	end
 
     else if (`TOP(NODE_Y) & `LEFT(NODE_X)) begin
+
+	converter_out c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+	converter_in c1 (node_1, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+
 		controller3_nw nw(.clk(clk.clk),
                   .rst(reset.reset),
                   .packet_addr,
@@ -129,6 +135,10 @@ module node3 #(
 	end
 
 	else if (`BOTTOM(NODE_Y) & `LEFT(NODE_X)) begin
+
+	converter_in c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+	converter_in c1 (node_1, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+
 		controller3_sw sw(.clk(clk.clk),
                   .rst(reset.reset),
                   .packet_addr,
@@ -163,6 +173,10 @@ module node3 #(
 	end
 
 	else begin
+
+	converter_in c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+	converter_out c1 (node_1, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+
 		controller3_se se(.clk(clk.clk),
                   .rst(reset.reset),
                   .packet_addr,

@@ -35,10 +35,7 @@ module node4 #(
 
   assign sending_data = grant_v;
 
-  converter c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
-  converter c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
-  converter c2 (node_2, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
-  converter c3 (local_node, buffer_full_out[3], sending_data[3], data_out[3], buffer_full_in[3], receiving_data[3], data_in[3]);
+  converter_out c3 (local_node, buffer_full_out[3], sending_data[3], data_out[3], buffer_full_in[3], receiving_data[3], data_in[3]);
 
   generate
     for(genvar i = 0; i <= NUM_INTERFACES-1; i = i + 1) begin
@@ -68,6 +65,11 @@ module node4 #(
     end
 
 	if (`TOP(NODE_Y)) begin
+
+		converter_out c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+		converter_in c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
+		converter_out c2 (node_2, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
+
 		controller4_edge_n n(.clk(clk.clk),
                         .rst(reset.reset),
 						.packet_addr,
@@ -116,6 +118,11 @@ module node4 #(
 	end
 
     else if (`BOTTOM(NODE_Y)) begin
+
+		converter_in c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+		converter_in c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
+		converter_out c2 (node_2, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
+
 		controller4_edge_s s(.clk(clk.clk),
                         .rst(reset.reset),
 						.packet_addr,
@@ -164,6 +171,11 @@ module node4 #(
 	end
 
 	else if (`RIGHT(NODE_X)) begin
+
+		converter_in c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+		converter_out c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
+		converter_out c2 (node_2, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
+
 		controller4_edge_e e(.clk(clk.clk),
                         .rst(reset.reset),
 						.packet_addr,
@@ -218,6 +230,11 @@ module node4 #(
 	end
 
 	else begin
+
+		converter_in c0 (node_0, buffer_full_out[0], sending_data[0], data_out[0], buffer_full_in[0], receiving_data[0], data_in[0]);
+		converter_out c1 (node_1, buffer_full_out[1], sending_data[1], data_out[1], buffer_full_in[1], receiving_data[1], data_in[1]);
+		converter_in c2 (node_2, buffer_full_out[2], sending_data[2], data_out[2], buffer_full_in[2], receiving_data[2], data_in[2]);
+
 		controller4_edge_w w(.clk(clk.clk),
                         .rst(reset.reset),
 						.packet_addr,
