@@ -248,6 +248,7 @@ class sim_node;
             d.next_nodes[this_i].req_s[i]--;
           end
           for(int j=0; j<b_count-3;j++) begin
+            $display("Shift");
             d.next_nodes[this_i].req_table[i][j] = d.next_nodes[this_i].req_table[i][j+1];
           end
         end
