@@ -13,7 +13,6 @@ class node_transaction extends transaction;
   constraint c_node {
     buffer_full dist { 1 := e.cfg.node_r_density[node_index],
                        0 := (10000 - e.cfg.node_r_density[node_index])};
-    e.cfg.heavy_mode == 1'b1 -> buffer_full == 0;
 
     sending dist { 1 := e.cfg.node_s_density[node_index],
                    0 := (10000 - e.cfg.node_s_density[node_index])};
@@ -73,6 +72,7 @@ class node_transaction extends transaction;
 
     if (current_bytes == 0) begin
       data = (bytes << 8) + (x << 4) + y;
+      //data = data | (from << 8);                //TODO: Remov
       current_bytes = bytes;
     end else begin
       data = packet_data;

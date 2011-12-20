@@ -43,11 +43,15 @@ class environment;
       $display("***SENDING***");
       `ifdef NOC_MODE
         for(int i=0; i<`NODE_COUNT; i=i+1) begin
+          $display("N%0d BFI Before Capture: %0d%0d%0d", i, d.nodes[i].id[0].buffer_full, d.nodes[i].id[1].buffer_full, d.nodes[i].id[2].buffer_full);
           d.nodes[i].capturebf();
+          $display("N%0d BFI After Capture: %0d%0d%0d", i, d.nodes[i].id[0].buffer_full, d.nodes[i].id[1].buffer_full, d.nodes[i].id[2].buffer_full);
         end
       `endif
       for(int i=0; i<`NODE_COUNT; i=i+1) begin
+          $display("N%0d BFO Before Send: %0d%0d%0d", i, d.nodes[i].od[0].buffer_full, d.nodes[i].od[1].buffer_full, d.nodes[i].od[2].buffer_full);
         d.nodes[i].send();
+          $display("N%0d BFO After Send: %0d%0d%0d", i, d.next_nodes[i].od[0].buffer_full, d.next_nodes[i].od[1].buffer_full, d.next_nodes[i].od[2].buffer_full);
       end
       `ifdef NOC_MODE
       $display("***CAPTURING NON-LOCAL***");
