@@ -32,6 +32,7 @@ wire error;
 wire fifo_data_out;
 wire head_empty;
 wire fifo_empty;
+wire fifo_full;
 
 logic head_push;
 logic fifo_push;
@@ -82,9 +83,11 @@ DW_fifo_s1_sf #(WIDTH, 2, ae_level, af_level, err_mode, rst_mode)
 DW_fifo_s1_sf #(WIDTH, (depth-1), ae_level, af_level, err_mode, rst_mode)
 	buffer (.clk(clk), .rst_n(!rst), .pop_req_n(!pop_req), .push_req_n(!fifo_push), .diag_n(1'b1),
 	.data_in(data_in), .empty(fifo_empty), .almost_empty(almost_empty),
-	.half_full(half_full), .almost_full(almost_full), .full(full),
+	.half_full(half_full), .almost_full(almost_full), .full(fifo_full),
 	.error(error), .data_out(), .peek_out(next_data_out) );
 
   assign data_valid = !head_empty;
 	assign next_data_valid = !fifo_empty;
+  assign full = fifo_full;// & !pop_req;
+
 endmodule

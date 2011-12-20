@@ -25,7 +25,6 @@ class node_transaction extends transaction;
 
     packet_data >= 0;
     packet_data < 2**16;
-    packet_data == node_index;
 
     solve x before y;
     x >= 0;
@@ -74,9 +73,6 @@ class node_transaction extends transaction;
 
     if (current_bytes == 0) begin
       data = (bytes << 8) + (x << 4) + y;
-      `ifdef NOC_MODE
-        data = data | packet_data << 8;
-      `endif
       current_bytes = bytes;
     end else begin
       data = packet_data;
