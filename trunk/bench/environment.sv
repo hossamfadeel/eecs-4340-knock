@@ -42,12 +42,17 @@ class environment;
       end
       $display("***SENDING***");
       for(int i=0; i<`NODE_COUNT; i=i+1) begin
+        d.nodes[i].capturebf();
+      end
+      for(int i=0; i<`NODE_COUNT; i=i+1) begin
         d.nodes[i].send();
       end
+      `ifdef NOC_MODE
       $display("***CAPTURING NON-LOCAL***");
-      for(int i=0; i<`NODE_COUNT; i=i+1) begin
-        d.nodes[i].capture();
-      end
+        for(int i=0; i<`NODE_COUNT; i=i+1) begin
+          d.nodes[i].capture();
+        end
+      `endif
       $display("***RECEIVING***");
       for(int i=0; i<`NODE_COUNT; i=i+1) begin
         d.nodes[i].receive();

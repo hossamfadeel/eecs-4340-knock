@@ -160,6 +160,13 @@ class sim_node;
     end
   endfunction
 
+  function capturebf();
+    for(int i=0; i<b_count-1; i++) begin
+      int bid = d.nodes[capture_node[i]-1].get_buffer_id(capture_if[i]);
+      id[i].buffer_full = d.next_nodes[capture_node[i]-1].od[bid].buffer_full;
+    end
+  endfunction
+
   function capture();
     //$display("Node %d Capture: ", `INDEX(this_x, this_y));
     for(int i=0; i<b_count-1; i++) begin
@@ -168,7 +175,7 @@ class sim_node;
       //$display("\t\tCN: %d", capture_node[i]);
       //$display("\t\tCI: %d", capture_if[i]);
       //$display("\t\tCDM: %d", dm[capture_if[i]]);
-      id[i].buffer_full = d.next_nodes[capture_node[i]-1].od[bid].buffer_full;
+      //id[i].buffer_full = d.next_nodes[capture_node[i]-1].od[bid].buffer_full;
       id[i].receiving_data = d.next_nodes[capture_node[i]-1].od[bid].sending_data;
       id[i].data_in = d.next_nodes[capture_node[i]-1].od[bid].data_out;
     end
@@ -180,14 +187,12 @@ class sim_node;
     bit requests[5][5];
     int grant[5] = '{-1, -1, -1, -1, -1};
 
-    $display("%0d:: Node %0d Status:", $time, node_index);
     for(int i=0; i<b_count; i++) begin
-      $display("\tInterface %0d:", i);
-      $display("\t\tDV: %0b", buffer[i].data_valid());
-      $display("\t\tBD: %h", buffer[i].data_out());
-      $display("\t\tBF: %0b", buffer[i].full());
-      $display("\t\tADDR: %h", address[i]);
-      $display("\t\tFC: %h", flit_count[i]);
+      $display("%0d:: N%0dB%0dDV: %0b", $time, node_index, i, buffer[i].data_valid());
+      $display("%0d:: N%0dB%0dBD: %h", $time, node_index, i, buffer[i].data_out());
+      $display("%0d:: N%0dB%0dBF: %0b", $time, node_index, i, buffer[i].full());
+      $display("%0d:: N%0dB%0dADDR: %h", $time, node_index, i, address[i]);
+      $display("%0d:: N%0dB%0dFC: %h", $time, node_index, i, flit_count[i]);
     end
 
     for(int i=0; i<b_count; i++) begin
@@ -295,33 +300,29 @@ class sim_node;
         is_sending[i] = 1'b1;
         temp = d.next_nodes[this_i].buffer[grant[i]].pop();
         popping_int[grant[i]] = 1;
-        $display("Popping %0d from B%0d", temp,  grant[i]);
+        $display("Popping %0d from B%0d of N%0d", temp,  grant[i], this_i);
       end
       //$display("\tInterface %0d:", i);
       //$display("\t\tSD: %b", is_sending[i]);
       //$display("\t\tDO%0d: %h",i, data_out[i]);
     end
 
-    $display("%0d:: Node %0d Outputs:", $time, this_i);
     for(int i=0; i<b_count; i++) begin
       d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
       d.next_nodes[this_i].od[i].sending_data = is_sending[i];
       d.next_nodes[this_i].od[i].data_out = is_sending[i] ? data_out[grant[i]] : 0; //data_out[i];
 
-      $display("\tInterface %0d:", i);
-      $display("\t\tBFO: %b", d.next_nodes[this_i].od[i].buffer_full);
-      $display("\t\tSD: %0b", d.next_nodes[this_i].od[i].sending_data);
-      $display("\t\tDO: %h",  d.next_nodes[this_i].od[i].data_out);
+      $display("%0d:: N%0dI%0dBFO: %b", $time, node_index, i, d.next_nodes[this_i].od[i].buffer_full);
+      $display("%0d:: N%0dI%0dSD: %0b", $time, node_index, i, d.next_nodes[this_i].od[i].sending_data);
+      $display("%0d:: N%0dI%0dDO: %h",  $time, node_index, i, d.next_nodes[this_i].od[i].data_out);
     end
   endfunction
 
   function receive();
-    $display("%0d:: Node %0d Inputs:", $time, node_index);
     for(int i=0; i<b_count; i++) begin
-      $display("\tInterface %0d:", i);
-      $display("\t\tBFI: %b", id[i].buffer_full);
-      $display("\t\tRD: %0b", id[i].receiving_data);
-      $display("\t\tDI: %h", id[i].data_in);
+      $display("%0d:: N%0dI%0dBFI: %b", $time, node_index, i, id[i].buffer_full);
+      $display("%0d:: N%0dI%0dRD: %0b", $time, node_index, i, id[i].receiving_data);
+      $display("%0d:: N%0dI%0dDI: %h", $time, node_index, i, id[i].data_in);
     end
 
     for(int i=0; i<b_count; i++) begin
@@ -369,6 +370,11 @@ class sim_node;
         d.next_nodes[this_i].flit_count[i] = flit_count[i];
         d.next_nodes[this_i].address[i] = address[i];
       end
+    end
+
+    d.next_nodes[this_i].od[b_count-1].buffer_full = buffer[b_count-1].full();
+    for(int i=0; i<b_count-1; i++) begin
+      d.next_nodes[this_i].od[i].buffer_full = d.next_nodes[this_i].buffer[i].full();
     end
   endfunction
 
