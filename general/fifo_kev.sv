@@ -34,44 +34,26 @@ wire head_empty;
 wire fifo_empty;
 wire fifo_full;
 
-logic head_push;
-logic fifo_push;
-logic [WIDTH-1:0] head_wrdata;
 
 //assign test_head_push = head_push;
 //assign test_fifo_push = fifo_push;
 //assign test_head_wrdata = head_wrdata;
 
+logic head_push;
+logic fifo_push;
+logic [WIDTH-1:0] head_wrdata;
+
+assign test_head_push = head_push;
+assign test_fifo_push = fifo_push;
+assign test_head_wrdata = head_wrdata;
+
 always_comb begin
-//	head_push = (push_req & head_empty) || (push_req & pop_req) || (pop_req & !fifo_empty);	
-	fifo_push = (!pop_req & push_req & (!head_empty & !full)) | (pop_req & push_req & !fifo_empty);
-	head_wrdata = ((push_req & head_empty)|| (!head_empty & push_req & pop_req & fifo_empty))? data_in : next_data_out;
-	if(head_empty) begin
-		if(push_req) begin
-			head_push = 1'b1;
-		end
-		else begin
-			head_push = 1'b0;
-		end
-	end
-	else begin //head_not empty
-		if(pop_req) begin
-			if(!fifo_empty) begin
-				head_push = 1'b1;
-			end
-			else begin
-				if (push_req) begin
-					head_push = 1'b1;
-				end
-				else begin
-					head_push = 1'b0;
-				end
-			end
-		end
-		else begin
-			head_push = 1'b0;
-		end
-	end
+
+
+	head_push = (push_req & head_empty) || (push_req & pop_req) || (pop_req & !fifo_empty);	
+	fifo_push = !full& push_req & (!head_empty); 
+	head_wrdata =  ((push_req & head_empty)|| (pop_req & fifo_empty)) ? data_in : next_data_out;
+
 end
 
 DW_fifo_s1_sf #(WIDTH, 2, ae_level, af_level, err_mode, rst_mode)
@@ -80,7 +62,7 @@ DW_fifo_s1_sf #(WIDTH, 2, ae_level, af_level, err_mode, rst_mode)
 	.half_full(), .almost_full(), .full(),
 	.error(error), .data_out(), .peek_out(data_out) );
 
-DW_fifo_s1_sf #(WIDTH, (depth-1), ae_level, af_level, err_mode, rst_mode)
+DW_fifo_s1_sf #(WIDTH, 4, ae_level, af_level, err_mode, rst_mode)
 	buffer (.clk(clk), .rst_n(!rst), .pop_req_n(!pop_req), .push_req_n(!fifo_push), .diag_n(1'b1),
 	.data_in(data_in), .empty(fifo_empty), .almost_empty(almost_empty),
 	.half_full(half_full), .almost_full(almost_full), .full(fifo_full),
@@ -88,6 +70,4 @@ DW_fifo_s1_sf #(WIDTH, (depth-1), ae_level, af_level, err_mode, rst_mode)
 
   assign data_valid = !head_empty;
 	assign next_data_valid = !fifo_empty;
-  assign full = fifo_full;// & !pop_req;
-
 endmodule
