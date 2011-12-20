@@ -96,8 +96,8 @@ module controller4_edge_s
 
 			.north_req(request[0][0]),
 			.south_req(),
-			.east_req(request[2][2]),
-			.west_req(request[3][2]),
+			.east_req(request[1][2]),
+			.west_req(request[2][2]),
 			.local_req()
 	);
 

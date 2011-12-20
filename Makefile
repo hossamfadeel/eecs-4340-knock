@@ -77,8 +77,6 @@ DEFINES += +define+NOC_SIZE=$(NOC_SIZE) +define+PARAMS=$(DPARAMS)
 bench_out: defines.sv top.sv $(INTERFACES) $(DUT) $(BENCH)
 	$(VCS) $^ $(DEFINES) -o $@
 	./$@ > results.txt
-	vim results.txt
-	tail -n 20 results.txt
 
 dut_out: defines.sv top.sv $(INTERFACES) $(DUT)
 	$(VCS) $^ $(DEFINES) +define+DUT_MODE -o $@
@@ -87,6 +85,25 @@ dut_out: defines.sv top.sv $(INTERFACES) $(DUT)
 dccl_out: defines.sv dw/DW01_cmp2.v general/dccl.sv other/dccl_bench.sv other/dccl_top.sv
 	$(VCS) $^ $(DEFINES) -o $@
 	./$@
+
+node3: 
+	make clean
+	make > results.txt
+	echo "***NW***"
+	tail -n 13 results.txt
+	make clean
+	make NODE_X=3 > results.txt
+	echo "***NE***"
+	tail -n 13 results.txt
+	make clean
+	make NODE_Y=3 > results.txt
+	echo "***SW***"
+	tail -n 13 results.txt
+	make clean
+	make NODE_X=3 NODE_Y=3 > results.txt
+	echo "***SE***"
+	tail -n 13 results.txt
+	rm results.txt
 
 .PHONY: clean
 clean:
