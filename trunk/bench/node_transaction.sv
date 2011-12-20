@@ -58,7 +58,7 @@ class node_transaction extends transaction;
     super.post_randomize();
 
     `ifdef NOC_MODE
-      if(e.d.nodes[node_index].buffer[0].full()) begin
+      if(e.d.nodes[node_index].buffer[e.d.nodes[node_index].get_buffer_id(`DIR_LOCAL)].full()) begin
     `else
       if(e.d.nodes[0].buffer[node_index].full()) begin
     `endif

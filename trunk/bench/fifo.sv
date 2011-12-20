@@ -26,12 +26,18 @@ class fifo;
   endfunction
 
   function push(int d);
+    $display("Writing to index %0d when read index is %0d", write_index, read_index);
+
     valid[write_index] = 1;
     data[write_index] = d;
     write_index = inc(write_index);
     
     if(read_index == write_index) begin
       is_full = 1;
+      $display("Buffer is Full");
+    end else begin
+      is_full = 0;
+      $display("Buffer is Not Full");
     end
   endfunction
 

@@ -93,6 +93,7 @@ class environment;
 
         t.fail("");
       end
+      d.next_nodes[node_index].bfshift();
   endfunction
 
   function shift();
