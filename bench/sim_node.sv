@@ -289,7 +289,7 @@ class sim_node;
 
     for(int i=0; i<b_count; i++) begin
       for(int j=i; j<b_count; j++) begin
-        assert (grant[i] != grant[j]) else $display("2 things granted to same interface!!");
+        assert (grant[i] != grant[j] || grant[i] == -1) else $display("2 things granted to same interface!!");
       end
     end
 
@@ -354,16 +354,16 @@ class sim_node;
         if(popping_int[i] == 1) begin
           if(d.next_nodes[this_i].buffer[i].data_valid()) begin
             int dout = d.next_nodes[this_i].buffer[i].data_out();
-           // $display("Address %0d from NDO = %h", i, dout[7:0]);
+            $display("Address %0d from NDO = %h", i, dout[7:0]);
             d.next_nodes[this_i].flit_count[i] = dout[15:8]+1;
             d.next_nodes[this_i].address[i] = dout[7:0];
           end else begin
             if(id[i].receiving_data) begin
-             // $display("Address %0d from DI = %h", i, id[i].data_in[7:0]);
+              $display("Address %0d from DI = %h", i, id[i].data_in[7:0]);
               d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8]+1;
               d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
             end else begin
-             // $display("Address %0d Kept", i);
+              $display("Address %0d Kept", i);
               d.next_nodes[this_i].flit_count[i] --;
               d.next_nodes[this_i].address[i] = address[i];
             end
@@ -380,7 +380,9 @@ class sim_node;
         d.next_nodes[this_i].address[i] = address[i];
       end
     end
+  endfunction
 
+  function bfshift();
     d.next_nodes[this_i].od[b_count-1].buffer_full = d.next_nodes[this_i].buffer[b_count-1].full();
     for(int i=0; i<b_count-1; i++) begin
       d.next_nodes[this_i].od[i].buffer_full = d.next_nodes[this_i].buffer[i].full();
