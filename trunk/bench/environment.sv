@@ -41,9 +41,11 @@ class environment;
         in_data[i].action();
       end
       $display("***SENDING***");
-      for(int i=0; i<`NODE_COUNT; i=i+1) begin
-        d.nodes[i].capturebf();
-      end
+      `ifdef NOC_MODE
+        for(int i=0; i<`NODE_COUNT; i=i+1) begin
+          d.nodes[i].capturebf();
+        end
+      `endif
       for(int i=0; i<`NODE_COUNT; i=i+1) begin
         d.nodes[i].send();
       end

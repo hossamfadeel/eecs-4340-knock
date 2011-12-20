@@ -374,7 +374,7 @@ class sim_node;
 
     d.next_nodes[this_i].od[b_count-1].buffer_full = buffer[b_count-1].full();
     for(int i=0; i<b_count-1; i++) begin
-      d.next_nodes[this_i].od[i].buffer_full = d.next_nodes[this_i].buffer[i].full();
+      d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
     end
   endfunction
 

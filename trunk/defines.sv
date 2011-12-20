@@ -19,3 +19,9 @@
 
 `define GETX(i) (i)%`NOC_SIZE
 `define GETY(i) (i)/`NOC_SIZE
+
+`ifdef NOC_MODE
+  `define CONVERTER converter_in
+`else
+  `define CONVERTER converter_out
+`endif
