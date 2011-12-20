@@ -32,7 +32,7 @@ wire error;
 wire fifo_data_out;
 wire head_empty;
 wire fifo_empty;
-wire fifo_full;
+
 
 
 //assign test_head_push = head_push;
@@ -51,7 +51,7 @@ always_comb begin
 
 
 	head_push = (push_req & head_empty) || (push_req & pop_req) || (pop_req & !fifo_empty);	
-	fifo_push = !full& push_req & (!head_empty); 
+	fifo_push = !full& push_req & (!head_empty) & (!(fifo_empty & push_req & pop_req) ); 
 	head_wrdata =  ((push_req & head_empty)|| (pop_req & fifo_empty)) ? data_in : next_data_out;
 
 end
@@ -65,7 +65,7 @@ DW_fifo_s1_sf #(WIDTH, 2, ae_level, af_level, err_mode, rst_mode)
 DW_fifo_s1_sf #(WIDTH, 4, ae_level, af_level, err_mode, rst_mode)
 	buffer (.clk(clk), .rst_n(!rst), .pop_req_n(!pop_req), .push_req_n(!fifo_push), .diag_n(1'b1),
 	.data_in(data_in), .empty(fifo_empty), .almost_empty(almost_empty),
-	.half_full(half_full), .almost_full(almost_full), .full(fifo_full),
+	.half_full(half_full), .almost_full(almost_full), .full(full),
 	.error(error), .data_out(), .peek_out(next_data_out) );
 
   assign data_valid = !head_empty;
