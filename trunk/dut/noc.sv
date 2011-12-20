@@ -16,7 +16,7 @@ module noc(
         end else if (`BOTTOM(y) && `LEFT(x)) begin
           node3 #(.NODE_X(x), .NODE_Y(y)) bl (.clk(clk), .reset(reset), .local_node(local_node[`INDEX(x,y)]),  .node_0(c[`NORTH(x,y)]), .node_1(c[`EAST(x,y)]));
         end else if (`BOTTOM(y) && `RIGHT(x)) begin
-          node3 #(.NODE_X(x), .NODE_Y(y)) bl (.clk(clk), .reset(reset), .local_node(local_node[`INDEX(x,y)]),  .node_0(c[`NORTH(x,y)]), .node_1(c[`WEST(x,y)]));
+          node3 #(.NODE_X(x), .NODE_Y(y)) br (.clk(clk), .reset(reset), .local_node(local_node[`INDEX(x,y)]),  .node_0(c[`NORTH(x,y)]), .node_1(c[`WEST(x,y)]));
         end else if (`TOP(y)) begin
           node4 #(.NODE_X(x), .NODE_Y(y)) t (.clk(clk), .reset(reset), .local_node(local_node[`INDEX(x,y)]),  .node_0(c[`SOUTH(x,y)]), .node_1(c[`EAST(x,y)]), .node_2(c[`WEST(x,y)]));
         end else if (`BOTTOM(y)) begin
