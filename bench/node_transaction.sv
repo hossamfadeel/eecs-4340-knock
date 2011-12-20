@@ -69,7 +69,6 @@ class node_transaction extends transaction;
       e.transaction_count++;
     end
 
-
     if (current_bytes == 0) begin
       data = (bytes << 8) + (x << 4) + y;
       //data = data | (from << 8);                //TODO: Remov

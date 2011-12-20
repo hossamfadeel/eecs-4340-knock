@@ -285,6 +285,13 @@ class sim_node;
   end
 */
     //$display("Node %0d Outputs:", node_index);
+    //
+
+    for(int i=0; i<b_count; i++) begin
+      for(int j=i; j<b_count; j++) begin
+        assert (grant[i] != grant[j]) else $display("2 things granted to same interface!!");
+      end
+    end
 
     for(int i=0; i<b_count; i++) begin
       popping_int[i] = 0;
@@ -301,6 +308,8 @@ class sim_node;
         temp = d.next_nodes[this_i].buffer[grant[i]].pop();
         popping_int[grant[i]] = 1;
         $display("Popping %0d from B%0d of N%0d", temp,  grant[i], this_i);
+
+        assert(!id[grant[i]].buffer_full) else $display("Granting to interface that can't accept data!!");
       end
       //$display("\tInterface %0d:", i);
       //$display("\t\tSD: %b", is_sending[i]);
