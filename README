@@ -1,0 +1,53 @@
+Running Tests
+=============
+
+The Makefile will compile and test specific node types or the NOC.  After running make, the tests will be run and output to the 'results.txt' file. At the end of each file will be a failure rate (which should hopefully be zero!).
+
+Compiling and Testing a Specific Node Type
+==========================================
+
+Node types are determined by the (X, Y) position of the node within the NOC.  To compile a specific node type, three parameters must be passed to make:
+
+  - NOC_SIZE: The size of one side of the NOC. [Default is 4]
+  - NODE_X: The X position of the node to be tested. [Default is 0]
+  - NODE_Y: The Y position of the node to be tested. [Default is 0]
+
+To test a corner node of a 4x4 NOC, the following command can be run:
+
+  make NOC_SIZE=4 NODE_X=3 NODE_Y=3
+
+This would test the bottom right corner of the NOC.
+
+Compiling and Testing the NOC
+=============================
+
+To compile the NOC, run make with the NOC_MODE parameter set:
+
+  make NOC_MODE=1
+
+Additional NOC sizes can be tested (but may not work) by setting the NOC_SIZE parameter:
+
+  make NOC_MODE=1 NOC_SIZE=3
+
+This would make a 3x3 NOC.
+
+Testing Parameters
+==================
+
+In addition, each type of test has a specific configuration file for testing.  These are:
+
+  - Corner Nodes: bench/params3.cfg
+  - Edge Nodes: bench/params4.cfg
+  - Center Nodes: bench/params5.cfg
+  - Full NOC: bench/params0.cfg
+
+The specifications for these settings are in the project documentation.  
+
+Direction Calculation Tests
+===========================
+
+The direction calculation can be tested by running:
+
+  make dccl_out
+
+This will test every input combination of the direction combination logic and ensure the correct requests are generated.
