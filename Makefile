@@ -107,5 +107,5 @@ node3:
 
 .PHONY: clean
 clean:
-	-rm -rf csrc/ *.daidir/ DVEfiles/
+	-rm -rf csrc/ *.daidir/ DVEfiles/ *.vdb
 	-rm -f *.log bench_out dut_out dccl_out *.svf *.key *.vpd results.txt
