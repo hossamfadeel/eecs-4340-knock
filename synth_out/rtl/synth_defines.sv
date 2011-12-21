@@ -1,0 +1,7 @@
+`define DUT_MODE
+
+`define NOC_MODE 1
+`define NOC_SIZE 4
+
+`define INTERFACES `NOC_SIZE*`NOC_SIZE
+`define NODE_COUNT `INTERFACES 
