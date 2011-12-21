@@ -1,0 +1,5 @@
+To run synthesis, run the following commands:
+
+  cd synth_out
+  dc_shell -f dsyn.tcl
+  icc_shell -f inv.tcl
