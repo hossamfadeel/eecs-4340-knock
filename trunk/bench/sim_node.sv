@@ -163,7 +163,11 @@ class sim_node;
   function capturebf();
     for(int i=0; i<b_count-1; i++) begin
       int bid = d.nodes[capture_node[i]-1].get_buffer_id(capture_if[i]);
+	`ifdef NOC_MODE
       id[i].buffer_full = d.nodes[capture_node[i]-1].od[bid].buffer_full;
+	`else
+      id[i].buffer_full = d.next_nodes[capture_node[i]-1].od[bid].buffer_full;
+	`endif
     end
   endfunction
 
@@ -317,7 +321,10 @@ class sim_node;
     end
 
     for(int i=0; i<b_count; i++) begin
-//      d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
+	`ifdef NOC_MODE
+    `else
+      d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
+	`endif      
       d.next_nodes[this_i].od[i].sending_data = is_sending[i];
       d.next_nodes[this_i].od[i].data_out = is_sending[i] ? data_out[grant[i]] : 0; //data_out[i];
 
@@ -380,6 +387,13 @@ class sim_node;
         d.next_nodes[this_i].address[i] = address[i];
       end
     end
+	`ifdef NOC_MODE
+    `else
+      	d.next_nodes[this_i].od[b_count-1].buffer_full = buffer[b_count-1].full();
+		for(int i=0; i<b_count-1; i++) begin
+		  d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
+		end
+	`endif
   endfunction
 
   function bfshift();

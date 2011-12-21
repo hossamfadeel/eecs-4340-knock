@@ -93,7 +93,10 @@ class environment;
 
         t.fail("");
       end
+	`ifdef NOC_MODE
       d.next_nodes[node_index].bfshift();
+	`endif
+
   endfunction
 
   function shift();
