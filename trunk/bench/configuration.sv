@@ -46,11 +46,14 @@ class configuration;
         rval = $fscanf(file, {"node_addr_mask_x[", "%d", "] %d"}, j, node_addr_mask_x[i]);
         rval = $fscanf(file, {"node_addr_mask_y[", "%d", "] %d"}, j, node_addr_mask_y[i]);
 
-//        $display("Loaded mask_x[%d] = %d", i, node_addr_mask_x[i]);
-//        $display("Loaded mask_y[%d] = %d", i, node_addr_mask_y[i]);
-
         node_r_density[i]  = node_r_density_r[i] * 10000;
         node_s_density[i]  = node_s_density_r[i] * 10000;
+
+/*        $display("J: %0d", j);
+        $display("Loaded r[%d] = %d", i, node_r_density[i]);
+        $display("Loaded s[%d] = %d", i, node_s_density[i]);
+        $display("Loaded mask_x[%d] = %d", i, node_addr_mask_x[i]);
+        $display("Loaded mask_y[%d] = %d", i, node_addr_mask_y[i]);*/
       end
 
     rval = $fscanf(file, "address_mode %d",        address_mode);
