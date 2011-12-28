@@ -1,4 +1,4 @@
-typedef class data;
+typedef class environment;
 
 class sim_node;
   class out_data;
@@ -24,7 +24,7 @@ class sim_node;
     endfunction
   endclass
 
-  data d;
+  environment env;
   int dir_map[5]; //north, south, east, west, local
   int b_count, this_x, this_y, this_i, node_index, capture_node[], capture_if[];
   int address[], flit_count[];
@@ -58,7 +58,7 @@ class sim_node;
     end
   endfunction
 
-  function new(const ref data _d, input int x, int y);
+  function new(const ref environment _env, input int x, int y);
     int n_east = `INDEX(x+1,y);
     int n_south = `INDEX(x,y+1);
     int n_west = `INDEX(x-1,y);
@@ -73,7 +73,7 @@ class sim_node;
       this_i = 0;
     `endif
 
-    d = _d;
+    env = _env;
 
     if(`TOP(y) && `LEFT(x)) begin
       b_count = 3;
@@ -162,11 +162,11 @@ class sim_node;
 
   function capturebf();
     for(int i=0; i<b_count-1; i++) begin
-      int bid = d.nodes[capture_node[i]-1].get_buffer_id(capture_if[i]);
+      int bid = env.d.nodes[capture_node[i]-1].get_buffer_id(capture_if[i]);
 	`ifdef NOC_MODE
-      id[i].buffer_full = d.nodes[capture_node[i]-1].od[bid].buffer_full;
+      id[i].buffer_full = env.d.nodes[capture_node[i]-1].od[bid].buffer_full;
 	`else
-      id[i].buffer_full = d.next_nodes[capture_node[i]-1].od[bid].buffer_full;
+      id[i].buffer_full = env.d.next_nodes[capture_node[i]-1].od[bid].buffer_full;
 	`endif
     end
   endfunction
@@ -174,14 +174,14 @@ class sim_node;
   function capture();
     //$display("Node %d Capture: ", `INDEX(this_x, this_y));
     for(int i=0; i<b_count-1; i++) begin
-      int bid = d.nodes[capture_node[i]-1].get_buffer_id(capture_if[i]);
+      int bid = env.d.nodes[capture_node[i]-1].get_buffer_id(capture_if[i]);
       //$display("\tInterface: %d", i);
       //$display("\t\tCN: %d", capture_node[i]);
       //$display("\t\tCI: %d", capture_if[i]);
       //$display("\t\tCDM: %d", dm[capture_if[i]]);
-      //id[i].buffer_full = d.next_nodes[capture_node[i]-1].od[bid].buffer_full;
-      id[i].receiving_data = d.next_nodes[capture_node[i]-1].od[bid].sending_data;
-      id[i].data_in = d.next_nodes[capture_node[i]-1].od[bid].data_out;
+      //id[i].buffer_full = env.d.next_nodes[capture_node[i]-1].od[bid].buffer_full;
+      id[i].receiving_data = env.d.next_nodes[capture_node[i]-1].od[bid].sending_data;
+      id[i].data_in = env.d.next_nodes[capture_node[i]-1].od[bid].data_out;
     end
   endfunction
 
@@ -191,13 +191,13 @@ class sim_node;
     bit requests[5][5];
     int grant[5] = '{-1, -1, -1, -1, -1};
 
-    for(int i=0; i<b_count; i++) begin
+    /*for(int i=0; i<b_count; i++) begin
       $display("%0d:: N%0dB%0dDV: %0b", $time, node_index, i, buffer[i].data_valid());
       $display("%0d:: N%0dB%0dBD: %h", $time, node_index, i, buffer[i].data_out());
       $display("%0d:: N%0dB%0dBF: %0b", $time, node_index, i, buffer[i].full());
       $display("%0d:: N%0dB%0dADDR: %h", $time, node_index, i, address[i]);
       $display("%0d:: N%0dB%0dFC: %h", $time, node_index, i, flit_count[i]);
-    end
+    end*/
 
     for(int i=0; i<b_count; i++) begin
       int req_from, req_to;
@@ -248,28 +248,28 @@ class sim_node;
          // if(d.next_nodes[this_i].req_table[i][j][grant[i]] == 1) begin
          //   $display("Clearing %0d in Column %0d", grant[i], j);
          // end
-          d.next_nodes[this_i].req_table[i][j][grant[i]] = 0;
+          env.d.next_nodes[this_i].req_table[i][j][grant[i]] = 0;
         end
 
-        if(no_reqs(d.next_nodes[this_i].req_table[i][0])) begin
+        if(no_reqs(env.d.next_nodes[this_i].req_table[i][0])) begin
          // $display("First column is empty");
 
-          if (d.next_nodes[this_i].req_s[i] != 0) begin
+          if (env.d.next_nodes[this_i].req_s[i] != 0) begin
            // $display("Decrementing pointer");
-            d.next_nodes[this_i].req_s[i]--;
+            env.d.next_nodes[this_i].req_s[i]--;
           end
           for(int j=0; j<b_count-3;j++) begin
            // $display("Shift");
-            d.next_nodes[this_i].req_table[i][j] = d.next_nodes[this_i].req_table[i][j+1];
+            env.d.next_nodes[this_i].req_table[i][j] = env.d.next_nodes[this_i].req_table[i][j+1];
           end
         end
 
         if (no_reqs(requests[i]) == 0) begin
           for(int k=0; k<5; k++) begin
-            if(d.next_nodes[this_i].req_table[i][d.next_nodes[this_i].req_s[i]-1][k] != requests[i][k]) begin
+            if(env.d.next_nodes[this_i].req_table[i][env.d.next_nodes[this_i].req_s[i]-1][k] != requests[i][k]) begin
              // $display("Adding row");
-              d.next_nodes[this_i].req_table[i][d.next_nodes[this_i].req_s[i]] = requests[i];
-              d.next_nodes[this_i].req_s[i]++;
+              env.d.next_nodes[this_i].req_table[i][env.d.next_nodes[this_i].req_s[i]] = requests[i];
+              env.d.next_nodes[this_i].req_s[i]++;
               break;
             end
           end
@@ -292,7 +292,7 @@ class sim_node;
     //
 
     for(int i=0; i<b_count; i++) begin
-      for(int j=i; j<b_count; j++) begin
+      for(int j=i+1; j<b_count; j++) begin
         assert (grant[i] != grant[j] || grant[i] == -1) else $display("2 things granted to same interface!!");
       end
     end
@@ -309,11 +309,15 @@ class sim_node;
       if(grant[i] > -1) begin
         int temp;
         is_sending[i] = 1'b1;
-        temp = d.next_nodes[this_i].buffer[grant[i]].pop();
+        temp = env.d.next_nodes[this_i].buffer[grant[i]].pop();
         popping_int[grant[i]] = 1;
-        $display("Popping %0d from B%0d of N%0d", temp,  grant[i], this_i);
+        $display("%0d: Popping %0d from B%0d of N%0d to I%0d", $time, temp,  grant[i], this_i, i);
 
         assert(!id[grant[i]].buffer_full) else $display("Granting to interface that can't accept data!!");
+
+        if (i == b_count-1) begin
+          env.transaction_count++;
+        end
       end
       //$display("\tInterface %0d:", i);
       //$display("\t\tSD: %b", is_sending[i]);
@@ -321,85 +325,79 @@ class sim_node;
     end
 
     for(int i=0; i<b_count; i++) begin
-	`ifdef NOC_MODE
-    `else
-      d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
-	`endif      
-      d.next_nodes[this_i].od[i].sending_data = is_sending[i];
-      d.next_nodes[this_i].od[i].data_out = is_sending[i] ? data_out[grant[i]] : 0; //data_out[i];
+      `ifndef NOC_MODE
+        env.d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
+      `endif      
+      env.d.next_nodes[this_i].od[i].sending_data = is_sending[i];
+      env.d.next_nodes[this_i].od[i].data_out = is_sending[i] ? data_out[grant[i]] : 0; //data_out[i];
 
-      $display("%0d:: N%0dI%0dBFO: %b", $time, node_index, i, d.next_nodes[this_i].od[i].buffer_full);
-      $display("%0d:: N%0dI%0dSD: %0b", $time, node_index, i, d.next_nodes[this_i].od[i].sending_data);
-      $display("%0d:: N%0dI%0dDO: %h",  $time, node_index, i, d.next_nodes[this_i].od[i].data_out);
+      /*$display("%0d:: N%0dI%0dBFO: %b", $time, node_index, i, env.d.next_nodes[this_i].od[i].buffer_full);
+      $display("%0d:: N%0dI%0dSD: %0b", $time, node_index, i, env.d.next_nodes[this_i].od[i].sending_data);
+      $display("%0d:: N%0dI%0dDO: %h",  $time, node_index, i, env.d.next_nodes[this_i].od[i].data_out);*/
     end
   endfunction
 
   function receive();
-    for(int i=0; i<b_count; i++) begin
+    /*for(int i=0; i<b_count; i++) begin
       $display("%0d:: N%0dI%0dBFI: %b", $time, node_index, i, id[i].buffer_full);
       $display("%0d:: N%0dI%0dRD: %0b", $time, node_index, i, id[i].receiving_data);
       $display("%0d:: N%0dI%0dDI: %h", $time, node_index, i, id[i].data_in);
-    end
+    end*/
 
     for(int i=0; i<b_count; i++) begin
       if(id[i].receiving_data) begin
-        $display("Pushing %h onto B%0d of N%0d", id[i].data_in, i, this_i);
-        d.next_nodes[this_i].buffer[i].push(id[i].data_in);
+        $display("%0d: Pushing %h onto B%0d of N%0d", $time, id[i].data_in, i, this_i);
+        env.d.next_nodes[this_i].buffer[i].push(id[i].data_in);
       end
     end
 
     for(int i=0; i<b_count; i++) begin
       if(flit_count[i] == 0) begin
         if(id[i].receiving_data) begin
-         // $display("Address %0d from DI = %h", i, id[i].data_in[7:0]);
-          d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8]+1;
-          d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
+          env.d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8]+1;
+          env.d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
         end else begin
-          d.next_nodes[this_i].flit_count[i] = 0;
+          env.d.next_nodes[this_i].flit_count[i] = 0;
         end
       end else if (flit_count[i] == 1) begin
         if(popping_int[i] == 1) begin
-          if(d.next_nodes[this_i].buffer[i].data_valid()) begin
-            int dout = d.next_nodes[this_i].buffer[i].data_out();
-            $display("Address %0d from NDO = %h", i, dout[7:0]);
-            d.next_nodes[this_i].flit_count[i] = dout[15:8]+1;
-            d.next_nodes[this_i].address[i] = dout[7:0];
+          if(env.d.next_nodes[this_i].buffer[i].data_valid()) begin
+            int dout = env.d.next_nodes[this_i].buffer[i].data_out();
+            env.d.next_nodes[this_i].flit_count[i] = dout[15:8]+1;
+            env.d.next_nodes[this_i].address[i] = dout[7:0];
           end else begin
             if(id[i].receiving_data) begin
-              $display("Address %0d from DI = %h", i, id[i].data_in[7:0]);
-              d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8]+1;
-              d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
+              env.d.next_nodes[this_i].flit_count[i] = id[i].data_in[15:8]+1;
+              env.d.next_nodes[this_i].address[i] = id[i].data_in[7:0];
             end else begin
-              $display("Address %0d Kept", i);
-              d.next_nodes[this_i].flit_count[i] --;
-              d.next_nodes[this_i].address[i] = address[i];
+              env.d.next_nodes[this_i].flit_count[i] --;
+              env.d.next_nodes[this_i].address[i] = address[i];
             end
           end
         end else begin
-          d.next_nodes[this_i].flit_count[i] = flit_count[i];
-          d.next_nodes[this_i].address[i] = address[i];
+          env.d.next_nodes[this_i].flit_count[i] = flit_count[i];
+          env.d.next_nodes[this_i].address[i] = address[i];
         end
       end else if (is_sending[i]) begin
-        d.next_nodes[this_i].flit_count[i] --;
-        d.next_nodes[this_i].address[i] = address[i];
+        env.d.next_nodes[this_i].flit_count[i] --;
+        env.d.next_nodes[this_i].address[i] = address[i];
       end else begin
-        d.next_nodes[this_i].flit_count[i] = flit_count[i];
-        d.next_nodes[this_i].address[i] = address[i];
+        env.d.next_nodes[this_i].flit_count[i] = flit_count[i];
+        env.d.next_nodes[this_i].address[i] = address[i];
       end
     end
-	`ifdef NOC_MODE
-    `else
-      	d.next_nodes[this_i].od[b_count-1].buffer_full = buffer[b_count-1].full();
-		for(int i=0; i<b_count-1; i++) begin
-		  d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
-		end
-	`endif
+    `ifndef NOC_MODE
+      env.d.next_nodes[this_i].od[b_count-1].buffer_full = buffer[b_count-1].full();
+      for(int i=0; i<b_count-1; i++) begin
+        env.d.next_nodes[this_i].od[i].buffer_full = buffer[i].full();
+      end
+    `endif
   endfunction
 
   function bfshift();
-    d.next_nodes[this_i].od[b_count-1].buffer_full = d.next_nodes[this_i].buffer[b_count-1].full();
+    env.d.next_nodes[this_i].od[b_count-1].buffer_full = env.d.next_nodes[this_i].buffer[b_count-1].full();
     for(int i=0; i<b_count-1; i++) begin
-      d.next_nodes[this_i].od[i].buffer_full = d.next_nodes[this_i].buffer[i].full();
+      env.d.next_nodes[this_i].od[i].buffer_full = env.d.next_nodes[this_i].buffer[i].full();
     end
   endfunction
 

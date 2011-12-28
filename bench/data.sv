@@ -1,18 +1,20 @@
+typedef class environment;
+
 class data;
   sim_node nodes[`NODE_COUNT];
   sim_node next_nodes[`NODE_COUNT];
 
-  function new();
+  function new(const ref environment _env);
     `ifdef NOC_MODE
       for(int x = 0; x<`NOC_SIZE;x++) begin
         for(int y = 0; y<`NOC_SIZE;y++) begin
-          nodes[x + y*`NOC_SIZE] = new(this, x, y);
-          next_nodes[x + y*`NOC_SIZE] = new(this, x, y);
+          nodes[x + y*`NOC_SIZE] = new(_env, x, y);
+          next_nodes[x + y*`NOC_SIZE] = new(_env, x, y);
         end
       end
     `else
-      nodes[0] = new(this, `NODE_X, `NODE_Y);
-      next_nodes[0] = new(this, `NODE_X, `NODE_Y);
+      nodes[0] = new(_env, `NODE_X, `NODE_Y);
+      next_nodes[0] = new(_env, `NODE_X, `NODE_Y);
     `endif
   endfunction
 

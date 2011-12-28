@@ -65,13 +65,8 @@ class node_transaction extends transaction;
         sending = 0;
       end
 
-    if (sending) begin
-      e.transaction_count++;
-    end
-
     if (current_bytes == 0) begin
       data = (bytes << 8) + (x << 4) + y;
-      //data = data | (from << 8);                //TODO: Remov
       current_bytes = bytes;
     end else begin
       data = packet_data;
