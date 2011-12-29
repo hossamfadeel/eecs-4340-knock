@@ -48,6 +48,10 @@ program automatic bench (
                 vnode[i].cb.data_out
                );
     end
+
+    if(env.rst.reset) begin
+      env.rst.action();
+    end
   
     env.shift();
   endtask

@@ -240,7 +240,7 @@ class sim_node;
       end 
 
       if(grant[i] > -1) begin
-        $display("Interface %0d Grants %0d", i, grant[i]);
+        $display("Node %0d Interface %0d Grants %0d", this_i, i, grant[i]);
     //    $display("Pointer is at %0d", req_s[i]);
 
         requests[i][grant[i]] = 0;
@@ -307,16 +307,22 @@ class sim_node;
       next_data_out[i] = buffer[i].next_data_out();
 
       if(grant[i] > -1) begin
+        string outString, actionString;
         int temp;
         is_sending[i] = 1'b1;
         temp = env.d.next_nodes[this_i].buffer[grant[i]].pop();
         popping_int[grant[i]] = 1;
-        $display("%0d: Popping %0d from B%0d of N%0d to I%0d", $time, temp,  grant[i], this_i, i);
 
-        assert(!id[grant[i]].buffer_full) else $display("Granting to interface that can't accept data!!");
+        assert(!id[i].buffer_full) else $display("Granting to interface that can't accept data!!");
+
+        $sformat(actionString, "Received from N%1d", this_i);
+        $sformat(outString, "Popping %0d from B%0d of N%0d to I%0d", temp,  grant[i], this_i, i);
 
         if (i == b_count-1) begin
+          env.t.perform(actionString, outString);
           env.transaction_count++;
+        end else begin
+          $display(outString);
         end
       end
       //$display("\tInterface %0d:", i);
@@ -346,8 +352,18 @@ class sim_node;
 
     for(int i=0; i<b_count; i++) begin
       if(id[i].receiving_data) begin
-        $display("%0d: Pushing %h onto B%0d of N%0d", $time, id[i].data_in, i, this_i);
+        string outString, actionString;
+
         env.d.next_nodes[this_i].buffer[i].push(id[i].data_in);
+
+        $sformat(actionString, "Sending to N%1d", `INDEX(id[i].data_in[7:4], id[i].data_in[3:0]) - 1);
+        $sformat(outString, "Pushing %h onto B%0d of N%0d", id[i].data_in, i, this_i);
+
+        if(i == b_count -1) begin
+          env.t.perform(actionString, outString);
+        end else begin
+          $display(outString);
+        end
       end
     end
 
@@ -426,6 +442,21 @@ class sim_node;
   function reset();
     for(int i=0; i<b_count; i++) begin
       buffer[i].reset();
+      for(int i=0; i<b_count; i++) begin
+        od[i] = new;
+        id[i] = new;
+        address[i] = 0;
+        flit_count[i] = 0;
+      end
+  
+      for(int i=0; i<5; i++) begin
+        for(int j=0; j<b_count-2;j++) begin
+          for(int k=0; k<5; k++) begin
+            req_table[i][j][k] = 0;
+          end
+        end
+        req_s[i] = 0; 
+      end
       od[i].buffer_full = buffer[i].full();
     end
   endfunction

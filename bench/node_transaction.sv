@@ -65,6 +65,14 @@ class node_transaction extends transaction;
         sending = 0;
       end
 
+    if(e.send_count == e.cfg.max_transactions && e.cfg.max_transactions > 0) begin
+      sending = 0;
+    end
+
+    if(sending == 1) begin
+      e.send_count++;
+    end
+
     if (current_bytes == 0) begin
       data = (bytes << 8) + (x << 4) + y;
       current_bytes = bytes;
