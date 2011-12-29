@@ -21,7 +21,7 @@ class configuration;
     foreach(node_addr_mask_y[i]){
       node_addr_mask_y[i] <= (`NOC_SIZE*`NOC_SIZE) -1;
     }
-    address_mode <= 1;
+    address_mode <= 0;
   }
 
   real reset_density_r;

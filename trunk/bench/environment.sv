@@ -6,6 +6,7 @@ class environment;
   node_transaction in_data[`INTERFACES];
 
   int transaction_count;
+  int send_count;
 
   function new();
     d = new(this);
@@ -24,6 +25,7 @@ class environment;
     end
 
     transaction_count = 0;
+    send_count = 0;
   endfunction
 
   function gen();
@@ -33,9 +35,9 @@ class environment;
       in_data[i].randomize();
     end
 
-    if(rst.reset) begin
-      rst.action(); 
-    end else begin
+    //if(rst.reset) begin
+    //  rst.action(); 
+    //end else begin
       for(int i=0; i<`INTERFACES; i=i+1) begin
         in_data[i].action();
       end
@@ -55,7 +57,7 @@ class environment;
       for(int i=0; i<`NODE_COUNT; i=i+1) begin
         d.nodes[i].receive();
       end
-    end
+    //end
   endfunction
 
   function check(int i, bit bf, bit sd, int data_out);
