@@ -71,7 +71,7 @@
 //                 STAR #129582
 //-------------------------------------------------------------------------------
 //
-module DW_fifoctl_s1_sf (
+module DW_fifoctl_s1_sf_knock (
     clk, rst_n, push_req_n, pop_req_n, diag_n, we_n, empty, 
     almost_empty, half_full, almost_full, full, error, wr_addr, rd_addr );
 

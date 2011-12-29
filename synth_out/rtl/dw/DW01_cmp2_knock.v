@@ -36,7 +36,7 @@
 //           RPH            07/17/2002 
 //                          Rewrote to comply with the new guidelines   
 //-------------------------------------------------------------------------------
-module DW01_cmp2
+module DW01_cmp2_knock
   (A, B, LEQ, TC, LT_LE, GE_GT);
 
   parameter width = 8; 

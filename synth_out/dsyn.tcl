@@ -33,14 +33,14 @@ define_design_lib WORK -path ./WORK
 ##################################################################
 
 set RTL_PATH  "./rtl/"
-set myFiles [list ./rtl/synth_defines.sv ./rtl/defines.sv ./rtl/interfaces/clock_interface.sv ./rtl/interfaces/node_interface.sv ./rtl/interfaces/reset_interface.sv ./rtl/dut/address_counter.sv ./rtl/dut/converter_out.sv ./rtl/dw/DW01_cmp2.v ./rtl/dw/DW_fifoctl_s1_sf.v ./rtl/dw/DW_fifo_s1_sf.v ./rtl/dw/DW_ram_r_w_s_dff.v ./rtl/general/dccl.sv ./rtl/general/fifo_kev.sv ./rtl/general/flipflop.sv ./rtl/general/register.sv ./rtl/dut/converter_in.sv ./rtl/dut/arbiter2.sv ./rtl/dut/arbiter3.sv ./rtl/dut/arbiter4.sv ./rtl/dut/controller3_ne.sv ./rtl/dut/controller3_nw.sv ./rtl/dut/controller3_se.sv ./rtl/dut/controller3_sw.sv ./rtl/dut/controller4_edge_e.sv ./rtl/dut/controller4_edge_n.sv ./rtl/dut/controller4_edge_s.sv ./rtl/dut/controller4_edge_w.sv ./rtl/dut/controller5.sv ./rtl/dut/node3.sv ./rtl/dut/node4.sv ./rtl/dut/node5.sv ./rtl/dut/noc.sv ./rtl/general/mux2_1.sv ./rtl/general/mux3_1.sv ./rtl/general/mux4_1.sv]
+set myFiles [list ./rtl/synth_defines.sv ./rtl/defines.sv ./rtl/interfaces/clock_interface.sv ./rtl/interfaces/node_interface.sv ./rtl/interfaces/reset_interface.sv ./rtl/dut/address_counter.sv ./rtl/dut/converter_out.sv ./rtl/dw/DW01_cmp2_knock.v ./rtl/dw/DW_fifoctl_s1_sf_knock.v ./rtl/dw/DW_fifo_s1_sf_knock.v ./rtl/dw/DW_ram_r_w_s_dff_knock.v ./rtl/general/dccl.sv ./rtl/general/fifo_kev.sv ./rtl/general/flipflop.sv ./rtl/general/register.sv ./rtl/dut/converter_in.sv ./rtl/dut/arbiter2.sv ./rtl/dut/arbiter3.sv ./rtl/dut/arbiter4.sv ./rtl/dut/controller3_ne.sv ./rtl/dut/controller3_nw.sv ./rtl/dut/controller3_se.sv ./rtl/dut/controller3_sw.sv ./rtl/dut/controller4_edge_e.sv ./rtl/dut/controller4_edge_n.sv ./rtl/dut/controller4_edge_s.sv ./rtl/dut/controller4_edge_w.sv ./rtl/dut/controller5.sv ./rtl/dut/node3.sv ./rtl/dut/node4.sv ./rtl/dut/node5.sv ./rtl/dut/noc.sv ./rtl/general/mux2_1.sv ./rtl/general/mux3_1.sv ./rtl/general/mux4_1.sv]
 set fileFormat sverilog              ;# verilog or sverilog
 set basename noc                     ;# Top-level module name
 set CLK "clk.clk"                  ;# The name of your clock 
 set virtual 0                        ;# 1 if virtual clock, 0 if real clock
 
 # Timing and loading information                
-set clkPeriod_ns 10     ;# desired clock period (in ns) 
+set clkPeriod_ns 2.51     ;# desired clock period (in ns) 
 
 # Input delay tells DC how long after the clock before an input becomes
 # valid. 
@@ -94,7 +94,7 @@ current_design $basename
 # The uniquify command makes unique copies of replicated   
 # modules.                          
 link
-uniquify
+uniquify -force
 
 # now you can create clocks for the design                 
 # and set other constraints                                
@@ -195,9 +195,9 @@ if {  $write_sdc == 1 } {
 # synthesized result back in to synopsys later in XG mode (ddc format) 
 if {  $write_ddc == 1 } {
     set filename [format "%s%s" $filebase ".ddc"]
-    write -format ddc -hierarchy -o $filename
+    write -format ddc -hierarchy -output $filename
     set mw_filename [format "%s%s" $filebase "_DCT"]
-    write_milkyway -overwrite -o $mw_filename
+    write_milkyway -overwrite -output $mw_filename
 }
 
 # report on the results from synthesis                     

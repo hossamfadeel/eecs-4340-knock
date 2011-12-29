@@ -42,7 +42,7 @@
 //				    STAR 9000294457
 //----------------------------------------------------------------------
 
-  module DW_ram_r_w_s_dff (clk, rst_n, cs_n, wr_n, rd_addr, wr_addr, data_in, 
+  module DW_ram_r_w_s_dff_knock (clk, rst_n, cs_n, wr_n, rd_addr, wr_addr, data_in, 
 			   data_out, peek_out);
 
    parameter data_width = 4;
