@@ -6,7 +6,7 @@ Report : timing
         -max_paths 1
 Design : noc
 Version: D-2010.03-SP1
-Date   : Thu Dec 29 14:09:54 2011
+Date   : Thu Dec 29 17:58:23 2011
 ****************************************
 
  # A fanout number of 1000 was used for high fanout net computations.
@@ -16,7 +16,7 @@ Wire Load Model Mode: enclosed
 
   Startpoint: reset.reset
               (input port clocked by clk.clk)
-  Endpoint: n2/genblk1[4].addr/address_reg/FF/data_o_reg[0]
+  Endpoint: b1/genblk1[0].addr/count_reg/FF/data_o_reg[1]
             (rising edge-triggered flip-flop clocked by clk.clk)
   Path Group: clk.clk
   Path Type: max
@@ -24,45 +24,44 @@ Wire Load Model Mode: enclosed
   Des/Clust/Port     Wire Load Model       Library
   ------------------------------------------------
   noc                280000                saed90nm_typ
-  node5_NODE_X1_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface__
+  node4_NODE_X1_NODE_Y3I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__
                      16000                 saed90nm_typ
-  address_counter_10 8000                  saed90nm_typ
-  register_8_10      8000                  saed90nm_typ
+  address_counter_43 8000                  saed90nm_typ
+  register_BITS8_43  8000                  saed90nm_typ
 
   Point                                                   Incr       Path
   --------------------------------------------------------------------------
   clock clk.clk (rise edge)                               0.00       0.00
   clock network delay (ideal)                             0.00       0.00
-  input external delay                                    0.25       0.25 f
-  reset.reset (in)                                        0.00       0.25 f
-  n2/reset.reset (node5_NODE_X1_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface__)
-                                                          0.00       0.25 f
-  n2/U8/Z (DELLN1X2)                                      1.49       1.74 f
-  n2/U5/Z (NBUFFX2)                                       0.15       1.89 f
-  n2/genblk1[4].addr/rst (address_counter_10)             0.00       1.89 f
-  n2/genblk1[4].addr/U24/QN (NOR2X0)                      0.13       2.03 r
-  n2/genblk1[4].addr/U8/Z (NBUFFX2)                       0.15       2.17 r
-  n2/genblk1[4].addr/U23/Q (AND2X1)                       0.12       2.29 r
-  n2/genblk1[4].addr/address_reg/data_i[0] (register_8_10)
-                                                          0.00       2.29 r
-  n2/genblk1[4].addr/address_reg/U12/Q (AO22X1)           0.11       2.41 r
-  n2/genblk1[4].addr/address_reg/FF/data_i[0] (flipflop_BITS8_20)
-                                                          0.00       2.41 r
-  n2/genblk1[4].addr/address_reg/FF/data_o_reg[0]/D (DFFX1)
-                                                          0.04       2.44 r
-  data arrival time                                                  2.44
+  input external delay                                    0.00       0.00 f
+  reset.reset (in)                                        0.00       0.00 f
+  b1/reset.reset (node4_NODE_X1_NODE_Y3I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__)
+                                                          0.00       0.00 f
+  b1/U3/Z (DELLN1X2)                                      1.56       1.56 f
+  b1/genblk1[0].addr/rst (address_counter_43)             0.00       1.56 f
+  b1/genblk1[0].addr/U24/QN (NOR2X0)                      0.33       1.89 r
+  b1/genblk1[0].addr/U8/Z (NBUFFX2)                       0.15       2.04 r
+  b1/genblk1[0].addr/U13/Q (AND2X1)                       0.12       2.16 r
+  b1/genblk1[0].addr/count_reg/data_i[1] (register_BITS8_43)
+                                                          0.00       2.16 r
+  b1/genblk1[0].addr/count_reg/U11/Q (AO22X1)             0.11       2.28 r
+  b1/genblk1[0].addr/count_reg/FF/data_i[1] (flipflop_BITS8_87)
+                                                          0.00       2.28 r
+  b1/genblk1[0].addr/count_reg/FF/data_o_reg[1]/D (DFFX1)
+                                                          0.04       2.31 r
+  data arrival time                                                  2.31
 
-  clock clk.clk (rise edge)                               2.51       2.51
-  clock network delay (ideal)                             0.00       2.51
-  n2/genblk1[4].addr/address_reg/FF/data_o_reg[0]/CLK (DFFX1)
-                                                          0.00       2.51 r
-  library setup time                                     -0.06       2.45
-  data required time                                                 2.45
+  clock clk.clk (rise edge)                               2.40       2.40
+  clock network delay (ideal)                             0.00       2.40
+  b1/genblk1[0].addr/count_reg/FF/data_o_reg[1]/CLK (DFFX1)
+                                                          0.00       2.40 r
+  library setup time                                     -0.06       2.34
+  data required time                                                 2.34
   --------------------------------------------------------------------------
-  data required time                                                 2.45
-  data arrival time                                                 -2.44
+  data required time                                                 2.34
+  data arrival time                                                 -2.31
   --------------------------------------------------------------------------
-  slack (MET)                                                        0.00
+  slack (MET)                                                        0.02
 
 
 1
@@ -71,7 +70,7 @@ Wire Load Model Mode: enclosed
 Report : area
 Design : noc
 Version: D-2010.03-SP1
-Date   : Thu Dec 29 14:09:54 2011
+Date   : Thu Dec 29 17:58:23 2011
 ****************************************
 
 Library(s) Used:
@@ -83,10 +82,10 @@ Number of nets:              1026
 Number of cells:               16
 Number of references:          16
 
-Combinational area:       103670.783301
+Combinational area:       103460.658497
 Noncombinational area:    49401.446274
-Net Interconnect area:    11612.897758 
+Net Interconnect area:    11726.651275 
 
-Total cell area:          153072.229575
-Total area:               164685.127333
+Total cell area:          152862.104771
+Total area:               164588.756046
 1

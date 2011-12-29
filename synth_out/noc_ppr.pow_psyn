@@ -7,7 +7,7 @@ Report : power
         -analysis_effort low
 Design : noc
 Version: D-2010.03-ICC-SP1
-Date   : Thu Dec 29 14:32:56 2011
+Date   : Thu Dec 29 18:01:49 2011
 ****************************************
 
 
@@ -1193,11 +1193,11 @@ Power-specific unit information :
     Leakage Power Units = 1pW
 
 
-  Cell Internal Power  = 783.6290 uW   (28%)
-  Net Switching Power  =   2.0077 mW   (72%)
+  Cell Internal Power  = 833.7246 uW   (28%)
+  Net Switching Power  =   2.1083 mW   (72%)
                          ---------
-Total Dynamic Power    =   2.7913 mW  (100%)
+Total Dynamic Power    =   2.9420 mW  (100%)
 
-Cell Leakage Power     = 763.9390 uW
+Cell Leakage Power     = 762.3511 uW
 
 1

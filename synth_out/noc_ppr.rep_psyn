@@ -6,7 +6,7 @@ Report : timing
         -max_paths 1
 Design : noc
 Version: D-2010.03-ICC-SP1
-Date   : Thu Dec 29 14:32:54 2011
+Date   : Thu Dec 29 18:01:47 2011
 ****************************************
 
  * Some/all delay information is back-annotated.
@@ -19,7 +19,7 @@ Operating Conditions: TYPICAL   Library: saed90nm_typ
 
   Startpoint: reset.reset
               (input port clocked by clk.clk)
-  Endpoint: n1/genblk1[3].addr/address_reg/FF/data_o_reg[6]
+  Endpoint: l2/genblk1[1].addr/address_reg/FF/data_o_reg[5]
             (rising edge-triggered flip-flop clocked by clk.clk)
   Path Group: clk.clk
   Path Type: max
@@ -28,36 +28,35 @@ Operating Conditions: TYPICAL   Library: saed90nm_typ
   --------------------------------------------------------------------------
   clock clk.clk (rise edge)                               0.00       0.00
   clock network delay (ideal)                             0.00       0.00
-  input external delay                                    0.25       0.25 f
-  reset.reset (in)                                        0.00       0.25 f
-  n1/reset.reset (node5_NODE_X1_NODE_Y1I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface__)
-                                                          0.00       0.25 f
-  n1/U7/Z (DELLN1X2)                                      0.26 *     0.51 f
-  n1/U6/Z (NBUFFX2)                                       0.08 *     0.59 f
-  n1/genblk1[3].addr/rst (address_counter_16)             0.00       0.59 f
-  n1/genblk1[3].addr/U24/QN (NOR2X0)                      0.10 *     0.69 r
-  n1/genblk1[3].addr/U8/Z (NBUFFX2)                       0.10 *     0.80 r
-  n1/genblk1[3].addr/U17/Q (AND2X1)                       0.06 *     0.86 r
-  n1/genblk1[3].addr/address_reg/data_i[6] (register_8_16)
-                                                          0.00       0.86 r
-  n1/genblk1[3].addr/address_reg/U6/Q (AO22X1)            0.08 *     0.94 r
-  n1/genblk1[3].addr/address_reg/FF/data_i[6] (flipflop_BITS8_32)
-                                                          0.00       0.94 r
-  n1/genblk1[3].addr/address_reg/FF/data_o_reg[6]/D (DFFX1)
-                                                          0.00 *     0.94 r
-  data arrival time                                                  0.94
+  input external delay                                    0.00       0.00 f
+  reset.reset (in)                                        0.00       0.00 f
+  l2/reset.reset (node4_NODE_X0_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__)
+                                                          0.00       0.00 f
+  l2/U3/Z (DELLN1X2)                                      0.35 *     0.35 f
+  l2/genblk1[1].addr/rst (address_counter_30)             0.00       0.35 f
+  l2/genblk1[1].addr/U24/QN (NOR2X0)                      0.14 *     0.49 r
+  l2/genblk1[1].addr/U5/Z (NBUFFX2)                       0.10 *     0.59 r
+  l2/genblk1[1].addr/U18/Q (AND2X1)                       0.06 *     0.65 r
+  l2/genblk1[1].addr/address_reg/data_i[5] (register_8_30)
+                                                          0.00       0.65 r
+  l2/genblk1[1].addr/address_reg/U7/Q (AO22X1)            0.08 *     0.73 r
+  l2/genblk1[1].addr/address_reg/FF/data_i[5] (flipflop_BITS8_60)
+                                                          0.00       0.73 r
+  l2/genblk1[1].addr/address_reg/FF/data_o_reg[5]/D (DFFX1)
+                                                          0.00 *     0.73 r
+  data arrival time                                                  0.73
 
-  clock clk.clk (rise edge)                               2.51       2.51
-  clock network delay (propagated)                        0.38       2.89
-  n1/genblk1[3].addr/address_reg/FF/data_o_reg[6]/CLK (DFFX1)
-                                                          0.00       2.89 r
-  library setup time                                     -0.05       2.84
-  data required time                                                 2.84
+  clock clk.clk (rise edge)                               2.40       2.40
+  clock network delay (propagated)                        0.14       2.54
+  l2/genblk1[1].addr/address_reg/FF/data_o_reg[5]/CLK (DFFX1)
+                                                          0.00       2.54 r
+  library setup time                                     -0.05       2.49
+  data required time                                                 2.49
   --------------------------------------------------------------------------
-  data required time                                                 2.84
-  data arrival time                                                 -0.94
+  data required time                                                 2.49
+  data arrival time                                                 -0.73
   --------------------------------------------------------------------------
-  slack (MET)                                                        1.90
+  slack (MET)                                                        1.76
 
 
 1
@@ -66,7 +65,7 @@ Operating Conditions: TYPICAL   Library: saed90nm_typ
 Report : area
 Design : noc
 Version: D-2010.03-ICC-SP1
-Date   : Thu Dec 29 14:32:54 2011
+Date   : Thu Dec 29 18:01:47 2011
 ****************************************
 
 Library(s) Used:
@@ -74,14 +73,14 @@ Library(s) Used:
     saed90nm_typ (File: /sim/synopsys/SAED_EDK90nm/Digital_Standard_Cell_Library/synopsys/models/saed90nm_typ.db)
 
 Number of ports:              596
-Number of nets:              1038
-Number of cells:               26
-Number of references:          17
+Number of nets:              1039
+Number of cells:               27
+Number of references:          18
 
-Combinational area:       103938.047305
+Combinational area:       103733.452101
 Noncombinational area:    49401.446274
-Net Interconnect area:    15575.349286 
+Net Interconnect area:    15895.919557 
 
-Total cell area:          153339.493579
-Total area:               168914.842865
+Total cell area:          153134.898375
+Total area:               169030.817931
 1
