@@ -9,7 +9,7 @@ Report : power
         -analysis_effort low
 Design : noc
 Version: D-2010.03-SP1
-Date   : Thu Dec 29 14:09:58 2011
+Date   : Thu Dec 29 17:58:28 2011
 ****************************************
 
 
@@ -304,7 +304,6 @@ address_counter_33_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_32_DW01_inc_0
                        ForQA             saed90nm_typ
-arbiter2_15            8000              saed90nm_typ
 dccl_35                8000              saed90nm_typ
 dccl_34                8000              saed90nm_typ
 dccl_33                8000              saed90nm_typ
@@ -355,6 +354,7 @@ address_counter_16_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_15_DW01_inc_0
                        ForQA             saed90nm_typ
+arbiter2_7             8000              saed90nm_typ
 arbiter4_11            8000              saed90nm_typ
 arbiter4_10            8000              saed90nm_typ
 arbiter4_9             8000              saed90nm_typ
@@ -414,12 +414,12 @@ flipflop_BITS8_126     ForQA             saed90nm_typ
 register_BITS2_23      ForQA             saed90nm_typ
 register_BITS1_87      ForQA             saed90nm_typ
 register_BITS3_39      ForQA             saed90nm_typ
-register_BITS2_15      ForQA             saed90nm_typ
+register_BITS2_7       ForQA             saed90nm_typ
 register_BITS4_35      ForQA             saed90nm_typ
 flipflop_BITS2_23      ForQA             saed90nm_typ
 flipflop_BITS1_87      ForQA             saed90nm_typ
 flipflop_BITS3_39      ForQA             saed90nm_typ
-flipflop_BITS2_15      ForQA             saed90nm_typ
+flipflop_BITS2_7       ForQA             saed90nm_typ
 flipflop_BITS4_35      ForQA             saed90nm_typ
 converter_in_I_n_node_interface_dut__0
                        ForQA             saed90nm_typ
@@ -649,10 +649,17 @@ arbiter2_0             8000              saed90nm_typ
 arbiter2_1             8000              saed90nm_typ
 arbiter2_2             8000              saed90nm_typ
 arbiter2_3             8000              saed90nm_typ
+arbiter2_4             8000              saed90nm_typ
+arbiter2_5             8000              saed90nm_typ
 arbiter2_6             8000              saed90nm_typ
-arbiter2_7             8000              saed90nm_typ
 arbiter2_8             8000              saed90nm_typ
 arbiter2_9             8000              saed90nm_typ
+arbiter2_10            8000              saed90nm_typ
+arbiter2_11            8000              saed90nm_typ
+arbiter2_12            8000              saed90nm_typ
+arbiter2_13            8000              saed90nm_typ
+arbiter2_14            8000              saed90nm_typ
+arbiter2_15            8000              saed90nm_typ
 arbiter2_16            8000              saed90nm_typ
 arbiter2_17            8000              saed90nm_typ
 arbiter2_18            8000              saed90nm_typ
@@ -660,13 +667,6 @@ arbiter2_19            8000              saed90nm_typ
 arbiter2_20            8000              saed90nm_typ
 arbiter2_21            8000              saed90nm_typ
 arbiter2_22            8000              saed90nm_typ
-arbiter2_4             8000              saed90nm_typ
-arbiter2_5             8000              saed90nm_typ
-arbiter2_10            8000              saed90nm_typ
-arbiter2_11            8000              saed90nm_typ
-arbiter2_12            8000              saed90nm_typ
-arbiter2_13            8000              saed90nm_typ
-arbiter2_14            8000              saed90nm_typ
 arbiter3_0             8000              saed90nm_typ
 arbiter3_2             8000              saed90nm_typ
 arbiter3_4             8000              saed90nm_typ
@@ -822,10 +822,17 @@ register_BITS2_0       ForQA             saed90nm_typ
 register_BITS2_1       ForQA             saed90nm_typ
 register_BITS2_2       ForQA             saed90nm_typ
 register_BITS2_3       ForQA             saed90nm_typ
+register_BITS2_4       ForQA             saed90nm_typ
+register_BITS2_5       ForQA             saed90nm_typ
 register_BITS2_6       ForQA             saed90nm_typ
-register_BITS2_7       ForQA             saed90nm_typ
 register_BITS2_8       ForQA             saed90nm_typ
 register_BITS2_9       ForQA             saed90nm_typ
+register_BITS2_10      ForQA             saed90nm_typ
+register_BITS2_11      ForQA             saed90nm_typ
+register_BITS2_12      ForQA             saed90nm_typ
+register_BITS2_13      ForQA             saed90nm_typ
+register_BITS2_14      ForQA             saed90nm_typ
+register_BITS2_15      ForQA             saed90nm_typ
 register_BITS2_16      ForQA             saed90nm_typ
 register_BITS2_17      ForQA             saed90nm_typ
 register_BITS2_18      ForQA             saed90nm_typ
@@ -833,13 +840,6 @@ register_BITS2_19      ForQA             saed90nm_typ
 register_BITS2_20      ForQA             saed90nm_typ
 register_BITS2_21      ForQA             saed90nm_typ
 register_BITS2_22      ForQA             saed90nm_typ
-register_BITS2_4       ForQA             saed90nm_typ
-register_BITS2_5       ForQA             saed90nm_typ
-register_BITS2_10      ForQA             saed90nm_typ
-register_BITS2_11      ForQA             saed90nm_typ
-register_BITS2_12      ForQA             saed90nm_typ
-register_BITS2_13      ForQA             saed90nm_typ
-register_BITS2_14      ForQA             saed90nm_typ
 register_BITS1_0       ForQA             saed90nm_typ
 register_BITS1_1       ForQA             saed90nm_typ
 register_BITS1_2       ForQA             saed90nm_typ
@@ -1005,10 +1005,17 @@ flipflop_BITS2_0       ForQA             saed90nm_typ
 flipflop_BITS2_1       ForQA             saed90nm_typ
 flipflop_BITS2_2       ForQA             saed90nm_typ
 flipflop_BITS2_3       ForQA             saed90nm_typ
+flipflop_BITS2_4       ForQA             saed90nm_typ
+flipflop_BITS2_5       ForQA             saed90nm_typ
 flipflop_BITS2_6       ForQA             saed90nm_typ
-flipflop_BITS2_7       ForQA             saed90nm_typ
 flipflop_BITS2_8       ForQA             saed90nm_typ
 flipflop_BITS2_9       ForQA             saed90nm_typ
+flipflop_BITS2_10      ForQA             saed90nm_typ
+flipflop_BITS2_11      ForQA             saed90nm_typ
+flipflop_BITS2_12      ForQA             saed90nm_typ
+flipflop_BITS2_13      ForQA             saed90nm_typ
+flipflop_BITS2_14      ForQA             saed90nm_typ
+flipflop_BITS2_15      ForQA             saed90nm_typ
 flipflop_BITS2_16      ForQA             saed90nm_typ
 flipflop_BITS2_17      ForQA             saed90nm_typ
 flipflop_BITS2_18      ForQA             saed90nm_typ
@@ -1016,13 +1023,6 @@ flipflop_BITS2_19      ForQA             saed90nm_typ
 flipflop_BITS2_20      ForQA             saed90nm_typ
 flipflop_BITS2_21      ForQA             saed90nm_typ
 flipflop_BITS2_22      ForQA             saed90nm_typ
-flipflop_BITS2_4       ForQA             saed90nm_typ
-flipflop_BITS2_5       ForQA             saed90nm_typ
-flipflop_BITS2_10      ForQA             saed90nm_typ
-flipflop_BITS2_11      ForQA             saed90nm_typ
-flipflop_BITS2_12      ForQA             saed90nm_typ
-flipflop_BITS2_13      ForQA             saed90nm_typ
-flipflop_BITS2_14      ForQA             saed90nm_typ
 flipflop_BITS1_0       ForQA             saed90nm_typ
 flipflop_BITS1_1       ForQA             saed90nm_typ
 flipflop_BITS1_2       ForQA             saed90nm_typ
@@ -1195,11 +1195,11 @@ Power-specific unit information :
     Leakage Power Units = 1pW
 
 
-  Cell Internal Power  = 903.7674 uW   (60%)
-  Net Switching Power  = 599.5659 uW   (40%)
+  Cell Internal Power  = 940.5815 uW   (60%)
+  Net Switching Power  = 625.1168 uW   (40%)
                          ---------
-Total Dynamic Power    =   1.5033 mW  (100%)
+Total Dynamic Power    =   1.5657 mW  (100%)
 
-Cell Leakage Power     = 748.4292 uW
+Cell Leakage Power     = 746.7679 uW
 
 1

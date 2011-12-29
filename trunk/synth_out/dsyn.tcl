@@ -40,17 +40,17 @@ set CLK "clk.clk"                  ;# The name of your clock
 set virtual 0                        ;# 1 if virtual clock, 0 if real clock
 
 # Timing and loading information                
-set clkPeriod_ns 2.51     ;# desired clock period (in ns) 
+set clkPeriod_ns 2.40     ;# desired clock period (in ns) 
 
 # Input delay tells DC how long after the clock before an input becomes
 # valid. 
-set inDelay_ns [expr $clkPeriod_ns*.1]  ;# delay from clock to inputs valid
-set outDelay_ns [expr $clkPeriod_ns*.1] ;# delay from clock to output valid
+set inDelay_ns [expr $clkPeriod_ns*.00001]  ;# delay from clock to inputs valid
+set outDelay_ns [expr $clkPeriod_ns*.00001] ;# delay from clock to output valid
 set inputDrive INVX16 
 set LoadLib $design_db         ;# name of library the cell comes from
 set myLoadPin "ZN"             ;# name of pin that the outputs drive
-set CLK_SKEW 0.10
-set CLK_JITTER 0.075
+set CLK_SKEW 0.00001
+set CLK_JITTER 0.000001
 
 # Create MW library
 
