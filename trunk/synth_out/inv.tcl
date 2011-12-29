@@ -170,10 +170,25 @@ write_parasitics -format SBPF -o $filename
 
 set filename [format "%s%s" $filebase ".gds2"]
 
+if {  $write_rep == 1 } {
+    set filename [format "%s%s" $filebase ".rep_psyn"]
+    redirect $filename { report_timing }
+    redirect -append $filename { report_area }
+}
+
+# report the power estimate from synthesis.             
+if {  $write_pow == 1 } {
+    set filename [format "%s%s" $filebase ".pow_psyn"]
+    redirect $filename { report_power }
+}
+
+if {  $write_ref == 1 } {
+    set filename [format "%s%s" $filebase ".ref_psyn"]
+    redirect $filename { report_reference -nosplit -hierarchy }
+}
 # Write out the graphic Data Stream Format! YAY!
 write_stream $filename
 
 #save_mw_cel
 #close_mw_cel
 
-exit

@@ -6,7 +6,7 @@ Report : timing
         -max_paths 1
 Design : noc
 Version: D-2010.03-SP1
-Date   : Thu Dec 29 13:20:02 2011
+Date   : Thu Dec 29 14:09:54 2011
 ****************************************
 
  # A fanout number of 1000 was used for high fanout net computations.
@@ -24,7 +24,7 @@ Wire Load Model Mode: enclosed
   Des/Clust/Port     Wire Load Model       Library
   ------------------------------------------------
   noc                280000                saed90nm_typ
-  node5_NODE_X1_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface___0
+  node5_NODE_X1_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface__
                      16000                 saed90nm_typ
   address_counter_10 8000                  saed90nm_typ
   register_8_10      8000                  saed90nm_typ
@@ -35,7 +35,7 @@ Wire Load Model Mode: enclosed
   clock network delay (ideal)                             0.00       0.00
   input external delay                                    0.25       0.25 f
   reset.reset (in)                                        0.00       0.25 f
-  n2/reset.reset (node5_NODE_X1_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface___0)
+  n2/reset.reset (node5_NODE_X1_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface__)
                                                           0.00       0.25 f
   n2/U8/Z (DELLN1X2)                                      1.49       1.74 f
   n2/U5/Z (NBUFFX2)                                       0.15       1.89 f
@@ -71,7 +71,7 @@ Wire Load Model Mode: enclosed
 Report : area
 Design : noc
 Version: D-2010.03-SP1
-Date   : Thu Dec 29 13:20:02 2011
+Date   : Thu Dec 29 14:09:54 2011
 ****************************************
 
 Library(s) Used:

@@ -94,7 +94,7 @@ current_design $basename
 # The uniquify command makes unique copies of replicated   
 # modules.                          
 link
-uniquify -force
+uniquify -dont_skip_empty_designs 
 
 # now you can create clocks for the design                 
 # and set other constraints                                
@@ -138,7 +138,7 @@ set_fix_hold $CLK
 #set_fix_multiple_port_nets -all -buffer_constants
 
 #   
-check_design
+check_design -multiple_designs
 
 ##################################################################
 # Check for design errors
