@@ -9,7 +9,7 @@ Report : power
         -analysis_effort low
 Design : noc
 Version: D-2010.03-SP1
-Date   : Thu Dec 29 13:20:07 2011
+Date   : Thu Dec 29 14:09:58 2011
 ****************************************
 
 
@@ -24,121 +24,187 @@ Wire Load Model Mode: enclosed
 Design        Wire Load Model            Library
 ------------------------------------------------
 noc                    280000            saed90nm_typ
-node3_NODE_X0_NODE_Y0I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface___0
+node3_NODE_X0_NODE_Y0I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__
                        8000              saed90nm_typ
-node3_NODE_X3_NODE_Y0I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface___0
+node3_NODE_X3_NODE_Y0I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__
                        8000              saed90nm_typ
-node3_NODE_X0_NODE_Y3I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface___0
+node3_NODE_X0_NODE_Y3I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__
                        8000              saed90nm_typ
-node3_NODE_X3_NODE_Y3I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface___0
+node3_NODE_X3_NODE_Y3I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__
                        8000              saed90nm_typ
-node4_NODE_X1_NODE_Y0I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface___0
+node4_NODE_X1_NODE_Y0I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__
                        16000             saed90nm_typ
-node4_NODE_X2_NODE_Y0I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface___0
+node4_NODE_X2_NODE_Y0I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__
                        16000             saed90nm_typ
-node4_NODE_X1_NODE_Y3I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface___0
+node4_NODE_X1_NODE_Y3I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__
                        16000             saed90nm_typ
-node4_NODE_X2_NODE_Y3I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface___0
+node4_NODE_X2_NODE_Y3I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__
                        16000             saed90nm_typ
-node4_NODE_X0_NODE_Y1I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface___0
+node4_NODE_X0_NODE_Y1I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__
                        16000             saed90nm_typ
-node4_NODE_X0_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface___0
+node4_NODE_X0_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__
                        16000             saed90nm_typ
-node4_NODE_X3_NODE_Y1I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface___0
+node4_NODE_X3_NODE_Y1I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__
                        16000             saed90nm_typ
-node4_NODE_X3_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface___0
+node4_NODE_X3_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__
                        16000             saed90nm_typ
-node5_NODE_X1_NODE_Y1I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface___0
+node5_NODE_X1_NODE_Y1I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface__
                        16000             saed90nm_typ
-node5_NODE_X1_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface___0
+node5_NODE_X1_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface__
                        16000             saed90nm_typ
-node5_NODE_X2_NODE_Y1I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface___0
+node5_NODE_X2_NODE_Y1I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface__
                        16000             saed90nm_typ
-node5_NODE_X2_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface___0
+node5_NODE_X2_NODE_Y2I_clk_clock_interface_dut_I_reset_reset_interface_dut_I_local_node_node_interface__I_node_0_node_interface__I_node_1_node_interface__I_node_2_node_interface__I_node_3_node_interface__
                        16000             saed90nm_typ
 fifo_kev_63            8000              saed90nm_typ
 address_counter_63     8000              saed90nm_typ
+fifo_kev_62            8000              saed90nm_typ
 address_counter_62     8000              saed90nm_typ
+fifo_kev_61            8000              saed90nm_typ
 address_counter_61     8000              saed90nm_typ
 converter_in_I_n_node_interface_dut__23
                        ForQA             saed90nm_typ
-controller3_nw_0       8000              saed90nm_typ
+controller3_nw         8000              saed90nm_typ
 mux2_1_23              8000              saed90nm_typ
+fifo_kev_60            8000              saed90nm_typ
 address_counter_60     8000              saed90nm_typ
+fifo_kev_59            8000              saed90nm_typ
 address_counter_59     8000              saed90nm_typ
+fifo_kev_58            8000              saed90nm_typ
 address_counter_58     8000              saed90nm_typ
-controller3_ne_0       8000              saed90nm_typ
+controller3_ne         8000              saed90nm_typ
+fifo_kev_57            8000              saed90nm_typ
 address_counter_57     8000              saed90nm_typ
+fifo_kev_56            8000              saed90nm_typ
 address_counter_56     8000              saed90nm_typ
+fifo_kev_55            8000              saed90nm_typ
 address_counter_55     8000              saed90nm_typ
-controller3_sw_0       8000              saed90nm_typ
+controller3_sw         8000              saed90nm_typ
+fifo_kev_54            8000              saed90nm_typ
 address_counter_54     8000              saed90nm_typ
+fifo_kev_53            8000              saed90nm_typ
 address_counter_53     8000              saed90nm_typ
+fifo_kev_52            8000              saed90nm_typ
 address_counter_52     8000              saed90nm_typ
-controller3_se_0       8000              saed90nm_typ
+controller3_se         8000              saed90nm_typ
+fifo_kev_51            8000              saed90nm_typ
 address_counter_51     8000              saed90nm_typ
+fifo_kev_50            8000              saed90nm_typ
 address_counter_50     8000              saed90nm_typ
+fifo_kev_49            8000              saed90nm_typ
 address_counter_49     8000              saed90nm_typ
+fifo_kev_48            8000              saed90nm_typ
 address_counter_48     8000              saed90nm_typ
 controller4_edge_n_1   8000              saed90nm_typ
 mux3_1_19              8000              saed90nm_typ
+fifo_kev_47            8000              saed90nm_typ
 address_counter_47     8000              saed90nm_typ
+fifo_kev_46            8000              saed90nm_typ
 address_counter_46     8000              saed90nm_typ
+fifo_kev_45            8000              saed90nm_typ
 address_counter_45     8000              saed90nm_typ
+fifo_kev_44            8000              saed90nm_typ
 address_counter_44     8000              saed90nm_typ
 controller4_edge_n_0   8000              saed90nm_typ
+fifo_kev_43            8000              saed90nm_typ
 address_counter_43     8000              saed90nm_typ
+fifo_kev_42            8000              saed90nm_typ
 address_counter_42     8000              saed90nm_typ
+fifo_kev_41            8000              saed90nm_typ
 address_counter_41     8000              saed90nm_typ
+fifo_kev_40            8000              saed90nm_typ
 address_counter_40     8000              saed90nm_typ
 controller4_edge_s_1   8000              saed90nm_typ
+fifo_kev_39            8000              saed90nm_typ
 address_counter_39     8000              saed90nm_typ
+fifo_kev_38            8000              saed90nm_typ
 address_counter_38     8000              saed90nm_typ
+fifo_kev_37            8000              saed90nm_typ
 address_counter_37     8000              saed90nm_typ
+fifo_kev_36            8000              saed90nm_typ
 address_counter_36     8000              saed90nm_typ
+controller4_edge_s_0   8000              saed90nm_typ
+fifo_kev_35            8000              saed90nm_typ
 address_counter_35     8000              saed90nm_typ
+fifo_kev_34            8000              saed90nm_typ
 address_counter_34     8000              saed90nm_typ
+fifo_kev_33            8000              saed90nm_typ
 address_counter_33     8000              saed90nm_typ
+fifo_kev_32            8000              saed90nm_typ
 address_counter_32     8000              saed90nm_typ
 controller4_edge_w_1   8000              saed90nm_typ
+fifo_kev_31            8000              saed90nm_typ
 address_counter_31     8000              saed90nm_typ
+fifo_kev_30            8000              saed90nm_typ
 address_counter_30     8000              saed90nm_typ
+fifo_kev_29            8000              saed90nm_typ
 address_counter_29     8000              saed90nm_typ
+fifo_kev_28            8000              saed90nm_typ
 address_counter_28     8000              saed90nm_typ
+controller4_edge_w_0   8000              saed90nm_typ
+fifo_kev_27            8000              saed90nm_typ
 address_counter_27     8000              saed90nm_typ
+fifo_kev_26            8000              saed90nm_typ
 address_counter_26     8000              saed90nm_typ
+fifo_kev_25            8000              saed90nm_typ
 address_counter_25     8000              saed90nm_typ
+fifo_kev_24            8000              saed90nm_typ
 address_counter_24     8000              saed90nm_typ
 controller4_edge_e_1   8000              saed90nm_typ
+fifo_kev_23            8000              saed90nm_typ
 address_counter_23     8000              saed90nm_typ
+fifo_kev_22            8000              saed90nm_typ
 address_counter_22     8000              saed90nm_typ
+fifo_kev_21            8000              saed90nm_typ
 address_counter_21     8000              saed90nm_typ
+fifo_kev_20            8000              saed90nm_typ
 address_counter_20     8000              saed90nm_typ
 controller4_edge_e_0   8000              saed90nm_typ
+fifo_kev_19            8000              saed90nm_typ
 address_counter_19     8000              saed90nm_typ
+fifo_kev_18            8000              saed90nm_typ
 address_counter_18     8000              saed90nm_typ
+fifo_kev_17            8000              saed90nm_typ
 address_counter_17     8000              saed90nm_typ
+fifo_kev_16            8000              saed90nm_typ
 address_counter_16     8000              saed90nm_typ
+fifo_kev_15            8000              saed90nm_typ
 address_counter_15     8000              saed90nm_typ
 controller5_3          8000              saed90nm_typ
 mux4_1_11              8000              saed90nm_typ
+fifo_kev_14            8000              saed90nm_typ
 address_counter_14     8000              saed90nm_typ
+fifo_kev_13            8000              saed90nm_typ
 address_counter_13     8000              saed90nm_typ
+fifo_kev_12            8000              saed90nm_typ
 address_counter_12     8000              saed90nm_typ
+fifo_kev_11            8000              saed90nm_typ
 address_counter_11     8000              saed90nm_typ
+fifo_kev_10            8000              saed90nm_typ
 address_counter_10     8000              saed90nm_typ
 controller5_2          8000              saed90nm_typ
+fifo_kev_9             8000              saed90nm_typ
 address_counter_9      8000              saed90nm_typ
+fifo_kev_8             8000              saed90nm_typ
 address_counter_8      8000              saed90nm_typ
+fifo_kev_7             8000              saed90nm_typ
 address_counter_7      8000              saed90nm_typ
+fifo_kev_6             8000              saed90nm_typ
 address_counter_6      8000              saed90nm_typ
+fifo_kev_5             8000              saed90nm_typ
 address_counter_5      8000              saed90nm_typ
 controller5_1          8000              saed90nm_typ
+fifo_kev_4             8000              saed90nm_typ
 address_counter_4      8000              saed90nm_typ
+fifo_kev_3             8000              saed90nm_typ
 address_counter_3      8000              saed90nm_typ
+fifo_kev_2             8000              saed90nm_typ
 address_counter_2      8000              saed90nm_typ
+fifo_kev_1             8000              saed90nm_typ
 address_counter_1      8000              saed90nm_typ
+fifo_kev_0             8000              saed90nm_typ
 address_counter_0      8000              saed90nm_typ
+controller5_0          8000              saed90nm_typ
 register_BITS8_63      8000              saed90nm_typ
 register_8_63          8000              saed90nm_typ
 address_counter_63_DW01_inc_0
@@ -151,24 +217,34 @@ address_counter_61_DW01_inc_0
 arbiter2_23            8000              saed90nm_typ
 dccl_63                8000              saed90nm_typ
 dccl_62                8000              saed90nm_typ
+dccl_61                8000              saed90nm_typ
 address_counter_60_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_59_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_58_DW01_inc_0
                        ForQA             saed90nm_typ
+dccl_60                8000              saed90nm_typ
+dccl_59                8000              saed90nm_typ
+dccl_58                8000              saed90nm_typ
 address_counter_57_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_56_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_55_DW01_inc_0
                        ForQA             saed90nm_typ
+dccl_57                8000              saed90nm_typ
+dccl_56                8000              saed90nm_typ
+dccl_55                8000              saed90nm_typ
 address_counter_54_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_53_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_52_DW01_inc_0
                        ForQA             saed90nm_typ
+dccl_54                8000              saed90nm_typ
+dccl_53                8000              saed90nm_typ
+dccl_52                8000              saed90nm_typ
 address_counter_51_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_50_DW01_inc_0
@@ -180,6 +256,10 @@ address_counter_48_DW01_inc_0
 arbiter3_19            8000              saed90nm_typ
 arbiter3_18            8000              saed90nm_typ
 arbiter3_17            8000              saed90nm_typ
+dccl_51                8000              saed90nm_typ
+dccl_50                8000              saed90nm_typ
+dccl_49                8000              saed90nm_typ
+dccl_48                8000              saed90nm_typ
 address_counter_47_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_46_DW01_inc_0
@@ -188,6 +268,10 @@ address_counter_45_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_44_DW01_inc_0
                        ForQA             saed90nm_typ
+dccl_47                8000              saed90nm_typ
+dccl_46                8000              saed90nm_typ
+dccl_45                8000              saed90nm_typ
+dccl_44                8000              saed90nm_typ
 address_counter_43_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_42_DW01_inc_0
@@ -196,6 +280,10 @@ address_counter_41_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_40_DW01_inc_0
                        ForQA             saed90nm_typ
+dccl_43                8000              saed90nm_typ
+dccl_42                8000              saed90nm_typ
+dccl_41                8000              saed90nm_typ
+dccl_40                8000              saed90nm_typ
 address_counter_39_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_38_DW01_inc_0
@@ -204,6 +292,10 @@ address_counter_37_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_36_DW01_inc_0
                        ForQA             saed90nm_typ
+dccl_39                8000              saed90nm_typ
+dccl_38                8000              saed90nm_typ
+dccl_37                8000              saed90nm_typ
+dccl_36                8000              saed90nm_typ
 address_counter_35_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_34_DW01_inc_0
@@ -213,6 +305,10 @@ address_counter_33_DW01_inc_0
 address_counter_32_DW01_inc_0
                        ForQA             saed90nm_typ
 arbiter2_15            8000              saed90nm_typ
+dccl_35                8000              saed90nm_typ
+dccl_34                8000              saed90nm_typ
+dccl_33                8000              saed90nm_typ
+dccl_32                8000              saed90nm_typ
 address_counter_31_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_30_DW01_inc_0
@@ -221,6 +317,10 @@ address_counter_29_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_28_DW01_inc_0
                        ForQA             saed90nm_typ
+dccl_31                8000              saed90nm_typ
+dccl_30                8000              saed90nm_typ
+dccl_29                8000              saed90nm_typ
+dccl_28                8000              saed90nm_typ
 address_counter_27_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_26_DW01_inc_0
@@ -229,6 +329,10 @@ address_counter_25_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_24_DW01_inc_0
                        ForQA             saed90nm_typ
+dccl_27                8000              saed90nm_typ
+dccl_26                8000              saed90nm_typ
+dccl_25                8000              saed90nm_typ
+dccl_24                8000              saed90nm_typ
 address_counter_23_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_22_DW01_inc_0
@@ -237,6 +341,10 @@ address_counter_21_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_20_DW01_inc_0
                        ForQA             saed90nm_typ
+dccl_23                8000              saed90nm_typ
+dccl_22                8000              saed90nm_typ
+dccl_21                8000              saed90nm_typ
+dccl_20                8000              saed90nm_typ
 address_counter_19_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_18_DW01_inc_0
@@ -250,6 +358,11 @@ address_counter_15_DW01_inc_0
 arbiter4_11            8000              saed90nm_typ
 arbiter4_10            8000              saed90nm_typ
 arbiter4_9             8000              saed90nm_typ
+dccl_19                8000              saed90nm_typ
+dccl_18                8000              saed90nm_typ
+dccl_17                8000              saed90nm_typ
+dccl_16                8000              saed90nm_typ
+dccl_15                8000              saed90nm_typ
 address_counter_14_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_13_DW01_inc_0
@@ -260,7 +373,12 @@ address_counter_11_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_10_DW01_inc_0
                        ForQA             saed90nm_typ
-arbiter4_8             8000              saed90nm_typ
+arbiter4_6             8000              saed90nm_typ
+dccl_14                8000              saed90nm_typ
+dccl_13                8000              saed90nm_typ
+dccl_12                8000              saed90nm_typ
+dccl_11                8000              saed90nm_typ
+dccl_10                8000              saed90nm_typ
 address_counter_9_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_8_DW01_inc_0
@@ -271,6 +389,11 @@ address_counter_6_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_5_DW01_inc_0
                        ForQA             saed90nm_typ
+dccl_9                 8000              saed90nm_typ
+dccl_8                 8000              saed90nm_typ
+dccl_7                 8000              saed90nm_typ
+dccl_6                 8000              saed90nm_typ
+dccl_5                 8000              saed90nm_typ
 address_counter_4_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_3_DW01_inc_0
@@ -281,6 +404,11 @@ address_counter_1_DW01_inc_0
                        ForQA             saed90nm_typ
 address_counter_0_DW01_inc_0
                        ForQA             saed90nm_typ
+dccl_4                 8000              saed90nm_typ
+dccl_3                 8000              saed90nm_typ
+dccl_2                 8000              saed90nm_typ
+dccl_1                 8000              saed90nm_typ
+dccl_0                 8000              saed90nm_typ
 flipflop_BITS8_127     ForQA             saed90nm_typ
 flipflop_BITS8_126     ForQA             saed90nm_typ
 register_BITS2_23      ForQA             saed90nm_typ
@@ -293,69 +421,6 @@ flipflop_BITS1_87      ForQA             saed90nm_typ
 flipflop_BITS3_39      ForQA             saed90nm_typ
 flipflop_BITS2_15      ForQA             saed90nm_typ
 flipflop_BITS4_35      ForQA             saed90nm_typ
-fifo_kev_0             8000              saed90nm_typ
-fifo_kev_1             8000              saed90nm_typ
-fifo_kev_2             8000              saed90nm_typ
-fifo_kev_3             8000              saed90nm_typ
-fifo_kev_4             8000              saed90nm_typ
-fifo_kev_5             8000              saed90nm_typ
-fifo_kev_6             8000              saed90nm_typ
-fifo_kev_7             8000              saed90nm_typ
-fifo_kev_8             8000              saed90nm_typ
-fifo_kev_9             8000              saed90nm_typ
-fifo_kev_10            8000              saed90nm_typ
-fifo_kev_11            8000              saed90nm_typ
-fifo_kev_12            8000              saed90nm_typ
-fifo_kev_13            8000              saed90nm_typ
-fifo_kev_14            8000              saed90nm_typ
-fifo_kev_15            8000              saed90nm_typ
-fifo_kev_16            8000              saed90nm_typ
-fifo_kev_17            8000              saed90nm_typ
-fifo_kev_18            8000              saed90nm_typ
-fifo_kev_19            8000              saed90nm_typ
-fifo_kev_20            8000              saed90nm_typ
-fifo_kev_21            8000              saed90nm_typ
-fifo_kev_22            8000              saed90nm_typ
-fifo_kev_23            8000              saed90nm_typ
-fifo_kev_24            8000              saed90nm_typ
-fifo_kev_25            8000              saed90nm_typ
-fifo_kev_26            8000              saed90nm_typ
-fifo_kev_27            8000              saed90nm_typ
-fifo_kev_28            8000              saed90nm_typ
-fifo_kev_29            8000              saed90nm_typ
-fifo_kev_30            8000              saed90nm_typ
-fifo_kev_31            8000              saed90nm_typ
-fifo_kev_32            8000              saed90nm_typ
-fifo_kev_33            8000              saed90nm_typ
-fifo_kev_34            8000              saed90nm_typ
-fifo_kev_35            8000              saed90nm_typ
-fifo_kev_36            8000              saed90nm_typ
-fifo_kev_37            8000              saed90nm_typ
-fifo_kev_38            8000              saed90nm_typ
-fifo_kev_39            8000              saed90nm_typ
-fifo_kev_40            8000              saed90nm_typ
-fifo_kev_41            8000              saed90nm_typ
-fifo_kev_42            8000              saed90nm_typ
-fifo_kev_43            8000              saed90nm_typ
-fifo_kev_44            8000              saed90nm_typ
-fifo_kev_45            8000              saed90nm_typ
-fifo_kev_46            8000              saed90nm_typ
-fifo_kev_47            8000              saed90nm_typ
-fifo_kev_48            8000              saed90nm_typ
-fifo_kev_49            8000              saed90nm_typ
-fifo_kev_50            8000              saed90nm_typ
-fifo_kev_51            8000              saed90nm_typ
-fifo_kev_52            8000              saed90nm_typ
-fifo_kev_53            8000              saed90nm_typ
-fifo_kev_54            8000              saed90nm_typ
-fifo_kev_55            8000              saed90nm_typ
-fifo_kev_56            8000              saed90nm_typ
-fifo_kev_57            8000              saed90nm_typ
-fifo_kev_58            8000              saed90nm_typ
-fifo_kev_59            8000              saed90nm_typ
-fifo_kev_60            8000              saed90nm_typ
-fifo_kev_61            8000              saed90nm_typ
-fifo_kev_62            8000              saed90nm_typ
 converter_in_I_n_node_interface_dut__0
                        ForQA             saed90nm_typ
 converter_in_I_n_node_interface_dut__1
@@ -444,9 +509,6 @@ mux3_1_15              8000              saed90nm_typ
 mux3_1_16              8000              saed90nm_typ
 mux3_1_17              8000              saed90nm_typ
 mux3_1_18              8000              saed90nm_typ
-controller4_edge_s_0   8000              saed90nm_typ
-controller4_edge_w_0   8000              saed90nm_typ
-controller5_0          8000              saed90nm_typ
 mux4_1_0               8000              saed90nm_typ
 mux4_1_1               8000              saed90nm_typ
 mux4_1_2               8000              saed90nm_typ
@@ -605,93 +667,31 @@ arbiter2_11            8000              saed90nm_typ
 arbiter2_12            8000              saed90nm_typ
 arbiter2_13            8000              saed90nm_typ
 arbiter2_14            8000              saed90nm_typ
-dccl_0                 8000              saed90nm_typ
-dccl_1                 8000              saed90nm_typ
-dccl_2                 8000              saed90nm_typ
-dccl_3                 8000              saed90nm_typ
-dccl_4                 8000              saed90nm_typ
-dccl_5                 8000              saed90nm_typ
-dccl_6                 8000              saed90nm_typ
-dccl_7                 8000              saed90nm_typ
-dccl_8                 8000              saed90nm_typ
-dccl_9                 8000              saed90nm_typ
-dccl_10                8000              saed90nm_typ
-dccl_11                8000              saed90nm_typ
-dccl_12                8000              saed90nm_typ
-dccl_13                8000              saed90nm_typ
-dccl_14                8000              saed90nm_typ
-dccl_15                8000              saed90nm_typ
-dccl_16                8000              saed90nm_typ
-dccl_17                8000              saed90nm_typ
-dccl_18                8000              saed90nm_typ
-dccl_19                8000              saed90nm_typ
-dccl_20                8000              saed90nm_typ
-dccl_21                8000              saed90nm_typ
-dccl_22                8000              saed90nm_typ
-dccl_23                8000              saed90nm_typ
-dccl_24                8000              saed90nm_typ
-dccl_25                8000              saed90nm_typ
-dccl_26                8000              saed90nm_typ
-dccl_27                8000              saed90nm_typ
-dccl_28                8000              saed90nm_typ
-dccl_29                8000              saed90nm_typ
-dccl_30                8000              saed90nm_typ
-dccl_31                8000              saed90nm_typ
-dccl_32                8000              saed90nm_typ
-dccl_33                8000              saed90nm_typ
-dccl_34                8000              saed90nm_typ
-dccl_35                8000              saed90nm_typ
-dccl_36                8000              saed90nm_typ
-dccl_37                8000              saed90nm_typ
-dccl_38                8000              saed90nm_typ
-dccl_39                8000              saed90nm_typ
-dccl_40                8000              saed90nm_typ
-dccl_41                8000              saed90nm_typ
-dccl_42                8000              saed90nm_typ
-dccl_43                8000              saed90nm_typ
-dccl_45                8000              saed90nm_typ
-dccl_46                8000              saed90nm_typ
-dccl_47                8000              saed90nm_typ
-dccl_48                8000              saed90nm_typ
-dccl_49                8000              saed90nm_typ
-dccl_50                8000              saed90nm_typ
-dccl_51                8000              saed90nm_typ
-dccl_52                8000              saed90nm_typ
-dccl_55                8000              saed90nm_typ
-dccl_61                8000              saed90nm_typ
-dccl_44                8000              saed90nm_typ
-dccl_53                8000              saed90nm_typ
-dccl_54                8000              saed90nm_typ
-dccl_56                8000              saed90nm_typ
-dccl_57                8000              saed90nm_typ
-dccl_58                8000              saed90nm_typ
-dccl_59                8000              saed90nm_typ
-dccl_60                8000              saed90nm_typ
 arbiter3_0             8000              saed90nm_typ
 arbiter3_2             8000              saed90nm_typ
 arbiter3_4             8000              saed90nm_typ
+arbiter3_5             8000              saed90nm_typ
 arbiter3_6             8000              saed90nm_typ
-arbiter3_8             8000              saed90nm_typ
-arbiter3_11            8000              saed90nm_typ
-arbiter3_14            8000              saed90nm_typ
+arbiter3_7             8000              saed90nm_typ
+arbiter3_10            8000              saed90nm_typ
+arbiter3_13            8000              saed90nm_typ
 arbiter3_16            8000              saed90nm_typ
 arbiter3_1             8000              saed90nm_typ
 arbiter3_3             8000              saed90nm_typ
-arbiter3_5             8000              saed90nm_typ
-arbiter3_7             8000              saed90nm_typ
+arbiter3_8             8000              saed90nm_typ
 arbiter3_9             8000              saed90nm_typ
-arbiter3_10            8000              saed90nm_typ
+arbiter3_11            8000              saed90nm_typ
 arbiter3_12            8000              saed90nm_typ
-arbiter3_13            8000              saed90nm_typ
+arbiter3_14            8000              saed90nm_typ
 arbiter3_15            8000              saed90nm_typ
 arbiter4_0             8000              saed90nm_typ
 arbiter4_3             8000              saed90nm_typ
-arbiter4_6             8000              saed90nm_typ
 arbiter4_1             8000              saed90nm_typ
-arbiter4_4             8000              saed90nm_typ
-arbiter4_7             8000              saed90nm_typ
 arbiter4_2             8000              saed90nm_typ
+arbiter4_4             8000              saed90nm_typ
 arbiter4_5             8000              saed90nm_typ
+arbiter4_7             8000              saed90nm_typ
+arbiter4_8             8000              saed90nm_typ
 flipflop_BITS8_0       ForQA             saed90nm_typ
 flipflop_BITS8_1       ForQA             saed90nm_typ
 flipflop_BITS8_2       ForQA             saed90nm_typ
@@ -1195,11 +1195,11 @@ Power-specific unit information :
     Leakage Power Units = 1pW
 
 
-  Cell Internal Power  = 899.8434 uW   (60%)
-  Net Switching Power  = 598.7897 uW   (40%)
+  Cell Internal Power  = 903.7674 uW   (60%)
+  Net Switching Power  = 599.5659 uW   (40%)
                          ---------
-Total Dynamic Power    =   1.4986 mW  (100%)
+Total Dynamic Power    =   1.5033 mW  (100%)
 
-Cell Leakage Power     = 748.4403 uW
+Cell Leakage Power     = 748.4292 uW
 
 1
