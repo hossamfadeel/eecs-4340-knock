@@ -92,7 +92,7 @@ always_comb begin
 end
 
 
-DW01_cmp2 #(.width(4)) comp_x(
+DW01_cmp2_knock #(.width(4)) comp_x(
 .A(packet_addr_x_i),
 .B(local_addr_x_i),
 .LEQ(1'b1),
@@ -101,7 +101,7 @@ DW01_cmp2 #(.width(4)) comp_x(
 .GE_GT(x_gt)
 								);	
 
-DW01_cmp2 #(.width(4)) comp_y(
+DW01_cmp2_knock #(.width(4)) comp_y(
 .A(packet_addr_y_i),
 .B(local_addr_y_i),
 .LEQ(1'b1),

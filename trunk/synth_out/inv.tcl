@@ -176,3 +176,4 @@ write_stream $filename
 #save_mw_cel
 #close_mw_cel
 
+exit

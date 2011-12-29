@@ -66,7 +66,7 @@
 //
 //-------------------------------------------------------------------------------
 //
-module DW_fifo_s1_sf (
+module DW_fifo_s1_sf_knock (
     clk, rst_n, push_req_n, pop_req_n, diag_n, data_in, empty, 
     almost_empty, half_full, almost_full, full, error, data_out, peek_out);
 
@@ -159,7 +159,7 @@ parameter rst_mode  =  0 ;
     assign ram_rst_n = (rst_mode < 2)? rst_n : 1'b1;
 
 
-    DW_fifoctl_s1_sf #(depth, ae_level, af_level, err_mode, `DW_ctl_rst_mode) FIFO_CTL(
+    DW_fifoctl_s1_sf_knock #(depth, ae_level, af_level, err_mode, `DW_ctl_rst_mode) FIFO_CTL(
 			.clk(clk),
 			.rst_n(rst_n),
 			.push_req_n(push_req_n),
@@ -176,7 +176,7 @@ parameter rst_mode  =  0 ;
 			.rd_addr(ram_rd_addr)
 			);
     
-    DW_ram_r_w_s_dff #(width, depth, `DW_ram_rst_mode) FIFO_MEM( 
+    DW_ram_r_w_s_dff_knock #(width, depth, `DW_ram_rst_mode) FIFO_MEM( 
 			.clk(clk),
 			.rst_n(ram_rst_n),
 			.wr_n(ram_we_n),

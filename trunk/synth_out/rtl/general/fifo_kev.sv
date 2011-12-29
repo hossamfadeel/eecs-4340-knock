@@ -54,13 +54,13 @@ always_comb begin
 
 end
 
-DW_fifo_s1_sf #(WIDTH, 2, ae_level, af_level, err_mode, rst_mode)
+DW_fifo_s1_sf_knock #(WIDTH, 2, ae_level, af_level, err_mode, rst_mode)
 	buffer_head (.clk(clk), .rst_n(!rst), .pop_req_n(!pop_req), .push_req_n(!head_push), .diag_n(1'b1),
 	.data_in(head_wrdata), .empty(head_empty), .almost_empty(),
 	.half_full(), .almost_full(), .full(),
 	.error(error), .data_out(), .peek_out(data_out) );
 
-DW_fifo_s1_sf #(WIDTH, 4, ae_level, af_level, err_mode, rst_mode)
+DW_fifo_s1_sf_knock #(WIDTH, 4, ae_level, af_level, err_mode, rst_mode)
 	buffer (.clk(clk), .rst_n(!rst), .pop_req_n(!pop_req), .push_req_n(!fifo_push), .diag_n(1'b1),
 	.data_in(data_in), .empty(fifo_empty), .almost_empty(almost_empty),
 	.half_full(half_full), .almost_full(almost_full), .full(full),
